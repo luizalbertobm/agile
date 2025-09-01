@@ -25,7 +25,7 @@ const Navbar = ({ onSidebarToggle }) => {
               color="gray"
               size="sm"
               onClick={onSidebarToggle}
-              className="!bg-gray-100 dark:!bg-gray-700 hover:!bg-gray-200 dark:hover:!bg-gray-600 !border-gray-200 dark:!border-gray-600"
+              className="!bg-gray-100 dark:!bg-gray-700 hover:!bg-gray-200 dark:hover:!bg-gray-600 !border-gray-200 dark:!border-gray-600 cursor-pointer"
               aria-label="Open sidebar"
             >
               <HiMenuAlt3 className="h-5 w-5 text-gray-600 dark:text-gray-300" />
@@ -34,7 +34,7 @@ const Navbar = ({ onSidebarToggle }) => {
               color="gray"
               size="sm"
               onClick={toggleDarkMode}
-              className="!bg-gray-100 dark:!bg-gray-700 hover:!bg-gray-200 dark:hover:!bg-gray-600 !border-gray-200 dark:!border-gray-600 transition-all duration-200"
+              className="!bg-gray-100 dark:!bg-gray-700 hover:!bg-gray-200 dark:hover:!bg-gray-600 !border-gray-200 dark:!border-gray-600 transition-all duration-200 cursor-pointer"
               aria-label={isDarkMode ? "Mudar para modo claro" : "Mudar para modo escuro"}
               title={isDarkMode ? "Mudar para modo claro" : "Mudar para modo escuro"}
             >

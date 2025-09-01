@@ -30,7 +30,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             color="gray"
             size="sm"
             onClick={onClose}
-            className="p-2"
+            className="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
             aria-label="Close sidebar"
           >
             <HiX className="h-5 w-5" />
