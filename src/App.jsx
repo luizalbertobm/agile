@@ -4,6 +4,7 @@ import { useSidebar } from './hooks/useSidebar';
 import { useLanguage } from './hooks/useLanguage';
 import Navbar from './components/common/Navbar/Navbar';
 import Sidebar from './components/common/Sidebar/Sidebar';
+import UserStoryBuilder from './components/UserStory/UserStoryBuilder';
 import './App.css';
 
 const AppContent = () => {
@@ -21,14 +22,7 @@ const AppContent = () => {
 
       {/* Main Content */}
       <main className="p-6">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            {t('navbar.brand')} - {t('sidebar.title')}
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            {t('sidebar.subtitle')}
-          </p>
-        </div>
+        <UserStoryBuilder />
       </main>
     </div>
   );
