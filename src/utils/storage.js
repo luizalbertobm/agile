@@ -29,8 +29,23 @@ export const storage = {
 };
 
 export const themeUtils = {
-  getStoredTheme: () => storage.get(THEME_STORAGE_KEY, false),
-  setStoredTheme: (isDark) => storage.set(THEME_STORAGE_KEY, isDark),
+  getStoredTheme: () => {
+    try {
+      const stored = localStorage.getItem(THEME_STORAGE_KEY);
+      if (stored === null) return null;
+      return JSON.parse(stored);
+    } catch (error) {
+      console.error('Error reading theme from localStorage:', error);
+      return null;
+    }
+  },
+  setStoredTheme: (isDark) => {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(isDark));
+    } catch (error) {
+      console.error('Error saving theme to localStorage:', error);
+    }
+  },
   applyTheme: (isDark) => {
     const htmlElement = document.documentElement;
     if (isDark) {
