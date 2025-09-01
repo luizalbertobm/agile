@@ -1,0 +1,58 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "search": "Search",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "welcome": "Welcome to",
+    "description": "Your tool to create and manage User Stories efficiently"
+  },
+  "navbar": {
+    "brand": "Bee Agile",
+    "toggleSidebar": "Toggle sidebar",
+    "toggleTheme": "Toggle theme",
+    "selectLanguage": "Select language"
+  },
+  "sidebar": {
+    "title": "User Stories",
+    "subtitle": "Manage your stories",
+    "search": "Search stories...",
+    "stats": {
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "pending": "Pending"
+    },
+    "sections": {
+      "recent": "Recent Stories"
+    },
+    "empty": {
+      "title": "No stories found",
+      "description": "Start by creating your first user story",
+      "action": "Create Story"
+    }
+  },
+  "userStory": {
+    "title": "User Story",
+    "status": {
+      "pending": "Pending",
+      "inProgress": "In Progress",
+      "completed": "Completed"
+    },
+    "form": {
+      "title": "Title",
+      "description": "Description",
+      "acceptanceCriteria": "Acceptance Criteria",
+      "priority": "Priority",
+      "estimate": "Estimate"
+    }
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  }
+}

@@ -11,6 +11,7 @@ A modern, professional React application for creating, validating, and managing 
 
 - **🎨 Modern UI/UX**: Clean, responsive design with Flowbite React components
 - **🌓 Dark/Light Mode**: Seamless theme switching with system preference detection
+- **🌍 Internationalization**: Multi-language support (Portuguese/English) with react-i18next
 - **📱 Responsive Design**: Mobile-first approach with Tailwind CSS
 - **📋 User Story Management**: Create, organize, and track user stories efficiently
 - **⚡ Performance Optimized**: React 19 with modern hooks and best practices
@@ -84,6 +85,12 @@ src/
 - **Flowbite React 0.12.7** - Professional component library
 - **Tailwind CSS 4.1.12** - Utility-first CSS framework
 - **React Icons 5.5.0** - Comprehensive icon library
+- **React Country Flag** - High-quality SVG flag icons for internationalization
+
+### Internationalization
+- **React i18next 15.7.3** - Internationalization framework
+- **i18next 25.4.2** - Core internationalization library
+- **i18next Browser Language Detector 8.2.0** - Automatic language detection
 
 ### Development Tools
 - **ESLint 9.33.0** - Code linting and quality
@@ -103,6 +110,14 @@ src/
 - **Custom Hooks**: Reusable logic extracted into hooks
 - **Context API**: Global state management for user stories
 - **Performance**: React.memo for optimized re-renders
+
+### Internationalization System
+- **Language Detection**: Automatic browser language detection with localStorage fallback
+- **Professional Flags**: High-quality SVG flags using react-country-flag
+- **Elegant UI**: Dropdown selector with gradients, animations, and visual indicators
+- **Comprehensive Coverage**: Full interface translation (navbar, sidebar, forms, messages)
+- **Persistence**: User language preference saved locally
+- **Supported Languages**: Portuguese (Brazil) and English (United States)
 
 ### Professional Practices
 - **Accessibility**: ARIA labels and semantic HTML

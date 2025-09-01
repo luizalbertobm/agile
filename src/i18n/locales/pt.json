@@ -1,0 +1,58 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "search": "Buscar",
+    "create": "Criar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "welcome": "Bem-vindo ao",
+    "description": "Sua ferramenta para criar e gerenciar User Stories de forma eficiente"
+  },
+  "navbar": {
+    "brand": "Bee Agile",
+    "toggleSidebar": "Alternar barra lateral",
+    "toggleTheme": "Alternar tema",
+    "selectLanguage": "Selecionar idioma"
+  },
+  "sidebar": {
+    "title": "Histórias de Usuário",
+    "subtitle": "Gerencie suas histórias",
+    "search": "Buscar histórias...",
+    "stats": {
+      "inProgress": "Em progresso",
+      "completed": "Concluído",
+      "pending": "Pendente"
+    },
+    "sections": {
+      "recent": "Histórias Recentes"
+    },
+    "empty": {
+      "title": "Nenhuma história encontrada",
+      "description": "Comece criando sua primeira história de usuário",
+      "action": "Criar História"
+    }
+  },
+  "userStory": {
+    "title": "História de Usuário",
+    "status": {
+      "pending": "Pendente",
+      "inProgress": "Em progresso",
+      "completed": "Concluído"
+    },
+    "form": {
+      "title": "Título",
+      "description": "Descrição",
+      "acceptanceCriteria": "Critérios de Aceitação",
+      "priority": "Prioridade",
+      "estimate": "Estimativa"
+    }
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  }
+}
