@@ -68,7 +68,12 @@ i18n
     debug: process.env.NODE_ENV === 'development',
     
     // Load stored language if available
-    lng: getStoredLanguage() || undefined
+    lng: getStoredLanguage() || 'pt',
+    
+    // React configuration
+    react: {
+      useSuspense: false
+    }
   });
 
 export default i18n;

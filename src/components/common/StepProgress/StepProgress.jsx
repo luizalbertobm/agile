@@ -99,34 +99,27 @@ const StepProgress = ({
                     {step.title}
                   </p>
                   
+                  {step.description && (
+                    <p className={`${sizes.description} text-gray-500 dark:text-gray-500 mt-1 leading-tight`}>
+                      {step.description}
+                    </p>
+                  )}
                 </div>
               </div>
               
               {/* Connector Line */}
               {index < steps.length - 1 && (
-                <div className={`flex-1 mx-4 rounded transition-all duration-300 ${sizes.connector} ${
-                  isCompleted 
-                    ? 'bg-gradient-to-r from-green-600 to-green-400 shadow-sm' 
-                    : 'bg-gray-200 dark:bg-gray-700'
-                }`} />
+                <div className="flex-1 mx-4 sm:mx-6">
+                  <div className={`${sizes.connector} w-full rounded-full transition-colors duration-300 ${
+                    currentStep > step.id 
+                      ? 'bg-green-500' 
+                      : 'bg-gray-200 dark:bg-gray-700'
+                  }`} />
+                </div>
               )}
             </div>
           );
         })}
-      </div>
-      
-      {/* Optional Progress Indicator */}
-      <div className="mt-6">
-        <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
-          <span>Progresso</span>
-          <span>{Math.round((currentStep / steps.length) * 100)}%</span>
-        </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-          <div 
-            className="bg-gradient-to-r from-blue-600 to-green-600 h-2 rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${(currentStep / steps.length) * 100}%` }}
-          />
-        </div>
       </div>
     </div>
   );

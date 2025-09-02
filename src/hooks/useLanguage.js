@@ -13,29 +13,56 @@ export const useLanguage = () => {
   
   const currentLanguage = i18n.language || 'pt';
   
+  // Debug logs
+  console.log('useLanguage Debug:', {
+    currentLanguage,
+    i18nLanguage: i18n.language,
+    resolvedLanguage: i18n.resolvedLanguage,
+    localStorage: localStorage.getItem(STORAGE_KEYS.LANGUAGE),
+    availableResources: Object.keys(i18n.services.resourceStore.data)
+  });
+  
   /**
    * Change the application language
    * @param {string} languageCode - The language code to switch to
    */
-  const changeLanguage = useCallback(async (languageCode) => {
-    try {
-      // Validate language code
-      if (!LANGUAGES[languageCode]) {
-        console.warn(`Language code '${languageCode}' is not supported`);
-        return;
+  const changeLanguage = useCallback(async (language) => {
+    console.log('🌍 [DEBUG] Changing language:', {
+      currentLanguage,
+      targetLanguage: language,
+      i18nCurrentLanguage: i18n.language,
+      beforeChange: {
+        localStorage: localStorage.getItem(STORAGE_KEYS.LANGUAGE),
+        i18nLanguage: i18n.language,
+        resolvedLanguage: i18n.resolvedLanguage
       }
+    });
+    
+    try {
+      // Update localStorage first
+      localStorage.setItem(STORAGE_KEYS.LANGUAGE, language);
+      console.log('🌍 [DEBUG] Updated localStorage:', localStorage.getItem(STORAGE_KEYS.LANGUAGE));
       
-      // Change language in i18n
-      await i18n.changeLanguage(languageCode);
+      // Change i18n language and wait for it to complete
+      await i18n.changeLanguage(language);
+      console.log('🌍 [DEBUG] i18n.changeLanguage completed');
       
-      // Persist to localStorage
-      setStorageItem(STORAGE_KEYS.LANGUAGE, languageCode);
+      // Verify the change
+      console.log('🌍 [DEBUG] After change:', {
+        currentLanguage: language,
+        i18nLanguage: i18n.language,
+        resolvedLanguage: i18n.resolvedLanguage,
+        localStorage: localStorage.getItem(STORAGE_KEYS.LANGUAGE),
+        testTranslation: i18n.t('navbar.title')
+      });
       
-      console.log(`Language changed to: ${languageCode}`);
+      // Force a re-render by triggering a custom event
+      window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language } }));
+      
     } catch (error) {
-      console.error('Error changing language:', error);
+      console.error('🌍 [ERROR] Error changing language:', error);
     }
-  }, [i18n]);
+  }, [currentLanguage, i18n]);
   
   /**
    * Get the current language information

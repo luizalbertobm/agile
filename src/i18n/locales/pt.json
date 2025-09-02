@@ -16,7 +16,8 @@
     "brand": "Bee Agile",
     "toggleSidebar": "Alternar barra lateral",
     "toggleTheme": "Alternar tema",
-    "selectLanguage": "Selecionar idioma"
+    "selectLanguage": "Selecionar idioma",
+    "stories": "Histórias"
   },
   "sidebar": {
     "title": "Histórias de Usuário",
@@ -49,6 +50,74 @@
       "acceptanceCriteria": "Critérios de Aceitação",
       "priority": "Prioridade",
       "estimate": "Estimativa"
+    },
+    "builder": {
+      "title": "User Story Builder",
+      "subtitle": "Crie User Stories bem estruturadas de forma fácil e profissional",
+      "steps": {
+        "step1": {
+          "title": "Estrutura Base",
+          "description": "Defina a estrutura básica da User Story"
+        },
+        "step2": {
+          "title": "Critérios de Aceitação", 
+          "description": "Estabeleça critérios claros de aceitação"
+        },
+        "step3": {
+          "title": "Definição de Pronto",
+          "description": "Configure a definição de pronto"
+        },
+        "step4": {
+          "title": "Revisão Final",
+          "description": "Revise e finalize sua User Story"
+        }
+      },
+      "form": {
+        "persona": "Persona",
+        "personaHelp": "(Quem é o usuário?)",
+        "personaPlaceholder": "Ex: usuário final, administrador, cliente, gestor...",
+        "action": "Ação",
+        "actionHelp": "(O que deseja fazer?)",
+        "actionPlaceholder": "Ex: fazer login, gerenciar usuários, visualizar relatórios...",
+        "benefit": "Benefício",
+        "benefitHelp": "(Qual o valor agregado?)",
+        "benefitPlaceholder": "Ex: acessar funcionalidades personalizadas, melhorar produtividade...",
+        "priority": "Prioridade",
+        "pattern": "Padrão:",
+        "patternExample": "Como [persona], eu quero [ação] para [benefício]",
+        "patternDescription": "Crie uma user story seguindo o padrão amplamente aceito na metodologia ágil",
+        "structure": "Estrutura da User Story",
+        "information": "Informações da User Story",
+        "preview": "Preview em Tempo Real",
+        "previewEmpty": "Complete os campos para ver o preview",
+        "previewTemplate": "Como {{persona}}, eu quero {{action}}{{benefit}}",
+        "templates": "Templates Rápidos",
+        "templatesHelp": "💡 Clique em qualquer template para preenchimento automático"
+      },
+      "priorities": {
+        "high": "Alta",
+        "medium": "Média", 
+        "low": "Baixa"
+      },
+      "navigation": {
+        "previous": "Anterior",
+        "next": "Próximo",
+        "finish": "Finalizar",
+        "step": "Passo"
+      },
+      "placeholders": {
+        "step2": {
+          "title": "Critérios de Aceitação",
+          "description": "Em desenvolvimento - Defina critérios claros e mensuráveis"
+        },
+        "step3": {
+          "title": "Definição de Pronto",
+          "description": "Em desenvolvimento - Configure a definição de pronto"
+        },
+        "step4": {
+          "title": "Revisão Final"
+        }
+      }
     }
   },
   "language": {

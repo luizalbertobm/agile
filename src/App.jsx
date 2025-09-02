@@ -1,4 +1,4 @@
-
+import { useEffect, useState } from 'react';
 import { UserStoryProvider } from './contexts/UserStoryContext';
 import { useSidebar } from './hooks/useSidebar';
 import { useLanguage } from './hooks/useLanguage';
@@ -10,9 +10,24 @@ import './App.css';
 const AppContent = () => {
   const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
   const { t } = useLanguage();
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  // Listen for language changes to force re-render
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      console.log('🌍 [DEBUG] Language change event received, forcing re-render');
+      setForceUpdate(prev => prev + 1);
+    };
+
+    window.addEventListener('languageChanged', handleLanguageChange);
+    
+    return () => {
+      window.removeEventListener('languageChanged', handleLanguageChange);
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900" key={forceUpdate}>
       <Navbar onSidebarToggle={toggleSidebar} />
       
       <Sidebar 

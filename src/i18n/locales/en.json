@@ -16,7 +16,8 @@
     "brand": "Bee Agile",
     "toggleSidebar": "Toggle sidebar",
     "toggleTheme": "Toggle theme",
-    "selectLanguage": "Select language"
+    "selectLanguage": "Select language",
+    "stories": "Stories"
   },
   "sidebar": {
     "title": "User Stories",
@@ -49,6 +50,74 @@
       "acceptanceCriteria": "Acceptance Criteria",
       "priority": "Priority",
       "estimate": "Estimate"
+    },
+    "builder": {
+      "title": "User Story Builder",
+      "subtitle": "Create well-structured User Stories easily and professionally",
+      "steps": {
+        "step1": {
+          "title": "Base Structure",
+          "description": "Define the basic structure of the User Story"
+        },
+        "step2": {
+          "title": "Acceptance Criteria",
+          "description": "Establish clear acceptance criteria"
+        },
+        "step3": {
+          "title": "Definition of Done",
+          "description": "Configure the definition of done"
+        },
+        "step4": {
+          "title": "Final Review",
+          "description": "Review and finalize your User Story"
+        }
+      },
+      "form": {
+        "persona": "Persona",
+        "personaHelp": "(Who is the user?)",
+        "personaPlaceholder": "Ex: end user, administrator, customer, manager...",
+        "action": "Action",
+        "actionHelp": "(What do they want to do?)",
+        "actionPlaceholder": "Ex: login, manage users, view reports...",
+        "benefit": "Benefit",
+        "benefitHelp": "(What value does it add?)",
+        "benefitPlaceholder": "Ex: access personalized features, improve productivity...",
+        "priority": "Priority",
+        "pattern": "Pattern:",
+        "patternExample": "As a [persona], I want [action] so that [benefit]",
+        "patternDescription": "Create a user story following the widely accepted agile methodology pattern",
+        "structure": "User Story Structure",
+        "information": "User Story Information",
+        "preview": "Real-time Preview",
+        "previewEmpty": "Complete the fields to see the preview",
+        "previewTemplate": "As a {{persona}}, I want {{action}}{{benefit}}",
+        "templates": "Quick Templates",
+        "templatesHelp": "💡 Click any template for automatic completion"
+      },
+      "priorities": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "navigation": {
+        "previous": "Previous",
+        "next": "Next",
+        "finish": "Finish",
+        "step": "Step"
+      },
+      "placeholders": {
+        "step2": {
+          "title": "Acceptance Criteria",
+          "description": "In development - Define clear and measurable criteria"
+        },
+        "step3": {
+          "title": "Definition of Done",
+          "description": "In development - Configure the definition of done"
+        },
+        "step4": {
+          "title": "Final Review"
+        }
+      }
     }
   },
   "language": {
