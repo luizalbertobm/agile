@@ -17,6 +17,10 @@ Roadmap: integration with GitHub Issues and the OpenAI API for task automation a
 
 ## Developer Workflows
 
+- **Terminal Command Execution:**
+  Before running any new command in the terminal, verify that the terminal is not currently executing another process.
+  This prevents command blocking and ensures each process completes properly.
+
 - **Start Dev Server:**
   ```sh
   npm run dev
@@ -31,11 +35,6 @@ Roadmap: integration with GitHub Issues and the OpenAI API for task automation a
 - **Preview Production Build:**
   ```sh
   npm run preview
-  ```
-
-- **Lint:**
-  ```sh
-  npm run lint
   ```
 
 ## Project-Specific Conventions

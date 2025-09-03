@@ -17,7 +17,9 @@
     "toggleSidebar": "Alternar barra lateral",
     "toggleTheme": "Alternar tema",
     "selectLanguage": "Selecionar idioma",
-    "stories": "Histórias"
+    "stories": "Histórias",
+    "save": "Salvar",
+    "copy": "Copiar"
   },
   "sidebar": {
     "title": "Histórias de Usuário",

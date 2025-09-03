@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 /* Custom dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -117,5 +117,19 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  button {
+    cursor: pointer;
+  }
+
+  a{
+    @apply text-primary;
+  }
+
+  /*
+  Make sure disabled buttons don't get the pointer cursor.
+  */
+  :disabled {
+    cursor: default;
   }
 }

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { UserStoryProvider } from './contexts/UserStoryContext';
 import { useSidebar } from './hooks/useSidebar';
 import { useLanguage } from './hooks/useLanguage';
 import Navbar from './components/common/Navbar/Navbar';
@@ -7,7 +6,7 @@ import Sidebar from './components/common/Sidebar/Sidebar';
 import UserStoryBuilder from './components/UserStory/UserStoryBuilder';
 import './App.css';
 
-const AppContent = () => {
+function App() {
   const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
   const { t } = useLanguage();
   const [forceUpdate, setForceUpdate] = useState(0);
@@ -40,14 +39,6 @@ const AppContent = () => {
         <UserStoryBuilder />
       </main>
     </div>
-  );
-};
-
-function App() {
-  return (
-    <UserStoryProvider>
-      <AppContent />
-    </UserStoryProvider>
   );
 }
 

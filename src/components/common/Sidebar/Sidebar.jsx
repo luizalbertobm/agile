@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +10,6 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@/components/ui/sheet';
 import { 
   HiDocumentText, 
@@ -19,19 +19,55 @@ import {
   HiExclamationCircle,
   HiPlus
 } from 'react-icons/hi';
-import { useUserStories } from '../../../contexts/UserStoryContext';
 import { useLanguage } from '../../../hooks/useLanguage';
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const { state } = useUserStories();
   const { t } = useLanguage();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Mock data for demo purposes - in a real app this would come from local storage or API
+  const mockStories = [
+    {
+      id: 1,
+      title: "Login do usuário",
+      description: "Como usuário, eu quero fazer login no sistema para acessar funcionalidades personalizadas",
+      status: t('userStory.status.completed'),
+      priority: "Alta",
+      estimate: "5",
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 2,
+      title: "Dashboard principal",
+      description: "Como administrador, eu quero visualizar um dashboard com métricas importantes",
+      status: t('userStory.status.inProgress'),
+      priority: "Média",
+      estimate: "8",
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 3,
+      title: "Relatórios personalizados",
+      description: "Como gerente, eu quero gerar relatórios personalizados para análise de dados",
+      status: t('userStory.status.pending'),
+      priority: "Baixa",
+      estimate: "13",
+      createdAt: new Date().toISOString()
+    }
+  ];
+
+  // Filter stories based on search term
+  const filteredStories = mockStories.filter(story => 
+    story.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    story.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Stats calculation
   const stats = {
-    inProgress: state.userStories.filter(s => s.status === t('userStory.status.inProgress')).length,
-    completed: state.userStories.filter(s => s.status === t('userStory.status.completed')).length,
-    pending: state.userStories.filter(s => s.status === t('userStory.status.pending')).length,
-    total: state.userStories.length
+    inProgress: mockStories.filter(s => s.status === t('userStory.status.inProgress')).length,
+    completed: mockStories.filter(s => s.status === t('userStory.status.completed')).length,
+    pending: mockStories.filter(s => s.status === t('userStory.status.pending')).length,
+    total: mockStories.length
   };
 
   const StatusIcon = ({ status }) => {
@@ -78,6 +114,8 @@ const Sidebar = ({ isOpen, onClose }) => {
             <Input
               type="text"
               placeholder={t('sidebar.search')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
             />
           </div>
@@ -120,7 +158,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {/* Section Title */}
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-              {t('sidebar.sections.recent')} ({stats.total})
+              {t('sidebar.sections.recent')} ({filteredStories.length})
             </h3>
             <Button size="sm" variant="outline" className="h-7 px-2">
               <HiPlus className="h-3 w-3 mr-1" />
@@ -131,25 +169,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {/* Stories List with ScrollArea */}
           <ScrollArea className="h-[calc(100vh-380px)] pr-4">
             <div className="space-y-3">
-              {state.loading && (
-                <div className="flex items-center justify-center py-8">
-                  <div className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-gray-500 bg-white dark:bg-gray-700 transition ease-in-out duration-150">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    {t('common.loading')}
-                  </div>
-                </div>
-              )}
-
-              {state.error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                  <p className="text-red-600 dark:text-red-400 text-sm">{state.error}</p>
-                </div>
-              )}
-
-              {state.userStories.map((story, index) => (
+              {filteredStories.map((story, index) => (
                 <div 
                   key={story.id || index}
                   className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 hover:shadow-md transition-all duration-200 cursor-pointer group"
@@ -158,16 +178,16 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <div className="flex items-center space-x-2">
                       <StatusIcon status={story.status} />
                       <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                        {story.title || `${t('userStory.title')} #${index + 1}`}
+                        {story.title}
                       </h4>
                     </div>
                     <Badge variant={getStatusBadgeVariant(story.status)} className="text-xs">
-                      {story.status || t('userStory.status.pending')}
+                      {story.status}
                     </Badge>
                   </div>
                   
                   <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
-                    {story.description || story.userStory || 'Como usuário, eu quero...'}
+                    {story.description}
                   </p>
                   
                   <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
@@ -180,13 +200,21 @@ const Sidebar = ({ isOpen, onClose }) => {
                       {story.estimate && `${story.estimate} pts`}
                     </span>
                     <span>
-                      {story.createdAt ? new Date(story.createdAt).toLocaleDateString() : 'Hoje'}
+                      {new Date(story.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
               ))}
 
-              {state.userStories.length === 0 && !state.loading && (
+              {filteredStories.length === 0 && searchTerm && (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">
+                    Nenhuma história encontrada para "{searchTerm}"
+                  </p>
+                </div>
+              )}
+
+              {mockStories.length === 0 && (
                 <div className="text-center py-12">
                   <div className="bg-gray-100 dark:bg-gray-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <HiDocumentText className="h-8 w-8 text-gray-400" />

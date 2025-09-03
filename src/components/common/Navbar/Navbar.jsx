@@ -8,10 +8,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
-import { HiMoon, HiSun, HiMenuAlt3, HiHome } from 'react-icons/hi';
+import { HiMoon, HiSun, HiMenuAlt3, HiHome, HiSave } from 'react-icons/hi';
 import { useTheme } from '../../../hooks/useTheme';
 import { useLanguage } from '../../../hooks/useLanguage';
 import { LanguageSelector } from '../LanguageSelector/LanguageSelector';
+import { HiDocumentText } from 'react-icons/hi2';
 
 const Navbar = ({ onSidebarToggle }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
@@ -41,11 +42,31 @@ const Navbar = ({ onSidebarToggle }) => {
 
             {/* Actions */}
             <div className="flex items-center space-x-1">
+              <Button
+                variant="default"
+                // size="sm"
+                onClick={onSidebarToggle}
+                aria-label={t('navbar.save')}
+              >
+                <HiSave className="h-5 w-5" />
+                
+                <span>{t('navbar.save')}</span>
+              </Button>
+              <Button
+                variant="outline"
+                // size="sm"
+                onClick={onSidebarToggle}
+                aria-label={t('navbar.copy')}
+              >
+                <HiSave className="h-5 w-5" />
+
+                <span>{t('navbar.copy')}</span>
+              </Button>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="ghost"
-                    size="sm"
+                    variant="outline"
+                    // size="sm"
                     onClick={onSidebarToggle}
                     aria-label={t('navbar.toggleSidebar')}
                   >
@@ -57,9 +78,9 @@ const Navbar = ({ onSidebarToggle }) => {
                   <p>{t('navbar.toggleSidebar')}</p>
                 </TooltipContent>
               </Tooltip>
-              
+
               <Separator orientation="vertical" className="h-6 mx-2" />
-              
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button

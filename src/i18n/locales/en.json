@@ -17,7 +17,9 @@
     "toggleSidebar": "Toggle sidebar",
     "toggleTheme": "Toggle theme",
     "selectLanguage": "Select language",
-    "stories": "Stories"
+    "stories": "Stories",
+    "save": "Save",
+    "copy": "Copy"
   },
   "sidebar": {
     "title": "User Stories",
