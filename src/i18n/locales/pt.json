@@ -44,18 +44,21 @@
     "form": {
       "title": "Título",
       "titlePlaceholder": "Digite o título da história de usuário",
+      "template": "Template",
+      "templatePlaceholder": "Selecione um template",
+      "templateNone": "Nenhum template",
       "as": "Como",
       "asPlaceholder": "Ex: usuário, administrador, cliente",
       "iWant": "Eu quero",
       "iWantPlaceholder": "Ex: fazer login, gerenciar dados, visualizar relatórios",
       "soThat": "Para que",
       "soThatPlaceholder": "Ex: acessar funcionalidades, melhorar produtividade",
-      "description": "Descrição",
-      "descriptionPlaceholder": "Descreva os detalhes da história de usuário",
       "priority": "Prioridade",
       "selectPriority": "Selecione a prioridade",
       "storyPoints": "Story Points",
-      "selectStoryPoints": "Selecionar pontos"
+      "selectStoryPoints": "Selecionar pontos",
+      "tags": "Tags",
+      "tagsPlaceholder": "Ex: frontend, backend, API (separadas por vírgula)"
     },
     "priorities": {
       "low": "Baixa",
@@ -91,14 +94,17 @@
       "title": "Templates",
       "defaultTitle": "História de Usuário",
       "login": "Login de Usuário",
-      "loginTemplate": "Como usuário, eu quero fazer login no sistema para acessar funcionalidades personalizadas",
+      "loginTemplate": "Como um usuário do sistema, eu quero fazer login com minhas credenciais para que eu possa acessar funcionalidades personalizadas e meus dados privados",
       "ecommerce": "Compra Online",
-      "ecommerceTemplate": "Como cliente, eu quero adicionar produtos ao carrinho para finalizar minha compra",
+      "ecommerceTemplate": "Como um cliente da loja online, eu quero adicionar produtos ao meu carrinho de compras para que eu possa revisar e finalizar minha compra",
       "dashboard": "Dashboard Gerencial",
-      "dashboardTemplate": "Como gestor, eu quero visualizar métricas em tempo real para tomar decisões estratégicas"
+      "dashboardTemplate": "Como um gestor da empresa, eu quero visualizar métricas e relatórios em tempo real para que eu possa tomar decisões estratégicas baseadas em dados atualizados",
+      "profile": "Gestão de Perfil",
+      "profileTemplate": "Como um usuário registrado, eu quero editar as informações do meu perfil para que eu possa manter meus dados pessoais sempre atualizados"
     },
     "gherkin": {
       "title": "Templates Gherkin",
+      "button": "Gherkin",
       "login": "Login",
       "loginGiven": "que estou na página de login",
       "loginWhen": "eu inserir credenciais válidas",

@@ -8,31 +8,31 @@ import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MarkdownPreviewer } from '@/components/ui/MarkdownPreviewer';
-import { 
-    FileText, 
-    CheckCircle, 
-    CheckCircle2, 
-    StickyNote, 
-    BookOpen, 
-    Code, 
+import {
+    FileText,
+    CheckCircle,
+    CheckCircle2,
+    StickyNote,
+    Code,
     BarChart3,
     Plus,
     Minus,
-    Trash
+    Trash,
+    ChevronDown
 } from 'lucide-react';
 
 function UserStoryBuilder() {
     const { t } = useTranslation();
-    
+
     // State for user story data
     const [userStoryData, setUserStoryData] = React.useState({
         title: '',
         as: '',
         iWant: '',
         soThat: '',
-        description: '',
         priority: '',
         storyPoints: '',
+        tags: '',
         acceptanceCriteria: [],
         definitionOfDone: [],
         notes: ''
@@ -48,6 +48,9 @@ function UserStoryBuilder() {
 
     // State for new definition item
     const [newDefinitionItem, setNewDefinitionItem] = React.useState('');
+
+    // State for selected template
+    const [selectedTemplate, setSelectedTemplate] = React.useState('none');
 
     // Priorities data
     const priorities = [
@@ -84,6 +87,10 @@ function UserStoryBuilder() {
         {
             name: t('userStory.templates.dashboard'),
             template: t('userStory.templates.dashboardTemplate')
+        },
+        {
+            name: t('userStory.templates.profile'),
+            template: t('userStory.templates.profileTemplate')
         }
     ];
 
@@ -134,7 +141,7 @@ function UserStoryBuilder() {
     const updateScenario = (index, updates) => {
         setUserStoryData(prev => ({
             ...prev,
-            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) =>
                 i === index ? { ...scenario, ...updates } : scenario
             )
         }));
@@ -143,8 +150,8 @@ function UserStoryBuilder() {
     const addAndCondition = (scenarioIndex) => {
         setUserStoryData(prev => ({
             ...prev,
-            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
-                i === scenarioIndex 
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) =>
+                i === scenarioIndex
                     ? { ...scenario, and: [...(scenario.and || []), ''] }
                     : scenario
             )
@@ -154,10 +161,10 @@ function UserStoryBuilder() {
     const updateAndCondition = (scenarioIndex, andIndex, value) => {
         setUserStoryData(prev => ({
             ...prev,
-            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
-                i === scenarioIndex 
-                    ? { 
-                        ...scenario, 
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) =>
+                i === scenarioIndex
+                    ? {
+                        ...scenario,
                         and: scenario.and.map((condition, j) => j === andIndex ? value : condition)
                     }
                     : scenario
@@ -168,10 +175,10 @@ function UserStoryBuilder() {
     const removeAndCondition = (scenarioIndex, andIndex) => {
         setUserStoryData(prev => ({
             ...prev,
-            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
-                i === scenarioIndex 
-                    ? { 
-                        ...scenario, 
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) =>
+                i === scenarioIndex
+                    ? {
+                        ...scenario,
                         and: scenario.and.filter((_, j) => j !== andIndex)
                     }
                     : scenario
@@ -199,19 +206,60 @@ function UserStoryBuilder() {
     const updateDefinitionItem = (index, updates) => {
         setUserStoryData(prev => ({
             ...prev,
-            definitionOfDone: prev.definitionOfDone.map((item, i) => 
+            definitionOfDone: prev.definitionOfDone.map((item, i) =>
                 i === index ? { ...item, ...updates } : item
             )
         }));
     };
 
     const applyTemplate = (template) => {
-        // Simple template parsing - can be enhanced
-        const templateData = template.template || template;
-        updateUserStoryData({ 
-            title: template.name || t('userStory.templates.defaultTitle'),
-            description: templateData
-        });
+        // Parse do template para extrair os campos estruturais
+        const templateText = template.template || template;
+
+        // Update selected template state
+        setSelectedTemplate(template.name || '');
+
+        // Regex para extrair padrões em português e inglês
+        const ptPattern = /Como\s+(.+?),\s*eu\s+quero\s+(.+?)\s+para\s+que\s+(.+?)$/i;
+        const enPattern = /As\s+a?\s*(.+?),\s*I\s+want\s+(?:to\s+)?(.+?)\s+so\s+that\s+(.+?)$/i;
+
+        let match = templateText.match(ptPattern) || templateText.match(enPattern);
+
+        if (match) {
+            updateUserStoryData({
+                title: template.name || t('userStory.templates.defaultTitle'),
+                as: match[1].trim(),
+                iWant: match[2].trim(),
+                soThat: match[3].trim()
+            });
+        } else {
+            // Fallback para templates que não seguem o padrão
+            updateUserStoryData({
+                title: template.name || t('userStory.templates.defaultTitle'),
+                as: 'usuário',
+                iWant: templateText,
+                soThat: 'alcançar meus objetivos'
+            });
+        }
+    };
+
+    const handleTemplateChange = (templateName) => {
+        setSelectedTemplate(templateName);
+        if (templateName && templateName !== 'none') {
+            const template = quickTemplates.find(t => t.name === templateName);
+            if (template) {
+                applyTemplate(template);
+            }
+        } else {
+            // Clear fields when "No template" is selected
+            updateUserStoryData({
+                title: '',
+                as: '',
+                iWant: '',
+                soThat: '',
+                tags: ''
+            });
+        }
     };
 
     const applyGherkinTemplate = (template) => {
@@ -226,11 +274,11 @@ function UserStoryBuilder() {
 
     const generatePreview = () => {
         let markdown = '';
-        
+
         if (userStoryData.title) {
             markdown += `# ${userStoryData.title}\n\n`;
         }
-        
+
         if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
             markdown += `## ${t('userStory.structure.title')}\n\n`;
             if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
@@ -239,11 +287,7 @@ function UserStoryBuilder() {
                 markdown += `**${t('userStory.form.soThat')}** ${userStoryData.soThat || '_[pendente]_'}\n\n`;
             }
         }
-        
-        if (userStoryData.description) {
-            markdown += `## ${t('userStory.form.description')}\n\n${userStoryData.description}\n\n`;
-        }
-        
+
         if (userStoryData.priority || userStoryData.storyPoints) {
             markdown += `## Detalhes\n\n`;
             if (userStoryData.priority) {
@@ -255,7 +299,18 @@ function UserStoryBuilder() {
             }
             markdown += '\n';
         }
-        
+
+        if (userStoryData.tags && userStoryData.tags.trim()) {
+            const tagsList = userStoryData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+            if (tagsList.length > 0) {
+                markdown += `## ${t('userStory.form.tags')}\n\n`;
+                tagsList.forEach(tag => {
+                    markdown += `\`${tag}\` `;
+                });
+                markdown += '\n\n';
+            }
+        }
+
         if (userStoryData.acceptanceCriteria.length > 0) {
             markdown += `## ${t('userStory.acceptanceCriteria.title')}\n\n`;
             userStoryData.acceptanceCriteria.forEach((scenario, index) => {
@@ -271,7 +326,7 @@ function UserStoryBuilder() {
                 markdown += '\n';
             });
         }
-        
+
         if (userStoryData.definitionOfDone.length > 0) {
             markdown += `## ${t('userStory.definitionOfDone.title')}\n\n`;
             userStoryData.definitionOfDone.forEach((item) => {
@@ -280,11 +335,11 @@ function UserStoryBuilder() {
             });
             markdown += '\n';
         }
-        
+
         if (userStoryData.notes) {
             markdown += `## ${t('userStory.notes.title')}\n\n${userStoryData.notes}\n\n`;
         }
-        
+
         return markdown || `*${t('userStory.preview.empty')}*`;
     };
 
@@ -305,16 +360,19 @@ function UserStoryBuilder() {
                 {/* Left Column - Main Content */}
                 <div className="lg:col-span-7 space-y-6">
                     {/* User Story Basic Information */}
-                    <UserStoryBasicInfo 
+                    <UserStoryBasicInfo
                         data={userStoryData}
                         updateData={updateUserStoryData}
                         priorities={priorities}
                         storyPoints={storyPoints}
+                        quickTemplates={quickTemplates}
+                        selectedTemplate={selectedTemplate}
+                        handleTemplateChange={handleTemplateChange}
                         t={t}
                     />
 
                     {/* Acceptance Criteria */}
-                    <AcceptanceCriteriaSection 
+                    <AcceptanceCriteriaSection
                         data={userStoryData}
                         updateData={updateUserStoryData}
                         newScenario={newScenario}
@@ -325,11 +383,13 @@ function UserStoryBuilder() {
                         addAndCondition={addAndCondition}
                         updateAndCondition={updateAndCondition}
                         removeAndCondition={removeAndCondition}
+                        gherkinTemplates={gherkinTemplates}
+                        applyGherkinTemplate={applyGherkinTemplate}
                         t={t}
                     />
 
                     {/* Definition of Done */}
-                    <DefinitionOfDoneSection 
+                    <DefinitionOfDoneSection
                         data={userStoryData}
                         updateData={updateUserStoryData}
                         newDefinitionItem={newDefinitionItem}
@@ -341,7 +401,7 @@ function UserStoryBuilder() {
                     />
 
                     {/* Notes */}
-                    <NotesSection 
+                    <NotesSection
                         data={userStoryData}
                         updateData={updateUserStoryData}
                         t={t}
@@ -351,28 +411,13 @@ function UserStoryBuilder() {
                 {/* Right Column - Sidebar */}
                 <div className="lg:col-span-5 space-y-6">
                     {/* Preview Card */}
-                    <MarkdownPreviewer 
+                    <MarkdownPreviewer
                         markdown={generatePreview()}
                         title={t('userStory.preview.title')}
                     />
 
-                    {/* Templates Card */}
-                    <TemplatesCard 
-                        quickTemplates={quickTemplates}
-                        applyTemplate={applyTemplate}
-                        t={t}
-                    />
-
-                    {/* Gherkin Templates */}
-                    <GherkinTemplatesCard 
-                        gherkinTemplates={gherkinTemplates}
-                        applyGherkinTemplate={applyGherkinTemplate}
-                        setNewScenario={setNewScenario}
-                        t={t}
-                    />
-
                     {/* Summary Card */}
-                    <SummaryCard 
+                    <SummaryCard
                         data={userStoryData}
                         t={t}
                     />
@@ -383,30 +428,88 @@ function UserStoryBuilder() {
 }
 
 // User Story Basic Information Component
-function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, t }) {
+function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTemplates, selectedTemplate, handleTemplateChange, t }) {
+    const [showTemplateDropdown, setShowTemplateDropdown] = React.useState(false);
+    const dropdownRef = React.useRef(null);
+
+    // Close dropdown when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowTemplateDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleTemplateSelect = (template) => {
+        handleTemplateChange(template.name);
+        setShowTemplateDropdown(false);
+    };
+
     return (
         <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                 <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5" />
                     {t('userStory.basicInfo.title')}
                 </CardTitle>
+                <div className="flex items-center gap-2">
+                    <div className="relative" ref={dropdownRef}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setShowTemplateDropdown(!showTemplateDropdown)}
+                            className="text-xs flex items-center gap-1"
+                        >
+                            <FileText className="h-4 w-4" />
+                            {selectedTemplate === 'none' || !selectedTemplate ? t('userStory.form.template') : selectedTemplate}
+                            <ChevronDown className={`h-3 w-3 transition-transform ${showTemplateDropdown ? 'rotate-180' : ''}`} />
+                        </Button>
+                        {showTemplateDropdown && (
+                            <div className="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-10">
+                                <div className="py-1">
+                                    <button
+                                        onClick={() => {
+                                            handleTemplateChange('none');
+                                            setShowTemplateDropdown(false);
+                                        }}
+                                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                                    >
+                                        {t('userStory.form.templateNone')}
+                                    </button>
+                                    {quickTemplates.map((template, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleTemplateSelect(template)}
+                                            className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                                        >
+                                            {template.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </CardHeader>
             <CardContent className="space-y-4">
                 {/* Title */}
-                <div>
-                    <Label className="block text-sm font-medium mb-2">
-                        {t('userStory.form.title')}
-                    </Label>
-                    <Input
-                        placeholder={t('userStory.form.titlePlaceholder')}
-                        value={data.title}
-                        onChange={(e) => updateData({ title: e.target.value })}
-                    />
-                </div>
 
                 {/* User Story Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <Label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.title')}
+                        </Label>
+                        <Input
+                            placeholder={t('userStory.form.titlePlaceholder')}
+                            value={data.title}
+                            onChange={(e) => updateData({ title: e.target.value })}
+                        />
+                    </div>
                     <div>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.as')}
@@ -417,6 +520,8 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, t }) {
                             onChange={(e) => updateData({ as: e.target.value })}
                         />
                     </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                     <div>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.iWant')}
@@ -439,21 +544,8 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, t }) {
                     </div>
                 </div>
 
-                {/* Description */}
-                <div>
-                    <Label className="block text-sm font-medium mb-2">
-                        {t('userStory.form.description')}
-                    </Label>
-                    <Textarea
-                        placeholder={t('userStory.form.descriptionPlaceholder')}
-                        value={data.description}
-                        onChange={(e) => updateData({ description: e.target.value })}
-                        rows={3}
-                    />
-                </div>
-
                 {/* Priority and Business Value */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.priority')}
@@ -494,6 +586,16 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, t }) {
                             </SelectContent>
                         </Select>
                     </div>
+                    <div>
+                        <Label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.tags')}
+                        </Label>
+                        <Input
+                            placeholder={t('userStory.form.tagsPlaceholder')}
+                            value={data.tags}
+                            onChange={(e) => updateData({ tags: e.target.value })}
+                        />
+                    </div>
                 </div>
             </CardContent>
         </Card>
@@ -501,26 +603,89 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, t }) {
 }
 
 // Acceptance Criteria Section Component
-function AcceptanceCriteriaSection({ 
-    data, 
-    updateData, 
-    newScenario, 
-    setNewScenario, 
-    addScenario, 
-    removeScenario, 
-    updateScenario, 
-    addAndCondition, 
-    updateAndCondition, 
-    removeAndCondition, 
-    t 
+function AcceptanceCriteriaSection({
+    data,
+    updateData,
+    newScenario,
+    setNewScenario,
+    addScenario,
+    removeScenario,
+    updateScenario,
+    addAndCondition,
+    updateAndCondition,
+    removeAndCondition,
+    gherkinTemplates,
+    applyGherkinTemplate,
+    t
 }) {
+    const [showGherkinDropdown, setShowGherkinDropdown] = React.useState(false);
+    const [selectedGherkinTemplate, setSelectedGherkinTemplate] = React.useState('');
+    const gherkinDropdownRef = React.useRef(null);
+
+    // Close dropdown when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (gherkinDropdownRef.current && !gherkinDropdownRef.current.contains(event.target)) {
+                setShowGherkinDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleGherkinTemplateSelect = (template) => {
+        setSelectedGherkinTemplate(template.name);
+        setNewScenario(template);
+        applyGherkinTemplate(template);
+        setShowGherkinDropdown(false);
+    };
+
     return (
         <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                 <CardTitle className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5" />
                     {t('userStory.acceptanceCriteria.title')}
                 </CardTitle>
+                <div className="flex items-center gap-2">
+                    <div className="relative" ref={gherkinDropdownRef}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setShowGherkinDropdown(!showGherkinDropdown)}
+                            className="text-xs flex items-center gap-1"
+                        >
+                            <Code className="h-4 w-4" />
+                            {selectedGherkinTemplate || t('userStory.gherkin.button')}
+                            <ChevronDown className={`h-3 w-3 transition-transform ${showGherkinDropdown ? 'rotate-180' : ''}`} />
+                        </Button>
+                        {showGherkinDropdown && (
+                            <div className="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-10">
+                                <div className="py-1">
+                                    <button
+                                        onClick={() => {
+                                            setSelectedGherkinTemplate('');
+                                            setShowGherkinDropdown(false);
+                                        }}
+                                        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                                    >
+                                        {t('userStory.form.templateNone')}
+                                    </button>
+                                    {gherkinTemplates.map((template, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleGherkinTemplateSelect(template)}
+                                            className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                                        >
+                                            {template.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </CardHeader>
             <CardContent className="space-y-4">
                 {/* Existing Scenarios */}
@@ -546,11 +711,10 @@ function AcceptanceCriteriaSection({
                                 <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
                                     Given
                                 </Label>
-                                <Textarea
+                                <Input
                                     placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
                                     value={scenario.given}
                                     onChange={(e) => updateScenario(index, { given: e.target.value })}
-                                    rows={2}
                                 />
                             </div>
 
@@ -559,11 +723,10 @@ function AcceptanceCriteriaSection({
                                 <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
                                     When
                                 </Label>
-                                <Textarea
+                                <Input
                                     placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
                                     value={scenario.when}
                                     onChange={(e) => updateScenario(index, { when: e.target.value })}
-                                    rows={2}
                                 />
                             </div>
 
@@ -572,11 +735,10 @@ function AcceptanceCriteriaSection({
                                 <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
                                     Then
                                 </Label>
-                                <Textarea
+                                <Input
                                     placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
                                     value={scenario.then}
                                     onChange={(e) => updateScenario(index, { then: e.target.value })}
-                                    rows={2}
                                 />
                             </div>
 
@@ -588,11 +750,10 @@ function AcceptanceCriteriaSection({
                                     </Label>
                                     {scenario.and.map((andCondition, andIndex) => (
                                         <div key={andIndex} className="flex gap-2 mb-2">
-                                            <Textarea
+                                            <Input
                                                 placeholder={t('userStory.acceptanceCriteria.andPlaceholder')}
                                                 value={andCondition}
                                                 onChange={(e) => updateAndCondition(index, andIndex, e.target.value)}
-                                                rows={1}
                                                 className="flex-1"
                                             />
                                             <Button
@@ -631,33 +792,30 @@ function AcceptanceCriteriaSection({
                             <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
                                 Given
                             </Label>
-                            <Textarea
+                            <Input
                                 placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
                                 value={newScenario.given}
                                 onChange={(e) => setNewScenario({ ...newScenario, given: e.target.value })}
-                                rows={2}
                             />
                         </div>
                         <div>
                             <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
                                 When
                             </Label>
-                            <Textarea
+                            <Input
                                 placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
                                 value={newScenario.when}
                                 onChange={(e) => setNewScenario({ ...newScenario, when: e.target.value })}
-                                rows={2}
                             />
                         </div>
                         <div>
                             <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
                                 Then
                             </Label>
-                            <Textarea
+                            <Input
                                 placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
                                 value={newScenario.then}
                                 onChange={(e) => setNewScenario({ ...newScenario, then: e.target.value })}
-                                rows={2}
                             />
                         </div>
                         <Button
@@ -676,15 +834,15 @@ function AcceptanceCriteriaSection({
 }
 
 // Definition of Done Section Component
-function DefinitionOfDoneSection({ 
-    data, 
-    updateData, 
-    newDefinitionItem, 
-    setNewDefinitionItem, 
-    addDefinitionItem, 
-    removeDefinitionItem, 
-    updateDefinitionItem, 
-    t 
+function DefinitionOfDoneSection({
+    data,
+    updateData,
+    newDefinitionItem,
+    setNewDefinitionItem,
+    addDefinitionItem,
+    removeDefinitionItem,
+    updateDefinitionItem,
+    t
 }) {
     return (
         <Card>
@@ -768,69 +926,12 @@ function NotesSection({ data, updateData, t }) {
     );
 }
 
-// Templates Card Component
-function TemplatesCard({ quickTemplates, applyTemplate, t }) {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="h-5 w-5" />
-                    {t('userStory.templates.title')}
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-                {quickTemplates.map((template, index) => (
-                    <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => applyTemplate(template)}
-                        className="w-full justify-start text-left"
-                    >
-                        {template.name}
-                    </Button>
-                ))}
-            </CardContent>
-        </Card>
-    );
-}
-
-// Gherkin Templates Card Component
-function GherkinTemplatesCard({ gherkinTemplates, applyGherkinTemplate, setNewScenario, t }) {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Code className="h-5 w-5" />
-                    {t('userStory.gherkin.title')}
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-                {gherkinTemplates.map((template, index) => (
-                    <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                            setNewScenario(template);
-                            applyGherkinTemplate(template);
-                        }}
-                        className="w-full justify-start text-left"
-                    >
-                        {template.name}
-                    </Button>
-                ))}
-            </CardContent>
-        </Card>
-    );
-}
-
 // Summary Card Component
 function SummaryCard({ data, t }) {
     const scenariosCount = data.acceptanceCriteria.length;
     const definitionItemsCount = data.definitionOfDone.length;
     const completedItemsCount = data.definitionOfDone.filter(item => item.completed).length;
-    
+
     return (
         <Card>
             <CardHeader>
@@ -882,6 +983,20 @@ function SummaryCard({ data, t }) {
                         <Badge variant="outline">
                             {data.storyPoints}
                         </Badge>
+                    </div>
+                )}
+                {data.tags && data.tags.trim() && (
+                    <div className="space-y-2">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {t('userStory.form.tags')}
+                        </span>
+                        <div className="flex flex-wrap gap-1">
+                            {data.tags.split(',').map(tag => tag.trim()).filter(tag => tag).map((tag, index) => (
+                                <Badge key={index} variant="secondary" className="text-xs">
+                                    {tag}
+                                </Badge>
+                            ))}
+                        </div>
                     </div>
                 )}
             </CardContent>

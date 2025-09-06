@@ -44,18 +44,21 @@
     "form": {
       "title": "Title",
       "titlePlaceholder": "Enter the user story title",
+      "template": "Template",
+      "templatePlaceholder": "Select a template",
+      "templateNone": "No template",
       "as": "As",
       "asPlaceholder": "Ex: user, administrator, customer",
       "iWant": "I want",
       "iWantPlaceholder": "Ex: to login, manage data, view reports",
       "soThat": "So that",
       "soThatPlaceholder": "Ex: access features, improve productivity",
-      "description": "Description",
-      "descriptionPlaceholder": "Describe the user story details",
       "priority": "Priority",
       "selectPriority": "Select priority",
       "storyPoints": "Story Points",
-      "selectStoryPoints": "Select points"
+      "selectStoryPoints": "Select points",
+      "tags": "Tags",
+      "tagsPlaceholder": "Ex: frontend, backend, API (comma separated)"
     },
     "priorities": {
       "low": "Low",
@@ -91,14 +94,17 @@
       "title": "Templates",
       "defaultTitle": "User Story",
       "login": "User Login",
-      "loginTemplate": "As a user, I want to login to the system to access personalized features",
+      "loginTemplate": "As a system user, I want to login with my credentials so that I can access personalized features and my private data",
       "ecommerce": "Online Purchase",
-      "ecommerceTemplate": "As a customer, I want to add products to cart to complete my purchase",
+      "ecommerceTemplate": "As an online store customer, I want to add products to my shopping cart so that I can review and complete my purchase",
       "dashboard": "Management Dashboard",
-      "dashboardTemplate": "As a manager, I want to view real-time metrics to make strategic decisions"
+      "dashboardTemplate": "As a company manager, I want to view real-time metrics and reports so that I can make strategic decisions based on updated data",
+      "profile": "Profile Management",
+      "profileTemplate": "As a registered user, I want to edit my profile information so that I can keep my personal data always up to date"
     },
     "gherkin": {
       "title": "Gherkin Templates",
+      "button": "Gherkin",
       "login": "Login",
       "loginGiven": "that I am on the login page",
       "loginWhen": "I enter valid credentials",
