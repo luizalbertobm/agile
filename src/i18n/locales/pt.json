@@ -41,6 +41,9 @@
     "structure": {
       "title": "Estrutura da User Story"
     },
+    "details": {
+      "title": "Detalhes"
+    },
     "form": {
       "title": "Título",
       "titlePlaceholder": "Digite o título da história de usuário",

@@ -280,7 +280,6 @@ function UserStoryBuilder() {
         }
 
         if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
-            markdown += `## ${t('userStory.structure.title')}\n\n`;
             if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
                 markdown += `**${t('userStory.form.as')}** ${userStoryData.as || '_[pendente]_'}  \n`;
                 markdown += `**${t('userStory.form.iWant')}** ${userStoryData.iWant || '_[pendente]_'}  \n`;
@@ -289,7 +288,7 @@ function UserStoryBuilder() {
         }
 
         if (userStoryData.priority || userStoryData.storyPoints) {
-            markdown += `## Detalhes\n\n`;
+            markdown += `## ${t('userStory.details.title')}\n\n`;
             if (userStoryData.priority) {
                 const priorityLabel = priorities.find(p => p.value === userStoryData.priority)?.label || userStoryData.priority;
                 markdown += `- **${t('userStory.form.priority')}:** ${priorityLabel}\n`;

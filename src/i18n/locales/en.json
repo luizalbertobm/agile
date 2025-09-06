@@ -41,6 +41,9 @@
     "structure": {
       "title": "User Story Structure"
     },
+    "details": {
+      "title": "Details"
+    },
     "form": {
       "title": "Title",
       "titlePlaceholder": "Enter the user story title",

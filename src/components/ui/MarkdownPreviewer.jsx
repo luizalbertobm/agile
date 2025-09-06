@@ -17,7 +17,7 @@ function MarkdownPreviewer({
     showToggleButton = true 
 }) {
     const [copied, setCopied] = useState(false);
-    const [viewMode, setViewMode] = useState('preview'); // 'preview' ou 'code'
+    const [viewMode, setViewMode] = useState('code'); // 'preview' ou 'code'
 
     // Função para copiar o markdown para o clipboard
     const handleCopyMarkdown = async () => {
