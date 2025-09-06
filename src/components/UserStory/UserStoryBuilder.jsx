@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { MarkdownPreviewer } from '@/components/ui/MarkdownPreviewer';
 import { 
     FileText, 
     CheckCircle, 
     CheckCircle2, 
     StickyNote, 
-    Eye, 
     BookOpen, 
     Code, 
     BarChart3,
@@ -30,7 +32,7 @@ function UserStoryBuilder() {
         soThat: '',
         description: '',
         priority: '',
-        businessValue: '',
+        storyPoints: '',
         acceptanceCriteria: [],
         definitionOfDone: [],
         notes: ''
@@ -53,6 +55,20 @@ function UserStoryBuilder() {
         { value: 'media', label: t('userStory.priorities.medium') },
         { value: 'alta', label: t('userStory.priorities.high') },
         { value: 'critica', label: t('userStory.priorities.critical') }
+    ];
+
+    // Story Points data (Fibonacci sequence)
+    const storyPoints = [
+        { value: '1', label: '1' },
+        { value: '2', label: '2' },
+        { value: '3', label: '3' },
+        { value: '5', label: '5' },
+        { value: '8', label: '8' },
+        { value: '13', label: '13' },
+        { value: '21', label: '21' },
+        { value: '34', label: '34' },
+        { value: '55', label: '55' },
+        { value: '89', label: '89' }
     ];
 
     // Quick templates
@@ -209,53 +225,67 @@ function UserStoryBuilder() {
     };
 
     const generatePreview = () => {
-        let preview = '';
+        let markdown = '';
         
         if (userStoryData.title) {
-            preview += `${t('userStory.form.title')}: ${userStoryData.title}\n\n`;
+            markdown += `# ${userStoryData.title}\n\n`;
         }
         
         if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
-            preview += `${t('userStory.structure.title')}:\n`;
-            if (userStoryData.as) preview += `${t('userStory.form.as')} ${userStoryData.as}\n`;
-            if (userStoryData.iWant) preview += `${t('userStory.form.iWant')} ${userStoryData.iWant}\n`;
-            if (userStoryData.soThat) preview += `${t('userStory.form.soThat')} ${userStoryData.soThat}\n\n`;
+            markdown += `## ${t('userStory.structure.title')}\n\n`;
+            if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
+                markdown += `**${t('userStory.form.as')}** ${userStoryData.as || '_[pendente]_'}  \n`;
+                markdown += `**${t('userStory.form.iWant')}** ${userStoryData.iWant || '_[pendente]_'}  \n`;
+                markdown += `**${t('userStory.form.soThat')}** ${userStoryData.soThat || '_[pendente]_'}\n\n`;
+            }
         }
         
         if (userStoryData.description) {
-            preview += `${t('userStory.form.description')}:\n${userStoryData.description}\n\n`;
+            markdown += `## ${t('userStory.form.description')}\n\n${userStoryData.description}\n\n`;
+        }
+        
+        if (userStoryData.priority || userStoryData.storyPoints) {
+            markdown += `## Detalhes\n\n`;
+            if (userStoryData.priority) {
+                const priorityLabel = priorities.find(p => p.value === userStoryData.priority)?.label || userStoryData.priority;
+                markdown += `- **${t('userStory.form.priority')}:** ${priorityLabel}\n`;
+            }
+            if (userStoryData.storyPoints) {
+                markdown += `- **${t('userStory.form.storyPoints')}:** ${userStoryData.storyPoints}\n`;
+            }
+            markdown += '\n';
         }
         
         if (userStoryData.acceptanceCriteria.length > 0) {
-            preview += `${t('userStory.acceptanceCriteria.title')}:\n`;
+            markdown += `## ${t('userStory.acceptanceCriteria.title')}\n\n`;
             userStoryData.acceptanceCriteria.forEach((scenario, index) => {
-                preview += `\n${t('userStory.acceptanceCriteria.scenario')} ${index + 1}:\n`;
-                if (scenario.given) preview += `Given ${scenario.given}\n`;
-                if (scenario.when) preview += `When ${scenario.when}\n`;
-                if (scenario.then) preview += `Then ${scenario.then}\n`;
+                markdown += `### ${t('userStory.acceptanceCriteria.scenario')} ${index + 1}\n\n`;
+                if (scenario.given) markdown += `**Given** ${scenario.given}  \n`;
+                if (scenario.when) markdown += `**When** ${scenario.when}  \n`;
+                if (scenario.then) markdown += `**Then** ${scenario.then}  \n`;
                 if (scenario.and && scenario.and.length > 0) {
                     scenario.and.forEach(condition => {
-                        if (condition) preview += `And ${condition}\n`;
+                        if (condition) markdown += `**And** ${condition}  \n`;
                     });
                 }
+                markdown += '\n';
             });
-            preview += '\n';
         }
         
         if (userStoryData.definitionOfDone.length > 0) {
-            preview += `${t('userStory.definitionOfDone.title')}:\n`;
-            userStoryData.definitionOfDone.forEach((item, index) => {
-                const status = item.completed ? '✓' : '○';
-                preview += `${status} ${item.text}\n`;
+            markdown += `## ${t('userStory.definitionOfDone.title')}\n\n`;
+            userStoryData.definitionOfDone.forEach((item) => {
+                const checkbox = item.completed ? '- [x]' : '- [ ]';
+                markdown += `${checkbox} ${item.text}\n`;
             });
-            preview += '\n';
+            markdown += '\n';
         }
         
         if (userStoryData.notes) {
-            preview += `${t('userStory.notes.title')}:\n${userStoryData.notes}\n`;
+            markdown += `## ${t('userStory.notes.title')}\n\n${userStoryData.notes}\n\n`;
         }
         
-        return preview || t('userStory.preview.empty');
+        return markdown || `*${t('userStory.preview.empty')}*`;
     };
 
     return (
@@ -273,12 +303,13 @@ function UserStoryBuilder() {
             {/* Main Grid Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 {/* Left Column - Main Content */}
-                <div className="lg:col-span-8 space-y-6">
+                <div className="lg:col-span-7 space-y-6">
                     {/* User Story Basic Information */}
                     <UserStoryBasicInfo 
                         data={userStoryData}
                         updateData={updateUserStoryData}
                         priorities={priorities}
+                        storyPoints={storyPoints}
                         t={t}
                     />
 
@@ -318,11 +349,11 @@ function UserStoryBuilder() {
                 </div>
 
                 {/* Right Column - Sidebar */}
-                <div className="lg:col-span-4 space-y-6">
+                <div className="lg:col-span-5 space-y-6">
                     {/* Preview Card */}
-                    <PreviewCard 
-                        generatePreview={generatePreview}
-                        t={t}
+                    <MarkdownPreviewer 
+                        markdown={generatePreview()}
+                        title={t('userStory.preview.title')}
                     />
 
                     {/* Templates Card */}
@@ -352,7 +383,7 @@ function UserStoryBuilder() {
 }
 
 // User Story Basic Information Component
-function UserStoryBasicInfo({ data, updateData, priorities, t }) {
+function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, t }) {
     return (
         <Card>
             <CardHeader>
@@ -364,9 +395,9 @@ function UserStoryBasicInfo({ data, updateData, priorities, t }) {
             <CardContent className="space-y-4">
                 {/* Title */}
                 <div>
-                    <label className="block text-sm font-medium mb-2">
+                    <Label className="block text-sm font-medium mb-2">
                         {t('userStory.form.title')}
-                    </label>
+                    </Label>
                     <Input
                         placeholder={t('userStory.form.titlePlaceholder')}
                         value={data.title}
@@ -377,9 +408,9 @@ function UserStoryBasicInfo({ data, updateData, priorities, t }) {
                 {/* User Story Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label className="block text-sm font-medium mb-2">
+                        <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.as')}
-                        </label>
+                        </Label>
                         <Input
                             placeholder={t('userStory.form.asPlaceholder')}
                             value={data.as}
@@ -387,9 +418,9 @@ function UserStoryBasicInfo({ data, updateData, priorities, t }) {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-2">
+                        <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.iWant')}
-                        </label>
+                        </Label>
                         <Input
                             placeholder={t('userStory.form.iWantPlaceholder')}
                             value={data.iWant}
@@ -397,9 +428,9 @@ function UserStoryBasicInfo({ data, updateData, priorities, t }) {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-2">
+                        <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.soThat')}
-                        </label>
+                        </Label>
                         <Input
                             placeholder={t('userStory.form.soThatPlaceholder')}
                             value={data.soThat}
@@ -410,9 +441,9 @@ function UserStoryBasicInfo({ data, updateData, priorities, t }) {
 
                 {/* Description */}
                 <div>
-                    <label className="block text-sm font-medium mb-2">
+                    <Label className="block text-sm font-medium mb-2">
                         {t('userStory.form.description')}
-                    </label>
+                    </Label>
                     <Textarea
                         placeholder={t('userStory.form.descriptionPlaceholder')}
                         value={data.description}
@@ -424,34 +455,44 @@ function UserStoryBasicInfo({ data, updateData, priorities, t }) {
                 {/* Priority and Business Value */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium mb-2">
+                        <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.priority')}
-                        </label>
-                        <select
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                        </Label>
+                        <Select
                             value={data.priority}
-                            onChange={(e) => updateData({ priority: e.target.value })}
+                            onValueChange={(value) => updateData({ priority: value })}
                         >
-                            <option value="">{t('userStory.form.selectPriority')}</option>
-                            {priorities.map((priority) => (
-                                <option key={priority.value} value={priority.value}>
-                                    {priority.label}
-                                </option>
-                            ))}
-                        </select>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder={t('userStory.form.selectPriority')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {priorities.map((priority) => (
+                                    <SelectItem key={priority.value} value={priority.value}>
+                                        {priority.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium mb-2">
-                            {t('userStory.form.businessValue')}
-                        </label>
-                        <Input
-                            type="number"
-                            min="1"
-                            max="10"
-                            placeholder="1-10"
-                            value={data.businessValue}
-                            onChange={(e) => updateData({ businessValue: e.target.value })}
-                        />
+                        <Label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.storyPoints')}
+                        </Label>
+                        <Select
+                            value={data.storyPoints}
+                            onValueChange={(value) => updateData({ storyPoints: value })}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder={t('userStory.form.selectStoryPoints')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {storyPoints.map((point) => (
+                                    <SelectItem key={point.value} value={point.value}>
+                                        {point.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                 </div>
             </CardContent>
@@ -502,9 +543,9 @@ function AcceptanceCriteriaSection({
                         <div className="space-y-3">
                             {/* Given */}
                             <div>
-                                <label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
+                                <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
                                     Given
-                                </label>
+                                </Label>
                                 <Textarea
                                     placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
                                     value={scenario.given}
@@ -515,9 +556,9 @@ function AcceptanceCriteriaSection({
 
                             {/* When */}
                             <div>
-                                <label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
+                                <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
                                     When
-                                </label>
+                                </Label>
                                 <Textarea
                                     placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
                                     value={scenario.when}
@@ -528,9 +569,9 @@ function AcceptanceCriteriaSection({
 
                             {/* Then */}
                             <div>
-                                <label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
+                                <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
                                     Then
-                                </label>
+                                </Label>
                                 <Textarea
                                     placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
                                     value={scenario.then}
@@ -542,9 +583,9 @@ function AcceptanceCriteriaSection({
                             {/* And Conditions */}
                             {scenario.and && scenario.and.length > 0 && (
                                 <div>
-                                    <label className="block text-sm font-medium mb-1 text-orange-700 dark:text-orange-400">
+                                    <Label className="block text-sm font-medium mb-1 text-orange-700 dark:text-orange-400">
                                         And
-                                    </label>
+                                    </Label>
                                     {scenario.and.map((andCondition, andIndex) => (
                                         <div key={andIndex} className="flex gap-2 mb-2">
                                             <Textarea
@@ -587,9 +628,9 @@ function AcceptanceCriteriaSection({
                     </h4>
                     <div className="space-y-3">
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
+                            <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
                                 Given
-                            </label>
+                            </Label>
                             <Textarea
                                 placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
                                 value={newScenario.given}
@@ -598,9 +639,9 @@ function AcceptanceCriteriaSection({
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
+                            <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
                                 When
-                            </label>
+                            </Label>
                             <Textarea
                                 placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
                                 value={newScenario.when}
@@ -609,9 +650,9 @@ function AcceptanceCriteriaSection({
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
+                            <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
                                 Then
-                            </label>
+                            </Label>
                             <Textarea
                                 placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
                                 value={newScenario.then}
@@ -727,29 +768,6 @@ function NotesSection({ data, updateData, t }) {
     );
 }
 
-// Preview Card Component
-function PreviewCard({ generatePreview, t }) {
-    const preview = generatePreview();
-    
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <Eye className="h-5 w-5" />
-                    {t('userStory.preview.title')}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-                    <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">
-                        {preview}
-                    </pre>
-                </div>
-            </CardContent>
-        </Card>
-    );
-}
-
 // Templates Card Component
 function TemplatesCard({ quickTemplates, applyTemplate, t }) {
     return (
@@ -856,13 +874,13 @@ function SummaryCard({ data, t }) {
                         </Badge>
                     </div>
                 )}
-                {data.businessValue && (
+                {data.storyPoints && (
                     <div className="flex justify-between items-center">
                         <span className="text-sm text-gray-600 dark:text-gray-400">
-                            {t('userStory.form.businessValue')}
+                            {t('userStory.form.storyPoints')}
                         </span>
                         <Badge variant="outline">
-                            {data.businessValue}/10
+                            {data.storyPoints}
                         </Badge>
                     </div>
                 )}

@@ -54,7 +54,8 @@
       "descriptionPlaceholder": "Describe the user story details",
       "priority": "Priority",
       "selectPriority": "Select priority",
-      "businessValue": "Business Value"
+      "storyPoints": "Story Points",
+      "selectStoryPoints": "Select points"
     },
     "priorities": {
       "low": "Low",
@@ -83,7 +84,7 @@
       "placeholder": "Add notes or additional observations"
     },
     "preview": {
-      "title": "Preview",
+      "title": "Preview (Markdown)",
       "empty": "Complete the fields to see preview"
     },
     "templates": {

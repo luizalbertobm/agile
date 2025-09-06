@@ -54,7 +54,8 @@
       "descriptionPlaceholder": "Descreva os detalhes da história de usuário",
       "priority": "Prioridade",
       "selectPriority": "Selecione a prioridade",
-      "businessValue": "Valor de Negócio"
+      "storyPoints": "Story Points",
+      "selectStoryPoints": "Selecionar pontos"
     },
     "priorities": {
       "low": "Baixa",
@@ -83,7 +84,7 @@
       "placeholder": "Adicione notas ou observações adicionais"
     },
     "preview": {
-      "title": "Preview",
+      "title": "Preview (Markdown)",
       "empty": "Complete os campos para ver o preview"
     },
     "templates": {
