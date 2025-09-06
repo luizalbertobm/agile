@@ -34,7 +34,6 @@ export const LanguageSelector = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="space-x-2">
-          <HiGlobeAlt className="w-4 h-4" />
           <ReactCountryFlag
             countryCode={currentLanguageInfo.countryCode}
             svg

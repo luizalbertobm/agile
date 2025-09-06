@@ -1,16 +1,6 @@
 {
   "common": {
-    "loading": "Carregando...",
-    "error": "Erro",
-    "search": "Buscar",
-    "create": "Criar",
-    "edit": "Editar",
-    "delete": "Excluir",
-    "save": "Salvar",
-    "cancel": "Cancelar",
-    "close": "Fechar",
-    "welcome": "Bem-vindo ao",
-    "description": "Sua ferramenta para criar e gerenciar User Stories de forma eficiente"
+    "create": "Criar"
   },
   "navbar": {
     "brand": "Bee Agile",
@@ -40,90 +30,96 @@
     }
   },
   "userStory": {
-    "title": "História de Usuário",
     "status": {
       "pending": "Pendente",
       "inProgress": "Em progresso",
       "completed": "Concluído"
     },
+    "basicInfo": {
+      "title": "Informações Básicas"
+    },
+    "structure": {
+      "title": "Estrutura da User Story"
+    },
     "form": {
       "title": "Título",
+      "titlePlaceholder": "Digite o título da história de usuário",
+      "as": "Como",
+      "asPlaceholder": "Ex: usuário, administrador, cliente",
+      "iWant": "Eu quero",
+      "iWantPlaceholder": "Ex: fazer login, gerenciar dados, visualizar relatórios",
+      "soThat": "Para que",
+      "soThatPlaceholder": "Ex: acessar funcionalidades, melhorar produtividade",
       "description": "Descrição",
-      "acceptanceCriteria": "Critérios de Aceitação",
+      "descriptionPlaceholder": "Descreva os detalhes da história de usuário",
       "priority": "Prioridade",
-      "estimate": "Estimativa"
+      "selectPriority": "Selecione a prioridade",
+      "businessValue": "Valor de Negócio"
+    },
+    "priorities": {
+      "low": "Baixa",
+      "medium": "Média",
+      "high": "Alta",
+      "critical": "Crítica"
+    },
+    "acceptanceCriteria": {
+      "title": "Critérios de Aceitação",
+      "scenario": "Cenário",
+      "addNew": "Adicionar Novo Cenário",
+      "addScenario": "Adicionar Cenário",
+      "addAnd": "Adicionar condição And",
+      "givenPlaceholder": "Dado que... (contexto inicial)",
+      "whenPlaceholder": "Quando... (ação do usuário)",
+      "thenPlaceholder": "Então... (resultado esperado)",
+      "andPlaceholder": "E... (condição adicional)"
+    },
+    "definitionOfDone": {
+      "title": "Definição de Pronto",
+      "itemPlaceholder": "Digite um item da definição de pronto",
+      "addPlaceholder": "Adicionar novo item"
+    },
+    "notes": {
+      "title": "Notas",
+      "placeholder": "Adicione notas ou observações adicionais"
+    },
+    "preview": {
+      "title": "Preview",
+      "empty": "Complete os campos para ver o preview"
+    },
+    "templates": {
+      "title": "Templates",
+      "defaultTitle": "História de Usuário",
+      "login": "Login de Usuário",
+      "loginTemplate": "Como usuário, eu quero fazer login no sistema para acessar funcionalidades personalizadas",
+      "ecommerce": "Compra Online",
+      "ecommerceTemplate": "Como cliente, eu quero adicionar produtos ao carrinho para finalizar minha compra",
+      "dashboard": "Dashboard Gerencial",
+      "dashboardTemplate": "Como gestor, eu quero visualizar métricas em tempo real para tomar decisões estratégicas"
+    },
+    "gherkin": {
+      "title": "Templates Gherkin",
+      "login": "Login",
+      "loginGiven": "que estou na página de login",
+      "loginWhen": "eu inserir credenciais válidas",
+      "loginThen": "eu devo ser redirecionado para o dashboard",
+      "form": "Formulário",
+      "formGiven": "que estou preenchendo um formulário",
+      "formWhen": "eu submeter dados válidos",
+      "formThen": "eu devo ver uma mensagem de sucesso",
+      "navigation": "Navegação",
+      "navigationGiven": "que estou logado no sistema",
+      "navigationWhen": "eu clicar em um menu",
+      "navigationThen": "eu devo ser levado para a página correspondente"
+    },
+    "summary": {
+      "title": "Resumo",
+      "scenarios": "Cenários",
+      "definitionItems": "Itens de DoD",
+      "progress": "Progresso"
     },
     "builder": {
       "title": "User Story Builder",
-      "subtitle": "Crie User Stories bem estruturadas de forma fácil e profissional",
-      "steps": {
-        "step1": {
-          "title": "Estrutura Base",
-          "description": "Defina a estrutura básica da User Story"
-        },
-        "step2": {
-          "title": "Critérios de Aceitação", 
-          "description": "Estabeleça critérios claros de aceitação"
-        },
-        "step3": {
-          "title": "Definição de Pronto",
-          "description": "Configure a definição de pronto"
-        },
-        "step4": {
-          "title": "Revisão Final",
-          "description": "Revise e finalize sua User Story"
-        }
-      },
-      "form": {
-        "persona": "Persona",
-        "personaHelp": "(Quem é o usuário?)",
-        "personaPlaceholder": "Ex: usuário final, administrador, cliente, gestor...",
-        "action": "Ação",
-        "actionHelp": "(O que deseja fazer?)",
-        "actionPlaceholder": "Ex: fazer login, gerenciar usuários, visualizar relatórios...",
-        "benefit": "Benefício",
-        "benefitHelp": "(Qual o valor agregado?)",
-        "benefitPlaceholder": "Ex: acessar funcionalidades personalizadas, melhorar produtividade...",
-        "priority": "Prioridade",
-        "pattern": "Padrão:",
-        "patternExample": "Como [persona], eu quero [ação] para [benefício]",
-        "patternDescription": "Crie uma user story seguindo o padrão amplamente aceito na metodologia ágil",
-        "structure": "Estrutura da User Story",
-        "information": "Informações da User Story",
-        "preview": "Preview em Tempo Real",
-        "previewEmpty": "Complete os campos para ver o preview",
-        "previewTemplate": "Como {{persona}}, eu quero {{action}}{{benefit}}",
-        "templates": "Templates Rápidos",
-        "templatesHelp": "💡 Clique em qualquer template para preenchimento automático"
-      },
-      "priorities": {
-        "high": "Alta",
-        "medium": "Média", 
-        "low": "Baixa"
-      },
-      "navigation": {
-        "previous": "Anterior",
-        "next": "Próximo",
-        "finish": "Finalizar",
-        "step": "Passo"
-      },
-      "placeholders": {
-        "step2": {
-          "title": "Critérios de Aceitação",
-          "description": "Em desenvolvimento - Defina critérios claros e mensuráveis"
-        },
-        "step3": {
-          "title": "Definição de Pronto",
-          "description": "Em desenvolvimento - Configure a definição de pronto"
-        },
-        "step4": {
-          "title": "Revisão Final"
-        }
-      }
+      "subtitle": "Crie User Stories bem estruturadas de forma fácil e profissional"
     }
-  },
-  "language": {
-    "portuguese": "Português",
-    "english": "English"
   }
 }

@@ -1,16 +1,6 @@
 {
   "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "search": "Search",
-    "create": "Create",
-    "edit": "Edit",
-    "delete": "Delete",
-    "save": "Save",
-    "cancel": "Cancel",
-    "close": "Close",
-    "welcome": "Welcome to",
-    "description": "Your tool to create and manage User Stories efficiently"
+    "create": "Create"
   },
   "navbar": {
     "brand": "Bee Agile",
@@ -40,90 +30,96 @@
     }
   },
   "userStory": {
-    "title": "User Story",
     "status": {
       "pending": "Pending",
       "inProgress": "In Progress",
       "completed": "Completed"
     },
+    "basicInfo": {
+      "title": "Basic Information"
+    },
+    "structure": {
+      "title": "User Story Structure"
+    },
     "form": {
       "title": "Title",
+      "titlePlaceholder": "Enter the user story title",
+      "as": "As",
+      "asPlaceholder": "Ex: user, administrator, customer",
+      "iWant": "I want",
+      "iWantPlaceholder": "Ex: to login, manage data, view reports",
+      "soThat": "So that",
+      "soThatPlaceholder": "Ex: access features, improve productivity",
       "description": "Description",
-      "acceptanceCriteria": "Acceptance Criteria",
+      "descriptionPlaceholder": "Describe the user story details",
       "priority": "Priority",
-      "estimate": "Estimate"
+      "selectPriority": "Select priority",
+      "businessValue": "Business Value"
+    },
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "acceptanceCriteria": {
+      "title": "Acceptance Criteria",
+      "scenario": "Scenario",
+      "addNew": "Add New Scenario",
+      "addScenario": "Add Scenario",
+      "addAnd": "Add And condition",
+      "givenPlaceholder": "Given that... (initial context)",
+      "whenPlaceholder": "When... (user action)",
+      "thenPlaceholder": "Then... (expected result)",
+      "andPlaceholder": "And... (additional condition)"
+    },
+    "definitionOfDone": {
+      "title": "Definition of Done",
+      "itemPlaceholder": "Enter a definition of done item",
+      "addPlaceholder": "Add new item"
+    },
+    "notes": {
+      "title": "Notes",
+      "placeholder": "Add notes or additional observations"
+    },
+    "preview": {
+      "title": "Preview",
+      "empty": "Complete the fields to see preview"
+    },
+    "templates": {
+      "title": "Templates",
+      "defaultTitle": "User Story",
+      "login": "User Login",
+      "loginTemplate": "As a user, I want to login to the system to access personalized features",
+      "ecommerce": "Online Purchase",
+      "ecommerceTemplate": "As a customer, I want to add products to cart to complete my purchase",
+      "dashboard": "Management Dashboard",
+      "dashboardTemplate": "As a manager, I want to view real-time metrics to make strategic decisions"
+    },
+    "gherkin": {
+      "title": "Gherkin Templates",
+      "login": "Login",
+      "loginGiven": "that I am on the login page",
+      "loginWhen": "I enter valid credentials",
+      "loginThen": "I should be redirected to the dashboard",
+      "form": "Form",
+      "formGiven": "that I am filling out a form",
+      "formWhen": "I submit valid data",
+      "formThen": "I should see a success message",
+      "navigation": "Navigation",
+      "navigationGiven": "that I am logged into the system",
+      "navigationWhen": "I click on a menu",
+      "navigationThen": "I should be taken to the corresponding page"
+    },
+    "summary": {
+      "title": "Summary",
+      "scenarios": "Scenarios",
+      "definitionItems": "DoD Items",
+      "progress": "Progress"
     },
     "builder": {
       "title": "User Story Builder",
-      "subtitle": "Create well-structured User Stories easily and professionally",
-      "steps": {
-        "step1": {
-          "title": "Base Structure",
-          "description": "Define the basic structure of the User Story"
-        },
-        "step2": {
-          "title": "Acceptance Criteria",
-          "description": "Establish clear acceptance criteria"
-        },
-        "step3": {
-          "title": "Definition of Done",
-          "description": "Configure the definition of done"
-        },
-        "step4": {
-          "title": "Final Review",
-          "description": "Review and finalize your User Story"
-        }
-      },
-      "form": {
-        "persona": "Persona",
-        "personaHelp": "(Who is the user?)",
-        "personaPlaceholder": "Ex: end user, administrator, customer, manager...",
-        "action": "Action",
-        "actionHelp": "(What do they want to do?)",
-        "actionPlaceholder": "Ex: login, manage users, view reports...",
-        "benefit": "Benefit",
-        "benefitHelp": "(What value does it add?)",
-        "benefitPlaceholder": "Ex: access personalized features, improve productivity...",
-        "priority": "Priority",
-        "pattern": "Pattern:",
-        "patternExample": "As a [persona], I want [action] so that [benefit]",
-        "patternDescription": "Create a user story following the widely accepted agile methodology pattern",
-        "structure": "User Story Structure",
-        "information": "User Story Information",
-        "preview": "Real-time Preview",
-        "previewEmpty": "Complete the fields to see the preview",
-        "previewTemplate": "As a {{persona}}, I want {{action}}{{benefit}}",
-        "templates": "Quick Templates",
-        "templatesHelp": "💡 Click any template for automatic completion"
-      },
-      "priorities": {
-        "high": "High",
-        "medium": "Medium",
-        "low": "Low"
-      },
-      "navigation": {
-        "previous": "Previous",
-        "next": "Next",
-        "finish": "Finish",
-        "step": "Step"
-      },
-      "placeholders": {
-        "step2": {
-          "title": "Acceptance Criteria",
-          "description": "In development - Define clear and measurable criteria"
-        },
-        "step3": {
-          "title": "Definition of Done",
-          "description": "In development - Configure the definition of done"
-        },
-        "step4": {
-          "title": "Final Review"
-        }
-      }
+      "subtitle": "Create well-structured User Stories easily and professionally"
     }
-  },
-  "language": {
-    "portuguese": "Português",
-    "english": "English"
   }
 }

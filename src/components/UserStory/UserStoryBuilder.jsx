@@ -1,376 +1,874 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    HiDocumentText,
-    HiCheckCircle,
-    HiEye,
-    HiChevronRight,
-    HiChevronLeft,
-    HiStar,
-    HiUser,
-    HiLightBulb,
-    HiGlobeAlt
-} from 'react-icons/hi2';
-import { HiClipboard } from 'react-icons/hi';
-import { useLanguage } from '../../hooks/useLanguage';
-import StepProgress from '../common/StepProgress/StepProgress';
-import { PanelTopInactive } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { 
+    FileText, 
+    CheckCircle, 
+    CheckCircle2, 
+    StickyNote, 
+    Eye, 
+    BookOpen, 
+    Code, 
+    BarChart3,
+    Plus,
+    Minus,
+    Trash
+} from 'lucide-react';
 
-const UserStoryBuilder = () => {
-    const [currentStep, setCurrentStep] = useState(1);
-    const [userStoryData, setUserStoryData] = useState({
-        persona: '',
-        action: '',
-        benefit: '',
+function UserStoryBuilder() {
+    const { t } = useTranslation();
+    
+    // State for user story data
+    const [userStoryData, setUserStoryData] = React.useState({
+        title: '',
+        as: '',
+        iWant: '',
+        soThat: '',
+        description: '',
         priority: '',
+        businessValue: '',
         acceptanceCriteria: [],
         definitionOfDone: [],
         notes: ''
     });
-    const { t } = useLanguage();
 
-    // Set default priority after translations are loaded
-    React.useEffect(() => {
-        if (userStoryData.priority === '') {
-            setUserStoryData(prev => ({ ...prev, priority: t('userStory.builder.priorities.medium') }));
-        }
-    }, [t, userStoryData.priority]);
+    // State for new scenario
+    const [newScenario, setNewScenario] = React.useState({
+        given: '',
+        when: '',
+        then: '',
+        and: []
+    });
 
-    const steps = [
-        {
-            id: 1,
-            title: t('userStory.builder.steps.step1.title'),
-            icon: HiDocumentText,
-            description: t('userStory.builder.steps.step1.description')
-        },
-        {
-            id: 2,
-            title: t('userStory.builder.steps.step2.title'),
-            icon: HiCheckCircle,
-            description: t('userStory.builder.steps.step2.description')
-        },
-        {
-            id: 3,
-            title: t('userStory.builder.steps.step3.title'),
-            icon: HiClipboard,
-            description: t('userStory.builder.steps.step3.description')
-        },
-        {
-            id: 4,
-            title: t('userStory.builder.steps.step4.title'),
-            icon: HiEye,
-            description: t('userStory.builder.steps.step4.description')
-        }
-    ];
+    // State for new definition item
+    const [newDefinitionItem, setNewDefinitionItem] = React.useState('');
 
+    // Priorities data
     const priorities = [
+        { value: 'baixa', label: t('userStory.priorities.low') },
+        { value: 'media', label: t('userStory.priorities.medium') },
+        { value: 'alta', label: t('userStory.priorities.high') },
+        { value: 'critica', label: t('userStory.priorities.critical') }
+    ];
+
+    // Quick templates
+    const quickTemplates = [
         {
-            value: t('userStory.builder.priorities.high'),
-            active: 'bg-red-500/30 border-border-red-200 dark:border-red-600 text-red-600 dark:text-red-400 hover:border-red/600 hover:bg-red-700',
+            name: t('userStory.templates.login'),
+            template: t('userStory.templates.loginTemplate')
         },
         {
-            value: t('userStory.builder.priorities.medium'),
-            active: 'bg-yellow-500/30 border-border-yellow-200 dark:border-yellow-600 text-yellow-600 dark:text-yellow-400 hover:border-yellow/600 hover:bg-yellow-700',
+            name: t('userStory.templates.ecommerce'),
+            template: t('userStory.templates.ecommerceTemplate')
         },
         {
-            value: t('userStory.builder.priorities.low'),
-            active: 'bg-green-500/30 border-border-green-200 dark:border-green-600 text-green-600 dark:text-green-400 hover:border-green/600 hover:bg-green-700',
+            name: t('userStory.templates.dashboard'),
+            template: t('userStory.templates.dashboardTemplate')
         }
     ];
 
-    const quickTemplates = React.useMemo(() => {
-        const currentLanguage = t('language.portuguese') === 'Português' ? 'pt' : 'en';
-
-        if (currentLanguage === 'pt') {
-            return [
-                'Como usuário final, eu quero fazer login no sistema',
-                'Como administrador, eu quero gerenciar usuários',
-                'Como cliente, eu quero visualizar meu histórico de pedidos',
-                'Como desenvolvedor, eu quero acessar logs do sistema'
-            ];
-        } else {
-            return [
-                'As an end user, I want to login to the system',
-                'As an administrator, I want to manage users',
-                'As a customer, I want to view my order history',
-                'As a developer, I want to access system logs'
-            ];
+    // Gherkin templates
+    const gherkinTemplates = [
+        {
+            name: t('userStory.gherkin.login'),
+            given: t('userStory.gherkin.loginGiven'),
+            when: t('userStory.gherkin.loginWhen'),
+            then: t('userStory.gherkin.loginThen')
+        },
+        {
+            name: t('userStory.gherkin.form'),
+            given: t('userStory.gherkin.formGiven'),
+            when: t('userStory.gherkin.formWhen'),
+            then: t('userStory.gherkin.formThen')
+        },
+        {
+            name: t('userStory.gherkin.navigation'),
+            given: t('userStory.gherkin.navigationGiven'),
+            when: t('userStory.gherkin.navigationWhen'),
+            then: t('userStory.gherkin.navigationThen')
         }
-    }, [t]);
+    ];
 
-    const updateUserStoryData = (field, value) => {
-        setUserStoryData(prev => ({ ...prev, [field]: value }));
+    // Helper functions
+    const updateUserStoryData = (updates) => {
+        setUserStoryData(prev => ({ ...prev, ...updates }));
     };
 
-    const generatePreview = () => {
-        const { persona, action, benefit } = userStoryData;
-        if (!persona || !action) return t('userStory.builder.form.previewEmpty');
+    const addScenario = () => {
+        if (newScenario.given && newScenario.when && newScenario.then) {
+            setUserStoryData(prev => ({
+                ...prev,
+                acceptanceCriteria: [...prev.acceptanceCriteria, { ...newScenario }]
+            }));
+            setNewScenario({ given: '', when: '', then: '', and: [] });
+        }
+    };
 
-        const benefitText = benefit ? ` para ${benefit}` : '';
-        return t('userStory.builder.form.previewTemplate', {
-            persona,
-            action,
-            benefit: benefitText
+    const removeScenario = (index) => {
+        setUserStoryData(prev => ({
+            ...prev,
+            acceptanceCriteria: prev.acceptanceCriteria.filter((_, i) => i !== index)
+        }));
+    };
+
+    const updateScenario = (index, updates) => {
+        setUserStoryData(prev => ({
+            ...prev,
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
+                i === index ? { ...scenario, ...updates } : scenario
+            )
+        }));
+    };
+
+    const addAndCondition = (scenarioIndex) => {
+        setUserStoryData(prev => ({
+            ...prev,
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
+                i === scenarioIndex 
+                    ? { ...scenario, and: [...(scenario.and || []), ''] }
+                    : scenario
+            )
+        }));
+    };
+
+    const updateAndCondition = (scenarioIndex, andIndex, value) => {
+        setUserStoryData(prev => ({
+            ...prev,
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
+                i === scenarioIndex 
+                    ? { 
+                        ...scenario, 
+                        and: scenario.and.map((condition, j) => j === andIndex ? value : condition)
+                    }
+                    : scenario
+            )
+        }));
+    };
+
+    const removeAndCondition = (scenarioIndex, andIndex) => {
+        setUserStoryData(prev => ({
+            ...prev,
+            acceptanceCriteria: prev.acceptanceCriteria.map((scenario, i) => 
+                i === scenarioIndex 
+                    ? { 
+                        ...scenario, 
+                        and: scenario.and.filter((_, j) => j !== andIndex)
+                    }
+                    : scenario
+            )
+        }));
+    };
+
+    const addDefinitionItem = () => {
+        if (newDefinitionItem.trim()) {
+            setUserStoryData(prev => ({
+                ...prev,
+                definitionOfDone: [...prev.definitionOfDone, { text: newDefinitionItem.trim(), completed: false }]
+            }));
+            setNewDefinitionItem('');
+        }
+    };
+
+    const removeDefinitionItem = (index) => {
+        setUserStoryData(prev => ({
+            ...prev,
+            definitionOfDone: prev.definitionOfDone.filter((_, i) => i !== index)
+        }));
+    };
+
+    const updateDefinitionItem = (index, updates) => {
+        setUserStoryData(prev => ({
+            ...prev,
+            definitionOfDone: prev.definitionOfDone.map((item, i) => 
+                i === index ? { ...item, ...updates } : item
+            )
+        }));
+    };
+
+    const applyTemplate = (template) => {
+        // Simple template parsing - can be enhanced
+        const templateData = template.template || template;
+        updateUserStoryData({ 
+            title: template.name || t('userStory.templates.defaultTitle'),
+            description: templateData
         });
     };
 
-    const nextStep = () => {
-        if (currentStep < steps.length) setCurrentStep(currentStep + 1);
+    const applyGherkinTemplate = (template) => {
+        // Apply template to new scenario
+        setNewScenario({
+            given: template.given,
+            when: template.when,
+            then: template.then,
+            and: []
+        });
     };
 
-    const prevStep = () => {
-        if (currentStep > 1) setCurrentStep(currentStep - 1);
-    };
-
-    const goToStep = (stepId) => {
-        setCurrentStep(stepId);
-    };
-
-    const renderStepContent = () => {
-        switch (currentStep) {
-            case 1:
-                return
-            case 2:
-                return <Step2Content data={userStoryData} updateData={updateUserStoryData} t={t} />;
-            case 3:
-                return <Step3Content data={userStoryData} updateData={updateUserStoryData} t={t} />;
-            case 4:
-                return <Step4Content data={userStoryData} generatePreview={generatePreview} t={t} />;
-            default:
-                return null;
+    const generatePreview = () => {
+        let preview = '';
+        
+        if (userStoryData.title) {
+            preview += `${t('userStory.form.title')}: ${userStoryData.title}\n\n`;
         }
+        
+        if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
+            preview += `${t('userStory.structure.title')}:\n`;
+            if (userStoryData.as) preview += `${t('userStory.form.as')} ${userStoryData.as}\n`;
+            if (userStoryData.iWant) preview += `${t('userStory.form.iWant')} ${userStoryData.iWant}\n`;
+            if (userStoryData.soThat) preview += `${t('userStory.form.soThat')} ${userStoryData.soThat}\n\n`;
+        }
+        
+        if (userStoryData.description) {
+            preview += `${t('userStory.form.description')}:\n${userStoryData.description}\n\n`;
+        }
+        
+        if (userStoryData.acceptanceCriteria.length > 0) {
+            preview += `${t('userStory.acceptanceCriteria.title')}:\n`;
+            userStoryData.acceptanceCriteria.forEach((scenario, index) => {
+                preview += `\n${t('userStory.acceptanceCriteria.scenario')} ${index + 1}:\n`;
+                if (scenario.given) preview += `Given ${scenario.given}\n`;
+                if (scenario.when) preview += `When ${scenario.when}\n`;
+                if (scenario.then) preview += `Then ${scenario.then}\n`;
+                if (scenario.and && scenario.and.length > 0) {
+                    scenario.and.forEach(condition => {
+                        if (condition) preview += `And ${condition}\n`;
+                    });
+                }
+            });
+            preview += '\n';
+        }
+        
+        if (userStoryData.definitionOfDone.length > 0) {
+            preview += `${t('userStory.definitionOfDone.title')}:\n`;
+            userStoryData.definitionOfDone.forEach((item, index) => {
+                const status = item.completed ? '✓' : '○';
+                preview += `${status} ${item.text}\n`;
+            });
+            preview += '\n';
+        }
+        
+        if (userStoryData.notes) {
+            preview += `${t('userStory.notes.title')}:\n${userStoryData.notes}\n`;
+        }
+        
+        return preview || t('userStory.preview.empty');
     };
 
     return (
-        <div className="w-7xl mx-auto">
-            {/* Main Content Card */}
-            <Step1Content
-                data={userStoryData}
-                updateData={updateUserStoryData}
-                priorities={priorities}
-                quickTemplates={quickTemplates}
-                generatePreview={generatePreview}
-                t={t}
-            />
-            <Step2Content data={userStoryData} updateData={updateUserStoryData} t={t}>
-                
-            </Step2Content>
-        </div>
-    );
-};
+        <div className="max-w-7xl mx-auto p-6 space-y-6">
+            {/* Header */}
+            <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                    {t('userStory.builder.title')}
+                </h1>
+                <p className="text-gray-600 dark:text-gray-300">
+                    {t('userStory.builder.subtitle')}
+                </p>
+            </div>
 
-// Step 1: Estrutura Base
-const Step1Content = ({ data, updateData, priorities, quickTemplates, generatePreview, t }) => {
-    const applyTemplate = (template) => {
-        // Simple parsing of template - this could be more sophisticated
-        const parts = template.split(',');
-        if (parts.length >= 2) {
-            const persona = parts[0].replace('Como ', '').trim();
-            const action = parts[1].replace(' eu quero ', '').trim();
-            updateData('persona', persona);
-            updateData('action', action);
-        }
-    };
+            {/* Main Grid Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left Column - Main Content */}
+                <div className="lg:col-span-8 space-y-6">
+                    {/* User Story Basic Information */}
+                    <UserStoryBasicInfo 
+                        data={userStoryData}
+                        updateData={updateUserStoryData}
+                        priorities={priorities}
+                        t={t}
+                    />
 
-    return (
-        <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-4">
-                {/* Form Section - Takes 2 columns */}
-                <div className="xl:col-span-7">
-                    <Card className="bg-white dark:bg-gray-800/50 border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                                <div className="w-1.5 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full mr-2"></div>
-                                {t('userStory.builder.steps.step1.title')}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-5">
-                            {/* Persona Field */}
-                            <div className="group space-y-2">
-                                <Label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <div className="flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-2">
-                                        <HiUser className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                                    </div>
-                                    {t('userStory.builder.form.persona')} <span className="text-red-500 ml-1">*</span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 font-normal">{t('userStory.builder.form.personaHelp')}</span>
-                                </Label>
-                                <Input
-                                    type="text"
-                                    value={data.persona}
-                                    onChange={(e) => updateData('persona', e.target.value)}
-                                    placeholder={t('userStory.builder.form.personaPlaceholder')}
-                                    className="w-full bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 text-sm transition-all duration-200 group-hover:bg-gray-50 dark:group-hover:bg-gray-700/70"
-                                />
-                            </div>
+                    {/* Acceptance Criteria */}
+                    <AcceptanceCriteriaSection 
+                        data={userStoryData}
+                        updateData={updateUserStoryData}
+                        newScenario={newScenario}
+                        setNewScenario={setNewScenario}
+                        addScenario={addScenario}
+                        removeScenario={removeScenario}
+                        updateScenario={updateScenario}
+                        addAndCondition={addAndCondition}
+                        updateAndCondition={updateAndCondition}
+                        removeAndCondition={removeAndCondition}
+                        t={t}
+                    />
 
-                            {/* Ação Field */}
-                            <div className="group space-y-2">
-                                <Label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <div className="flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-2">
-                                        <HiLightBulb className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                                    </div>
-                                    {t('userStory.builder.form.action')} <span className="text-red-500 ml-1">*</span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 font-normal">{t('userStory.builder.form.actionHelp')}</span>
-                                </Label>
-                                <Input
-                                    type="text"
-                                    value={data.action}
-                                    onChange={(e) => updateData('action', e.target.value)}
-                                    placeholder={t('userStory.builder.form.actionPlaceholder')}
-                                    className="w-full bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 text-sm transition-all duration-200 group-hover:bg-gray-50 dark:group-hover:bg-gray-700/70"
-                                />
-                            </div>
+                    {/* Definition of Done */}
+                    <DefinitionOfDoneSection 
+                        data={userStoryData}
+                        updateData={updateUserStoryData}
+                        newDefinitionItem={newDefinitionItem}
+                        setNewDefinitionItem={setNewDefinitionItem}
+                        addDefinitionItem={addDefinitionItem}
+                        removeDefinitionItem={removeDefinitionItem}
+                        updateDefinitionItem={updateDefinitionItem}
+                        t={t}
+                    />
 
-                            {/* Benefício Field */}
-                            <div className="group space-y-2">
-                                <Label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <div className="flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-2">
-                                        <HiStar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                                    </div>
-                                    {t('userStory.builder.form.benefit')}
-                                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 font-normal">{t('userStory.builder.form.benefitHelp')}</span>
-                                </Label>
-                                <Input
-                                    type="text"
-                                    value={data.benefit}
-                                    onChange={(e) => updateData('benefit', e.target.value)}
-                                    placeholder={t('userStory.builder.form.benefitPlaceholder')}
-                                    className="w-full bg-gray-50/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 text-sm transition-all duration-200 group-hover:bg-gray-50 dark:group-hover:bg-gray-700/70"
-                                />
-                            </div>
-
-                            {/* Prioridade */}
-                            <div>
-                                <Label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                                    <div className="flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-2">
-                                        <HiStar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                                    </div>
-                                    {t('userStory.builder.form.priority')}
-                                </Label>
-                                <div className="grid grid-cols-3 gap-3">
-                                    {priorities.map((priority) => (
-                                        console.log(priority),
-                                        <Button
-                                            key={priority.value}
-                                            onClick={() => updateData('priority', priority.value)}
-                                            className={`relative p-3 rounded-lg border-2 transition-all duration-200 group
-                                                ${data.priority === priority.value
-                                                    ? ` ${priority.active}`
-                                                    : ` 'bg-white/10 dark:bg-white/10 border-border-gray-100 dark:border-white/20 text-gray-600 dark:text-white'`
-                                                }`}
-                                        >
-                                            <div className="text-center">
-                                                <div className="font-medium text-xs">{priority.value}</div>
-                                            </div>
-                                            {data.priority === priority.value && (
-                                                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-blue-100 rounded-full"></div>
-                                            )}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    {/* Notes */}
+                    <NotesSection 
+                        data={userStoryData}
+                        updateData={updateUserStoryData}
+                        t={t}
+                    />
                 </div>
 
-                {/* Sidebar - Templates and Preview */}
-                <div className="xl:col-span-5 space-y-4">
+                {/* Right Column - Sidebar */}
+                <div className="lg:col-span-4 space-y-6">
                     {/* Preview Card */}
-                    <Card className="bg-gradient-to-br from-emerald-50 via-blue-50 to-indigo-50 dark:from-gray-800/80 dark:via-gray-800/60 dark:to-gray-800/80 border-emerald-200/50 dark:border-gray-700/50 shadow-sm sticky top-6">
-                        <CardHeader className="pb-3">
-                            <CardTitle className="flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                <div className="flex items-center justify-center w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg mr-2">
-                                    <HiEye className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                                </div>
-                                {t('userStory.builder.form.preview')}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-3 border border-white/20 dark:border-gray-700/20 min-h-[60px] flex items-center shadow-sm">
-                                <p className="text-gray-900 dark:text-white font-medium leading-relaxed text-sm">
-                                    {generatePreview()}
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <PreviewCard 
+                        generatePreview={generatePreview}
+                        t={t}
+                    />
 
                     {/* Templates Card */}
-                    <Card className="bg-white dark:bg-gray-800/50 border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-                        <CardHeader className="pb-3">
-                            <CardTitle className="flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                <div className="flex items-center justify-center w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg mr-2">
-                                    <HiGlobeAlt className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                                </div>
-                                {t('userStory.builder.form.templates')}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            <div className="space-y-2">
-                                {quickTemplates.map((template, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => applyTemplate(template)}
-                                        className="w-full text-left p-3 bg-gray-50/80 dark:bg-gray-700/50 rounded-lg border border-gray-200/50 dark:border-gray-600/50 hover:bg-blue-50/80 dark:hover:bg-gray-700/80 hover:border-blue-200 dark:hover:border-blue-500/30 transition-all duration-200 text-xs leading-relaxed group"
-                                    >
-                                        <span className="text-gray-700 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300">
-                                            {template}
-                                        </span>
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="mt-3 p-2 bg-blue-50/50 dark:bg-blue-900/20 rounded-lg border border-blue-200/50 dark:border-blue-700/30">
-                                <p className="text-xs text-blue-700 dark:text-blue-300 font-medium">
-                                    {t('userStory.builder.form.templatesHelp')}
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <TemplatesCard 
+                        quickTemplates={quickTemplates}
+                        applyTemplate={applyTemplate}
+                        t={t}
+                    />
+
+                    {/* Gherkin Templates */}
+                    <GherkinTemplatesCard 
+                        gherkinTemplates={gherkinTemplates}
+                        applyGherkinTemplate={applyGherkinTemplate}
+                        setNewScenario={setNewScenario}
+                        t={t}
+                    />
+
+                    {/* Summary Card */}
+                    <SummaryCard 
+                        data={userStoryData}
+                        t={t}
+                    />
                 </div>
             </div>
         </div>
     );
-};
+}
 
-// Placeholder components for other steps
-const Step2Content = ({ data, updateData, t }) => (
-    <div className="text-center py-12">
-        <HiCheckCircle className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            {t('userStory.builder.placeholders.step2.title')}
-        </h2>
-        <p className="text-gray-600 dark:text-gray-300">
-            {t('userStory.builder.placeholders.step2.description')}
-        </p>
-    </div>
-);
+// User Story Basic Information Component
+function UserStoryBasicInfo({ data, updateData, priorities, t }) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    {t('userStory.basicInfo.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {/* Title */}
+                <div>
+                    <label className="block text-sm font-medium mb-2">
+                        {t('userStory.form.title')}
+                    </label>
+                    <Input
+                        placeholder={t('userStory.form.titlePlaceholder')}
+                        value={data.title}
+                        onChange={(e) => updateData({ title: e.target.value })}
+                    />
+                </div>
 
-const Step3Content = ({ data, updateData, t }) => (
-    <div className="text-center py-12">
-        <HiClipboard className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            {t('userStory.builder.placeholders.step3.title')}
-        </h2>
-        <p className="text-gray-600 dark:text-gray-300">
-            {t('userStory.builder.placeholders.step3.description')}
-        </p>
-    </div>
-);
+                {/* User Story Fields */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.as')}
+                        </label>
+                        <Input
+                            placeholder={t('userStory.form.asPlaceholder')}
+                            value={data.as}
+                            onChange={(e) => updateData({ as: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.iWant')}
+                        </label>
+                        <Input
+                            placeholder={t('userStory.form.iWantPlaceholder')}
+                            value={data.iWant}
+                            onChange={(e) => updateData({ iWant: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.soThat')}
+                        </label>
+                        <Input
+                            placeholder={t('userStory.form.soThatPlaceholder')}
+                            value={data.soThat}
+                            onChange={(e) => updateData({ soThat: e.target.value })}
+                        />
+                    </div>
+                </div>
 
-const Step4Content = ({ data, generatePreview, t }) => (
-    <div className="text-center py-12">
-        <HiEye className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            {t('userStory.builder.placeholders.step4.title')}
-        </h2>
-        <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg max-w-2xl mx-auto">
-            <p className="text-lg text-gray-900 dark:text-white font-medium">
-                {generatePreview()}
-            </p>
-        </div>
-    </div>
-);
+                {/* Description */}
+                <div>
+                    <label className="block text-sm font-medium mb-2">
+                        {t('userStory.form.description')}
+                    </label>
+                    <Textarea
+                        placeholder={t('userStory.form.descriptionPlaceholder')}
+                        value={data.description}
+                        onChange={(e) => updateData({ description: e.target.value })}
+                        rows={3}
+                    />
+                </div>
+
+                {/* Priority and Business Value */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.priority')}
+                        </label>
+                        <select
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            value={data.priority}
+                            onChange={(e) => updateData({ priority: e.target.value })}
+                        >
+                            <option value="">{t('userStory.form.selectPriority')}</option>
+                            {priorities.map((priority) => (
+                                <option key={priority.value} value={priority.value}>
+                                    {priority.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.businessValue')}
+                        </label>
+                        <Input
+                            type="number"
+                            min="1"
+                            max="10"
+                            placeholder="1-10"
+                            value={data.businessValue}
+                            onChange={(e) => updateData({ businessValue: e.target.value })}
+                        />
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+// Acceptance Criteria Section Component
+function AcceptanceCriteriaSection({ 
+    data, 
+    updateData, 
+    newScenario, 
+    setNewScenario, 
+    addScenario, 
+    removeScenario, 
+    updateScenario, 
+    addAndCondition, 
+    updateAndCondition, 
+    removeAndCondition, 
+    t 
+}) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5" />
+                    {t('userStory.acceptanceCriteria.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {/* Existing Scenarios */}
+                {data.acceptanceCriteria.map((scenario, index) => (
+                    <div key={index} className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
+                        <div className="flex justify-between items-start mb-3">
+                            <h4 className="font-medium text-gray-900 dark:text-white">
+                                {t('userStory.acceptanceCriteria.scenario')} {index + 1}
+                            </h4>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeScenario(index)}
+                                className="text-red-600 hover:text-red-700"
+                            >
+                                <Trash className="h-4 w-4" />
+                            </Button>
+                        </div>
+
+                        <div className="space-y-3">
+                            {/* Given */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
+                                    Given
+                                </label>
+                                <Textarea
+                                    placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
+                                    value={scenario.given}
+                                    onChange={(e) => updateScenario(index, { given: e.target.value })}
+                                    rows={2}
+                                />
+                            </div>
+
+                            {/* When */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
+                                    When
+                                </label>
+                                <Textarea
+                                    placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
+                                    value={scenario.when}
+                                    onChange={(e) => updateScenario(index, { when: e.target.value })}
+                                    rows={2}
+                                />
+                            </div>
+
+                            {/* Then */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
+                                    Then
+                                </label>
+                                <Textarea
+                                    placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
+                                    value={scenario.then}
+                                    onChange={(e) => updateScenario(index, { then: e.target.value })}
+                                    rows={2}
+                                />
+                            </div>
+
+                            {/* And Conditions */}
+                            {scenario.and && scenario.and.length > 0 && (
+                                <div>
+                                    <label className="block text-sm font-medium mb-1 text-orange-700 dark:text-orange-400">
+                                        And
+                                    </label>
+                                    {scenario.and.map((andCondition, andIndex) => (
+                                        <div key={andIndex} className="flex gap-2 mb-2">
+                                            <Textarea
+                                                placeholder={t('userStory.acceptanceCriteria.andPlaceholder')}
+                                                value={andCondition}
+                                                onChange={(e) => updateAndCondition(index, andIndex, e.target.value)}
+                                                rows={1}
+                                                className="flex-1"
+                                            />
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => removeAndCondition(index, andIndex)}
+                                                className="text-red-600 hover:text-red-700"
+                                            >
+                                                <Minus className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => addAndCondition(index)}
+                                className="w-full"
+                            >
+                                <Plus className="h-4 w-4 mr-2" />
+                                {t('userStory.acceptanceCriteria.addAnd')}
+                            </Button>
+                        </div>
+                    </div>
+                ))}
+
+                {/* Add New Scenario */}
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                    <h4 className="font-medium mb-3 text-gray-900 dark:text-white">
+                        {t('userStory.acceptanceCriteria.addNew')}
+                    </h4>
+                    <div className="space-y-3">
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
+                                Given
+                            </label>
+                            <Textarea
+                                placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
+                                value={newScenario.given}
+                                onChange={(e) => setNewScenario({ ...newScenario, given: e.target.value })}
+                                rows={2}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
+                                When
+                            </label>
+                            <Textarea
+                                placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
+                                value={newScenario.when}
+                                onChange={(e) => setNewScenario({ ...newScenario, when: e.target.value })}
+                                rows={2}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
+                                Then
+                            </label>
+                            <Textarea
+                                placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
+                                value={newScenario.then}
+                                onChange={(e) => setNewScenario({ ...newScenario, then: e.target.value })}
+                                rows={2}
+                            />
+                        </div>
+                        <Button
+                            onClick={addScenario}
+                            disabled={!newScenario.given || !newScenario.when || !newScenario.then}
+                            className="w-full"
+                        >
+                            <Plus className="h-4 w-4 mr-2" />
+                            {t('userStory.acceptanceCriteria.addScenario')}
+                        </Button>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+// Definition of Done Section Component
+function DefinitionOfDoneSection({ 
+    data, 
+    updateData, 
+    newDefinitionItem, 
+    setNewDefinitionItem, 
+    addDefinitionItem, 
+    removeDefinitionItem, 
+    updateDefinitionItem, 
+    t 
+}) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5" />
+                    {t('userStory.definitionOfDone.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {/* Existing Items */}
+                {data.definitionOfDone.map((item, index) => (
+                    <div key={index} className="flex items-center gap-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-800">
+                        <input
+                            type="checkbox"
+                            checked={item.completed}
+                            onChange={(e) => updateDefinitionItem(index, { completed: e.target.checked })}
+                            className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
+                        />
+                        <Input
+                            value={item.text}
+                            onChange={(e) => updateDefinitionItem(index, { text: e.target.value })}
+                            className="flex-1"
+                            placeholder={t('userStory.definitionOfDone.itemPlaceholder')}
+                        />
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeDefinitionItem(index)}
+                            className="text-red-600 hover:text-red-700"
+                        >
+                            <Trash className="h-4 w-4" />
+                        </Button>
+                    </div>
+                ))}
+
+                {/* Add New Item */}
+                <div className="flex gap-2">
+                    <Input
+                        placeholder={t('userStory.definitionOfDone.addPlaceholder')}
+                        value={newDefinitionItem}
+                        onChange={(e) => setNewDefinitionItem(e.target.value)}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter' && newDefinitionItem.trim()) {
+                                addDefinitionItem();
+                            }
+                        }}
+                        className="flex-1"
+                    />
+                    <Button
+                        onClick={addDefinitionItem}
+                        disabled={!newDefinitionItem.trim()}
+                    >
+                        <Plus className="h-4 w-4" />
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+// Notes Section Component
+function NotesSection({ data, updateData, t }) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <StickyNote className="h-5 w-5" />
+                    {t('userStory.notes.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <Textarea
+                    placeholder={t('userStory.notes.placeholder')}
+                    value={data.notes}
+                    onChange={(e) => updateData({ notes: e.target.value })}
+                    rows={4}
+                />
+            </CardContent>
+        </Card>
+    );
+}
+
+// Preview Card Component
+function PreviewCard({ generatePreview, t }) {
+    const preview = generatePreview();
+    
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <Eye className="h-5 w-5" />
+                    {t('userStory.preview.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                    <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">
+                        {preview}
+                    </pre>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+// Templates Card Component
+function TemplatesCard({ quickTemplates, applyTemplate, t }) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="h-5 w-5" />
+                    {t('userStory.templates.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+                {quickTemplates.map((template, index) => (
+                    <Button
+                        key={index}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => applyTemplate(template)}
+                        className="w-full justify-start text-left"
+                    >
+                        {template.name}
+                    </Button>
+                ))}
+            </CardContent>
+        </Card>
+    );
+}
+
+// Gherkin Templates Card Component
+function GherkinTemplatesCard({ gherkinTemplates, applyGherkinTemplate, setNewScenario, t }) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <Code className="h-5 w-5" />
+                    {t('userStory.gherkin.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+                {gherkinTemplates.map((template, index) => (
+                    <Button
+                        key={index}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                            setNewScenario(template);
+                            applyGherkinTemplate(template);
+                        }}
+                        className="w-full justify-start text-left"
+                    >
+                        {template.name}
+                    </Button>
+                ))}
+            </CardContent>
+        </Card>
+    );
+}
+
+// Summary Card Component
+function SummaryCard({ data, t }) {
+    const scenariosCount = data.acceptanceCriteria.length;
+    const definitionItemsCount = data.definitionOfDone.length;
+    const completedItemsCount = data.definitionOfDone.filter(item => item.completed).length;
+    
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    {t('userStory.summary.title')}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+                <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {t('userStory.summary.scenarios')}
+                    </span>
+                    <Badge variant="secondary">
+                        {scenariosCount}
+                    </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {t('userStory.summary.definitionItems')}
+                    </span>
+                    <Badge variant="secondary">
+                        {definitionItemsCount}
+                    </Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {t('userStory.summary.progress')}
+                    </span>
+                    <Badge variant={completedItemsCount === definitionItemsCount && definitionItemsCount > 0 ? "default" : "secondary"}>
+                        {definitionItemsCount > 0 ? `${Math.round((completedItemsCount / definitionItemsCount) * 100)}%` : '0%'}
+                    </Badge>
+                </div>
+                {data.priority && (
+                    <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {t('userStory.form.priority')}
+                        </span>
+                        <Badge variant="outline">
+                            {data.priority}
+                        </Badge>
+                    </div>
+                )}
+                {data.businessValue && (
+                    <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {t('userStory.form.businessValue')}
+                        </span>
+                        <Badge variant="outline">
+                            {data.businessValue}/10
+                        </Badge>
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+    );
+}
 
 export default UserStoryBuilder;
