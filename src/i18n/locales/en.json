@@ -117,7 +117,23 @@
     },
     "preview": {
       "title": "Preview (Markdown)",
-      "empty": "Complete the fields to see preview"
+      "empty": "Complete the fields to see preview",
+      "progress": {
+        "title": "User Story Progress",
+        "status": {
+          "starting": "Starting",
+          "inProgress": "In progress",
+          "almostReady": "Almost ready"
+        }
+      },
+      "buttons": {
+        "code": "Code",
+        "preview": "Preview",
+        "copy": "Copy",
+        "copied": "Copied!"
+      },
+      "emptyContent": "No content to preview",
+      "noMarkdownContent": "// No markdown content available"
     },
     "templates": {
       "title": "Templates",

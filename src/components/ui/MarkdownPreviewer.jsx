@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { Copy, Check, Eye, Code } from 'lucide-react';
 
 /**
@@ -14,10 +16,60 @@ function MarkdownPreviewer({
     title = 'Preview',
     className = '',
     showCopyButton = true,
-    showToggleButton = true
+    showToggleButton = true,
+    progressData = null // New prop for user story progress data
 }) {
+    const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
     const [viewMode, setViewMode] = useState('code'); // 'preview' ou 'code'
+
+    // Calculate progress percentage based on user story completeness
+    const calculateProgress = () => {
+        if (!progressData) return 0;
+
+        const requiredFields = ['title', 'as', 'iWant', 'soThat'];
+        const optionalFields = ['priority', 'storyPoints', 'tags'];
+        
+        let completedFields = 0;
+        let totalFields = requiredFields.length + optionalFields.length;
+
+        // Check required fields (weighted more heavily)
+        requiredFields.forEach(field => {
+            if (progressData[field] && progressData[field].trim()) {
+                completedFields += 2; // Required fields count double
+                totalFields += 1; // Add extra weight to total
+            }
+        });
+
+        // Check optional fields
+        optionalFields.forEach(field => {
+            if (progressData[field] && progressData[field].trim()) {
+                completedFields += 1;
+            }
+        });
+
+        // Check acceptance criteria
+        if (progressData.acceptanceCriteria && progressData.acceptanceCriteria.length > 0) {
+            completedFields += 2;
+        }
+        totalFields += 2;
+
+        // Check definition of done
+        if (progressData.definitionOfDone && progressData.definitionOfDone.length > 0) {
+            completedFields += 1;
+        }
+        totalFields += 1;
+
+        // Check notes (optional)
+        if (progressData.notes && progressData.notes.trim()) {
+            completedFields += 0.5;
+        }
+        totalFields += 0.5;
+
+        return Math.round((completedFields / totalFields) * 100);
+    };
+
+    const progressPercentage = calculateProgress();
 
     // Função para copiar o markdown para o clipboard
     const handleCopyMarkdown = async () => {
@@ -26,7 +78,7 @@ function MarkdownPreviewer({
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch (err) {
-            console.error('Erro ao copiar markdown:', err);
+            console.error('Error copying markdown:', err);
         }
     };
 
@@ -38,7 +90,7 @@ function MarkdownPreviewer({
     // Parser de markdown para HTML com styling
     const renderMarkdown = (markdownText) => {
         if (!markdownText.trim()) {
-            return '<p class="text-gray-500 dark:text-gray-400 italic text-center py-8">Nenhum conteúdo para visualizar</p>';
+            return `<p class="text-gray-500 dark:text-gray-400 italic text-center py-8">${t('userStory.preview.emptyContent')}</p>`;
         }
 
         return markdownText
@@ -64,7 +116,7 @@ function MarkdownPreviewer({
                     // Convert newlines to HTML line breaks
                     .replace(/\n/g, '<br>');
 
-                return `<div class="dark:bg-black bg-gray-100 p-2 rounded-lg">
+                return `<div class="dark:bg-black bg-gray-100 p-2 rounded-lg mb-2">
                     <pre class="font-mono text-sm leading-relaxed text-gray-800 dark:text-gray-200 whitespace-pre-wrap">${formattedCode}</pre>
                 </div>`;
             })
@@ -121,14 +173,11 @@ function MarkdownPreviewer({
 
             // Horizontal rules
             .replace(/^---$/gm, '<hr class="border-gray-300 dark:border-gray-600 my-6">')
-
-        // Paragraphs (for remaining text)
-        // .replace(/^(?!<[h123]|<div|<li|<strong|<em|<code|<blockquote|<hr)(.+)$/gm, '<p class="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">$1</p>');
     };
 
     return (
         <Card className={`w-full ${className}`}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
                 <CardTitle className="flex items-center gap-2">
                     {viewMode === 'preview' ? (
                         <Eye className="h-5 w-5 text-blue-500" />
@@ -148,39 +197,73 @@ function MarkdownPreviewer({
                             {viewMode === 'preview' ? (
                                 <>
                                     <Code className="h-4 w-4 mr-1" />
-                                    Código
+                                    {t('userStory.preview.buttons.code')}
                                 </>
                             ) : (
                                 <>
                                     <Eye className="h-4 w-4 mr-1" />
-                                    Preview
+                                    {t('userStory.preview.buttons.preview')}
                                 </>
                             )}
                         </Button>
                     )}
                     {showCopyButton && (
                         <Button
-                            variant="outline"
+                            variant="default"
                             size="sm"
                             onClick={handleCopyMarkdown}
                             disabled={!markdown.trim()}
-                            className="text-xs"
+                            className="text-xs text-white"
                         >
                             {copied ? (
                                 <>
-                                    <Check className="h-4 w-4 mr-1 text-green-500" />
-                                    Copiado!
+                                    <Check className="h-4 w-4 mr-1" />
+                                    {t('userStory.preview.buttons.copied')}
                                 </>
                             ) : (
                                 <>
                                     <Copy className="h-4 w-4 mr-1" />
-                                    Copiar
+                                    {t('userStory.preview.buttons.copy')}
                                 </>
                             )}
                         </Button>
                     )}
                 </div>
             </CardHeader>
+            
+            {/* Progress Section */}
+            {progressData && (
+                <div className="px-6 pb-2">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {t('userStory.preview.progress.title')}
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className={`text-sm font-semibold ${
+                                progressPercentage >= 80 ? 'text-green-600 dark:text-green-400' :
+                                progressPercentage >= 50 ? 'text-yellow-600 dark:text-yellow-400' :
+                                'text-red-600 dark:text-red-400'
+                            }`}>
+                                {progressPercentage}%
+                            </span>
+                            <span className={`text-xs px-2 py-1 rounded-full ${
+                                progressPercentage >= 80 ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' :
+                                progressPercentage >= 50 ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                                'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+                            }`}>
+                                {progressPercentage >= 80 ? t('userStory.preview.progress.status.almostReady') :
+                                 progressPercentage >= 50 ? t('userStory.preview.progress.status.inProgress') :
+                                 t('userStory.preview.progress.status.starting')}
+                            </span>
+                        </div>
+                    </div>
+                    <Progress 
+                        value={progressPercentage} 
+                        className="h-2"
+                    />
+                </div>
+            )}
+            
             <CardContent>
                 {viewMode === 'preview' ? (
                     <div
@@ -192,7 +275,7 @@ function MarkdownPreviewer({
                 ) : (
                     <div className="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 border">
                         <pre className="text-sm text-gray-300 dark:text-gray-400 font-mono overflow-x-auto whitespace-pre-wrap">
-                            {markdown || '// Nenhum conteúdo markdown disponível'}
+                            {markdown || t('userStory.preview.noMarkdownContent')}
                         </pre>
                     </div>
                 )}

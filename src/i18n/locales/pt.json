@@ -117,7 +117,23 @@
     },
     "preview": {
       "title": "Preview (Markdown)",
-      "empty": "Complete os campos para ver o preview"
+      "empty": "Complete os campos para ver o preview",
+      "progress": {
+        "title": "Progresso da User Story",
+        "status": {
+          "starting": "Iniciando",
+          "inProgress": "Em progresso", 
+          "almostReady": "Quase pronto"
+        }
+      },
+      "buttons": {
+        "code": "Código",
+        "preview": "Preview",
+        "copy": "Copiar",
+        "copied": "Copiado!"
+      },
+      "emptyContent": "Nenhum conteúdo para visualizar",
+      "noMarkdownContent": "// Nenhum conteúdo markdown disponível"
     },
     "templates": {
       "title": "Templates",

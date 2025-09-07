@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { MarkdownPreviewer } from '@/components/ui/MarkdownPreviewer';
 import {
@@ -408,6 +409,7 @@ function UserStoryBuilder() {
                     <MarkdownPreviewer
                         markdown={generatePreview()}
                         title={t('userStory.preview.title')}
+                        progressData={userStoryData}
                     />
 
                     {/* Summary Card */}
@@ -539,7 +541,7 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                 </div>
 
                 {/* Priority and Business Value */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div className='md:col-span-1'>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.priority')}
@@ -560,27 +562,8 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             </SelectContent>
                         </Select>
                     </div>
+                    
                     <div className='md:col-span-1'>
-                        <Label className="block text-sm font-medium mb-2">
-                            {t('userStory.form.storyPoints')}
-                        </Label>
-                        <Select
-                            value={data.storyPoints}
-                            onValueChange={(value) => updateData({ storyPoints: value })}
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder={t('userStory.form.selectStoryPoints')} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {storyPoints.map((point) => (
-                                    <SelectItem key={point.value} value={point.value}>
-                                        {point.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className='md:col-span-2'>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.tags')}
                         </Label>
@@ -590,7 +573,41 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             onChange={(e) => updateData({ tags: e.target.value })}
                         />
                     </div>
+                    
                 </div>
+                <div className='md:col-span-4'>
+                        <Label className="block text-sm font-medium mb-2">
+                            {t('userStory.form.storyPoints')}
+                        </Label>
+                        <div className="space-y-4">
+                            <Slider
+                                value={data.storyPoints ? [storyPoints.findIndex(sp => sp.value === data.storyPoints)] : [0]}
+                                onValueChange={(value) => {
+                                    const selectedIndex = value[0];
+                                    updateData({ storyPoints: storyPoints[selectedIndex]?.value || '' });
+                                }}
+                                max={storyPoints.length - 1}
+                                min={0}
+                                step={1}
+                                className="w-full"
+                            />
+                            {/* Tick marks for story points */}
+                            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 px-2">
+                                {storyPoints.map((point, index) => (
+                                    <span 
+                                        key={point.value}
+                                        className={`transition-colors ${
+                                            data.storyPoints === point.value 
+                                                ? 'text-blue-600 dark:text-blue-400 font-medium' 
+                                                : 'text-gray-400 dark:text-gray-600'
+                                        }`}
+                                    >
+                                        {point.value}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
             </CardContent>
         </Card>
     );
@@ -682,6 +699,52 @@ function AcceptanceCriteriaSection({
                 </div>
             </CardHeader>
             <CardContent className="space-y-4">
+                {/* Add New Scenario */}
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                    <h4 className="font-medium mb-3 text-gray-900 dark:text-white">
+                        {t('userStory.acceptanceCriteria.addNew')}
+                    </h4>
+                    <div className="space-y-3">
+                        <div>
+                            <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
+                                Given
+                            </Label>
+                            <Input
+                                placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
+                                value={newScenario.given}
+                                onChange={(e) => setNewScenario({ ...newScenario, given: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
+                                When
+                            </Label>
+                            <Input
+                                placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
+                                value={newScenario.when}
+                                onChange={(e) => setNewScenario({ ...newScenario, when: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
+                                Then
+                            </Label>
+                            <Input
+                                placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
+                                value={newScenario.then}
+                                onChange={(e) => setNewScenario({ ...newScenario, then: e.target.value })}
+                            />
+                        </div>
+                        <Button
+                            onClick={addScenario}
+                            disabled={!newScenario.given || !newScenario.when || !newScenario.then}
+                            className="w-full"
+                        >
+                            <Plus className="h-4 w-4 mr-2" />
+                            {t('userStory.acceptanceCriteria.addScenario')}
+                        </Button>
+                    </div>
+                </div>
                 {/* Existing Scenarios */}
                 {data.acceptanceCriteria.map((scenario, index) => (
                     <div key={index} className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
@@ -776,52 +839,7 @@ function AcceptanceCriteriaSection({
                     </div>
                 ))}
 
-                {/* Add New Scenario */}
-                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
-                    <h4 className="font-medium mb-3 text-gray-900 dark:text-white">
-                        {t('userStory.acceptanceCriteria.addNew')}
-                    </h4>
-                    <div className="space-y-3">
-                        <div>
-                            <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
-                                Given
-                            </Label>
-                            <Input
-                                placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
-                                value={newScenario.given}
-                                onChange={(e) => setNewScenario({ ...newScenario, given: e.target.value })}
-                            />
-                        </div>
-                        <div>
-                            <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
-                                When
-                            </Label>
-                            <Input
-                                placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
-                                value={newScenario.when}
-                                onChange={(e) => setNewScenario({ ...newScenario, when: e.target.value })}
-                            />
-                        </div>
-                        <div>
-                            <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
-                                Then
-                            </Label>
-                            <Input
-                                placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
-                                value={newScenario.then}
-                                onChange={(e) => setNewScenario({ ...newScenario, then: e.target.value })}
-                            />
-                        </div>
-                        <Button
-                            onClick={addScenario}
-                            disabled={!newScenario.given || !newScenario.when || !newScenario.then}
-                            className="w-full"
-                        >
-                            <Plus className="h-4 w-4 mr-2" />
-                            {t('userStory.acceptanceCriteria.addScenario')}
-                        </Button>
-                    </div>
-                </div>
+                
             </CardContent>
         </Card>
     );
