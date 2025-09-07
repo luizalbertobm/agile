@@ -332,7 +332,7 @@ function UserStoryBuilder() {
         }
 
         if (userStoryData.notes) {
-            markdown += `## ${t('userStory.notes.title')}\n\n${userStoryData.notes}\n\n`;
+            markdown += `### ${t('userStory.notes.title')}\n\n${userStoryData.notes}\n\n`;
         }
 
         return markdown || `*${t('userStory.preview.empty')}*`;
