@@ -83,7 +83,33 @@
     "definitionOfDone": {
       "title": "Definição de Pronto",
       "itemPlaceholder": "Digite um item da definição de pronto",
-      "addPlaceholder": "Adicionar novo item"
+      "addPlaceholder": "Adicionar novo item",
+      "investTitle": "Diretrizes INVEST",
+      "investDescription": "Use a Definição de Pronto para estabelecer critérios claros de conclusão. Crie histórias de usuário eficazes garantindo que elas sejam:",
+      "independent": {
+        "title": "Independente",
+        "description": "Independente de outras histórias"
+      },
+      "negotiable": {
+        "title": "Negociável",
+        "description": "Detalhes podem ser discutidos"
+      },
+      "valuable": {
+        "title": "Valiosa",
+        "description": "Entrega valor ao usuário"
+      },
+      "estimable": {
+        "title": "Estimável",
+        "description": "Pode ser estimada pelo time"
+      },
+      "small": {
+        "title": "Pequena",
+        "description": "Pequena o suficiente para um sprint"
+      },
+      "testable": {
+        "title": "Testável",
+        "description": "Pode ser testada/validada"
+      }
     },
     "notes": {
       "title": "Notas",

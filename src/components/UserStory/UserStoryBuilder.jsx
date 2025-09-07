@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { MarkdownPreviewer } from '@/components/ui/MarkdownPreviewer';
 import {
     FileText,
@@ -18,7 +19,8 @@ import {
     Plus,
     Minus,
     Trash,
-    ChevronDown
+    ChevronDown,
+    Info
 } from 'lucide-react';
 
 function UserStoryBuilder() {
@@ -843,6 +845,8 @@ function DefinitionOfDoneSection({
     updateDefinitionItem,
     t
 }) {
+    const [showInvestGuidelines, setShowInvestGuidelines] = React.useState(false);
+
     return (
         <Card>
             <CardHeader>
@@ -851,6 +855,123 @@ function DefinitionOfDoneSection({
                     {t('userStory.definitionOfDone.title')}
                 </CardTitle>
             </CardHeader>
+            
+            {/* INVEST Guidelines Collapsible */}
+            <div className="mx-6 mb-2">
+                <Collapsible open={showInvestGuidelines} onOpenChange={setShowInvestGuidelines}>
+                    <CollapsibleTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full justify-between text-xs h-auto p-3 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-900 dark:text-blue-100"
+                        >
+                            <div className="flex items-center gap-2">
+                                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                <span className="font-medium">
+                                    {t('userStory.definitionOfDone.investTitle')}
+                                </span>
+                            </div>
+                            <ChevronDown className={`h-3 w-3 text-blue-600 dark:text-blue-400 transition-transform ${showInvestGuidelines ? 'rotate-180' : ''}`} />
+                        </Button>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent className="data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden">
+                        <div className="mt-1 p-2 ">
+                            <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed mb-4">
+                                {t('userStory.definitionOfDone.investDescription')}
+                            </p>
+                            
+                            {/* INVEST Detailed Breakdown */}
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        I
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 text-sm">
+                                            {t('userStory.definitionOfDone.independent.title')}
+                                        </h4>
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                            {t('userStory.definitionOfDone.independent.description')}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        N
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 text-sm">
+                                            {t('userStory.definitionOfDone.negotiable.title')}
+                                        </h4>
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                            {t('userStory.definitionOfDone.negotiable.description')}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        V
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 text-sm">
+                                            {t('userStory.definitionOfDone.valuable.title')}
+                                        </h4>
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                            {t('userStory.definitionOfDone.valuable.description')}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        E
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 text-sm">
+                                            {t('userStory.definitionOfDone.estimable.title')}
+                                        </h4>
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                            {t('userStory.definitionOfDone.estimable.description')}
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        S
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 text-sm">
+                                            {t('userStory.definitionOfDone.small.title')}
+                                        </h4>
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                            {t('userStory.definitionOfDone.small.description')}
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        T
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 text-sm">
+                                            {t('userStory.definitionOfDone.testable.title')}
+                                        </h4>
+                                        <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                            {t('userStory.definitionOfDone.testable.description')}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </CollapsibleContent>
+                </Collapsible>
+            </div>
+
             <CardContent className="space-y-4">
                 {/* Existing Items */}
                 {data.definitionOfDone.map((item, index) => (

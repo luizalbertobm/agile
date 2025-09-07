@@ -83,7 +83,33 @@
     "definitionOfDone": {
       "title": "Definition of Done",
       "itemPlaceholder": "Enter a definition of done item",
-      "addPlaceholder": "Add new item"
+      "addPlaceholder": "Add new item",
+      "investTitle": "INVEST Guidelines",
+      "investDescription": "Create effective user stories by ensuring they are Independent, Negotiable, Valuable, Estimable, Small, and Testable. Use the Definition of Done to establish clear completion criteria.",
+      "independent": {
+        "title": "Independent",
+        "description": "Independent of other stories"
+      },
+      "negotiable": {
+        "title": "Negotiable",
+        "description": "Details can be discussed"
+      },
+      "valuable": {
+        "title": "Valuable",
+        "description": "Delivers value to the user"
+      },
+      "estimable": {
+        "title": "Estimable",
+        "description": "Can be estimated by the team"
+      },
+      "small": {
+        "title": "Small",
+        "description": "Small enough for one sprint"
+      },
+      "testable": {
+        "title": "Testable",
+        "description": "Can be tested/validated"
+      }
     },
     "notes": {
       "title": "Notes",
