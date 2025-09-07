@@ -70,7 +70,7 @@
       "critical": "Crítica"
     },
     "acceptanceCriteria": {
-      "title": "Critérios de Aceitação",
+      "title": "Critérios de Aceitação (Gherkin)",
       "scenario": "Cenário",
       "addNew": "Adicionar Novo Cenário",
       "addScenario": "Adicionar Cenário",

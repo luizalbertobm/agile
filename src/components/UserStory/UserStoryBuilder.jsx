@@ -278,7 +278,7 @@ function UserStoryBuilder() {
         let markdown = '';
 
         if (userStoryData.title) {
-            markdown += `# ${userStoryData.title}\n\n`;
+            markdown += `## ${userStoryData.title}\n\n`;
         }
 
         if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
@@ -290,7 +290,7 @@ function UserStoryBuilder() {
         }
 
         if (userStoryData.priority || userStoryData.storyPoints) {
-            markdown += `## ${t('userStory.details.title')}\n\n`;
+            markdown += `### ${t('userStory.details.title')}\n\n`;
             if (userStoryData.priority) {
                 const priorityLabel = priorities.find(p => p.value === userStoryData.priority)?.label || userStoryData.priority;
                 markdown += `- **${t('userStory.form.priority')}:** ${priorityLabel}\n`;
@@ -298,25 +298,20 @@ function UserStoryBuilder() {
             if (userStoryData.storyPoints) {
                 markdown += `- **${t('userStory.form.storyPoints')}:** ${userStoryData.storyPoints}\n`;
             }
+            if (userStoryData.tags && userStoryData.tags.trim()) {
+                const tagsList = userStoryData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+                if (tagsList.length > 0) {
+                    markdown += `- **${t('userStory.form.tags')}:** ${tagsList.map(tag => `\`${tag}\``).join(' ')}\n`;
+                }
+            }
             markdown += '\n';
         }
 
-        if (userStoryData.tags && userStoryData.tags.trim()) {
-            const tagsList = userStoryData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
-            if (tagsList.length > 0) {
-                markdown += `## ${t('userStory.form.tags')}\n\n`;
-                tagsList.forEach(tag => {
-                    markdown += `\`${tag}\` `;
-                });
-                markdown += '\n\n';
-            }
-        }
-
         if (userStoryData.acceptanceCriteria.length > 0) {
-            markdown += `## ${t('userStory.acceptanceCriteria.title')}\n\n`;
+            markdown += `### ${t('userStory.acceptanceCriteria.title')}\n\n`;
             userStoryData.acceptanceCriteria.forEach((scenario, index) => {
-                markdown += `### ${t('userStory.acceptanceCriteria.scenario')} ${index + 1}\n\n`;
                 markdown += '```gherkin\n';
+                markdown += `Scenario: ${t('userStory.acceptanceCriteria.scenario')} ${index + 1}\n`;
                 if (scenario.given) markdown += `Given ${scenario.given}\n`;
                 if (scenario.when) markdown += `When ${scenario.when}\n`;
                 if (scenario.then) markdown += `Then ${scenario.then}\n`;
@@ -330,7 +325,7 @@ function UserStoryBuilder() {
         }
 
         if (userStoryData.definitionOfDone.length > 0) {
-            markdown += `## ${t('userStory.definitionOfDone.title')}\n\n`;
+            markdown += `### ${t('userStory.definitionOfDone.title')}\n\n`;
             userStoryData.definitionOfDone.forEach((item) => {
                 const checkbox = item.completed ? '- [x]' : '- [ ]';
                 markdown += `${checkbox} ${item.text}\n`;
@@ -977,12 +972,6 @@ function DefinitionOfDoneSection({
                 {/* Existing Items */}
                 {data.definitionOfDone.map((item, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-800">
-                        <input
-                            type="checkbox"
-                            checked={item.completed}
-                            onChange={(e) => updateDefinitionItem(index, { completed: e.target.checked })}
-                            className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                        />
                         <Input
                             value={item.text}
                             onChange={(e) => updateDefinitionItem(index, { text: e.target.value })}
