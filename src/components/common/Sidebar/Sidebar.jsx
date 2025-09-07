@@ -90,14 +90,14 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-[400px] sm:w-[540px] p-0">
-        <SheetHeader className="p-6 pb-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 border-b">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg">
-              <HiDocumentText className="h-6 w-6 text-white" />
+      <SheetContent side="left" className="w-[350px] sm:w-[400px] md:w-[540px] p-0">
+        <SheetHeader className="p-4 sm:p-6 pb-3 sm:pb-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 border-b">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg">
+              <HiDocumentText className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
             </div>
             <div>
-              <SheetTitle className="text-xl font-bold text-gray-900 dark:text-white text-left">
+              <SheetTitle className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white text-left">
                 {t('sidebar.title')}
               </SheetTitle>
               <SheetDescription className="text-xs text-gray-500 dark:text-gray-400 text-left">
@@ -107,7 +107,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
         </SheetHeader>
 
-        <div className="p-6 space-y-4 bg-gray-50/30 dark:bg-gray-800/30 h-full">
+        <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 bg-gray-50/30 dark:bg-gray-800/30 h-full">
           {/* Search Bar */}
           <div className="relative">
             <HiSearch className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -121,31 +121,31 @@ const Sidebar = ({ isOpen, onClose }) => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-3 text-center border border-blue-200 dark:border-blue-800">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="bg-white dark:bg-gray-700 rounded-lg p-2 sm:p-3 text-center border border-blue-200 dark:border-blue-800">
               <div className="flex items-center justify-center mb-1">
-                <HiClock className="h-4 w-4 text-blue-500 mr-1" />
-                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{stats.inProgress}</span>
+                <HiClock className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 mr-1" />
+                <span className="text-sm sm:text-lg font-bold text-blue-600 dark:text-blue-400">{stats.inProgress}</span>
               </div>
               <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
                 {t('sidebar.stats.inProgress')}
               </div>
             </div>
             
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-3 text-center border border-green-200 dark:border-green-800">
+            <div className="bg-white dark:bg-gray-700 rounded-lg p-2 sm:p-3 text-center border border-green-200 dark:border-green-800">
               <div className="flex items-center justify-center mb-1">
-                <HiCheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                <span className="text-lg font-bold text-green-600 dark:text-green-400">{stats.completed}</span>
+                <HiCheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-1" />
+                <span className="text-sm sm:text-lg font-bold text-green-600 dark:text-green-400">{stats.completed}</span>
               </div>
               <div className="text-xs text-green-600 dark:text-green-400 font-medium">
                 {t('sidebar.stats.completed')}
               </div>
             </div>
             
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-3 text-center border border-gray-200 dark:border-gray-600">
+            <div className="bg-white dark:bg-gray-700 rounded-lg p-2 sm:p-3 text-center border border-gray-200 dark:border-gray-600">
               <div className="flex items-center justify-center mb-1">
-                <HiExclamationCircle className="h-4 w-4 text-gray-500 mr-1" />
-                <span className="text-lg font-bold text-gray-600 dark:text-gray-300">{stats.pending}</span>
+                <HiExclamationCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 mr-1" />
+                <span className="text-sm sm:text-lg font-bold text-gray-600 dark:text-gray-300">{stats.pending}</span>
               </div>
               <div className="text-xs text-gray-600 dark:text-gray-300 font-medium">
                 {t('sidebar.stats.pending')}
@@ -160,28 +160,28 @@ const Sidebar = ({ isOpen, onClose }) => {
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
               {t('sidebar.sections.recent')} ({filteredStories.length})
             </h3>
-            <Button size="sm" variant="outline" className="h-7 px-2">
+            <Button size="sm" variant="outline" className="h-6 sm:h-7 px-2 text-xs">
               <HiPlus className="h-3 w-3 mr-1" />
-              {t('common.create')}
+              <span className="hidden sm:inline">{t('common.create')}</span>
             </Button>
           </div>
 
           {/* Stories List with ScrollArea */}
-          <ScrollArea className="h-[calc(100vh-380px)] pr-4">
-            <div className="space-y-3">
+          <ScrollArea className="h-[calc(100vh-320px)] sm:h-[calc(100vh-380px)] pr-2 sm:pr-4">
+            <div className="space-y-2 sm:space-y-3">
               {filteredStories.map((story, index) => (
                 <div 
                   key={story.id || index}
-                  className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                  className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3 sm:p-4 hover:shadow-md transition-all duration-200 cursor-pointer group"
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 min-w-0 flex-1">
                       <StatusIcon status={story.status} />
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
                         {story.title}
                       </h4>
                     </div>
-                    <Badge variant={getStatusBadgeVariant(story.status)} className="text-xs">
+                    <Badge variant={getStatusBadgeVariant(story.status)} className="text-xs flex-shrink-0 ml-2">
                       {story.status}
                     </Badge>
                   </div>
@@ -190,16 +190,16 @@ const Sidebar = ({ isOpen, onClose }) => {
                     {story.description}
                   </p>
                   
-                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                    <span>
+                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 flex-wrap gap-1">
+                    <div className="flex items-center space-x-1">
                       {story.priority && (
-                        <Badge variant="outline" className="text-xs mr-2">
+                        <Badge variant="outline" className="text-xs">
                           {story.priority}
                         </Badge>
                       )}
-                      {story.estimate && `${story.estimate} pts`}
-                    </span>
-                    <span>
+                      {story.estimate && <span>{story.estimate} pts</span>}
+                    </div>
+                    <span className="text-xs">
                       {new Date(story.createdAt).toLocaleDateString()}
                     </span>
                   </div>

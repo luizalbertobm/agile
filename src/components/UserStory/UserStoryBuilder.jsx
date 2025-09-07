@@ -339,12 +339,12 @@ function UserStoryBuilder() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto p-6 space-y-6">
+        <div className="max-w-7xl mx-auto p-2 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
 
             {/* Main Grid Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-6">
                 {/* Left Column - Main Content */}
-                <div className="lg:col-span-7 space-y-6">
+                <div className="xl:col-span-7 space-y-4 sm:space-y-6">
                     {/* User Story Basic Information */}
                     <UserStoryBasicInfo
                         data={userStoryData}
@@ -395,7 +395,8 @@ function UserStoryBuilder() {
                 </div>
 
                 {/* Right Column - Sidebar */}
-                <div className="lg:col-span-5 space-y-6">
+                                {/* Right Column - Summary & Preview */}
+                <div className="xl:col-span-5 space-y-4 sm:space-y-6">
                     {/* Preview Card */}
                     <MarkdownPreviewer
                         markdown={generatePreview()}
@@ -482,11 +483,11 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                     </div>
                 </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 sm:space-y-6">
                 {/* Title */}
 
                 {/* User Story Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     <div>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.title')}
@@ -495,20 +496,44 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             placeholder={t('userStory.form.titlePlaceholder')}
                             value={data.title}
                             onChange={(e) => updateData({ title: e.target.value })}
+                            className="w-full"
                         />
                     </div>
-                    <div>
-                        <Label className="block text-sm font-medium mb-2">
-                            {t('userStory.form.as')}
-                        </Label>
-                        <Input
-                            placeholder={t('userStory.form.asPlaceholder')}
-                            value={data.as}
-                            onChange={(e) => updateData({ as: e.target.value })}
-                        />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <Label className="block text-sm font-medium mb-2">
+                                {t('userStory.form.as')}
+                            </Label>
+                            <Input
+                                placeholder={t('userStory.form.asPlaceholder')}
+                                value={data.as}
+                                onChange={(e) => updateData({ as: e.target.value })}
+                                className="w-full"
+                            />
+                        </div>
+                        <div>
+                            <Label className="block text-sm font-medium mb-2">
+                                {t('userStory.form.priority')}
+                            </Label>
+                            <Select
+                                value={data.priority}
+                                onValueChange={(value) => updateData({ priority: value })}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder={t('userStory.form.selectPriority')} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {priorities.map((priority) => (
+                                        <SelectItem key={priority.value} value={priority.value}>
+                                            {priority.label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     <div>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.iWant')}
@@ -517,6 +542,7 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             placeholder={t('userStory.form.iWantPlaceholder')}
                             value={data.iWant}
                             onChange={(e) => updateData({ iWant: e.target.value })}
+                            className="w-full"
                         />
                     </div>
                     <div>
@@ -527,34 +553,14 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             placeholder={t('userStory.form.soThatPlaceholder')}
                             value={data.soThat}
                             onChange={(e) => updateData({ soThat: e.target.value })}
+                            className="w-full"
                         />
                     </div>
                 </div>
 
-                {/* Priority and Business Value */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div className='md:col-span-1'>
-                        <Label className="block text-sm font-medium mb-2">
-                            {t('userStory.form.priority')}
-                        </Label>
-                        <Select
-                            value={data.priority}
-                            onValueChange={(value) => updateData({ priority: value })}
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder={t('userStory.form.selectPriority')} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {priorities.map((priority) => (
-                                    <SelectItem key={priority.value} value={priority.value}>
-                                        {priority.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    
-                    <div className='md:col-span-1'>
+                {/* Tags and Story Points */}
+                <div className="grid grid-cols-1 gap-4">
+                    <div>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.tags')}
                         </Label>
@@ -562,15 +568,15 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             placeholder={t('userStory.form.tagsPlaceholder')}
                             value={data.tags}
                             onChange={(e) => updateData({ tags: e.target.value })}
+                            className="w-full"
                         />
                     </div>
                     
-                </div>
-                <div className='md:col-span-4'>
+                    <div>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.storyPoints')}
                         </Label>
-                        <div className="space-y-4">
+                        <div className="space-y-3 sm:space-y-4">
                             <Slider
                                 value={data.storyPoints ? [storyPoints.findIndex(sp => sp.value === data.storyPoints)] : [0]}
                                 onValueChange={(value) => {
@@ -599,6 +605,7 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             </div>
                         </div>
                     </div>
+                </div>
             </CardContent>
         </Card>
     );
