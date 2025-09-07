@@ -84,9 +84,6 @@ export const LanguageSelector = () => {
             
             {isLanguageActive(language.code) && (
               <div className="flex items-center space-x-1">
-                <Badge variant="secondary" className="text-xs">
-                  Active
-                </Badge>
                 <HiCheck className="w-4 h-4 text-green-600" />
               </div>
             )}

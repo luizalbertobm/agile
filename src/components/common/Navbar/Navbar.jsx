@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
   Tooltip,
@@ -13,6 +13,7 @@ import { HiRocketLaunch } from 'react-icons/hi2';
 import { useTheme } from '../../../hooks/useTheme';
 import { useLanguage } from '../../../hooks/useLanguage';
 import { LanguageSelector } from '../LanguageSelector/LanguageSelector';
+import beeLogoUrl from '../../../assets/bee-transparent.png';
 
 const Navbar = ({ onSidebarToggle }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
@@ -25,7 +26,12 @@ const Navbar = ({ onSidebarToggle }) => {
           <div className="flex items-center justify-between">
             {/* Brand */}
             <div className="flex items-center space-x-3">
-              <Avatar className="w-10 h-10">
+              <Avatar className="w-14 h-14">
+                <AvatarImage 
+                  src={beeLogoUrl} 
+                  alt="Bee Agile Logo" 
+                  className="object-contain"
+                />
                 <AvatarFallback className="bg-gradient-to-br from-purple-600 to-blue-600 text-white font-bold">
                   <HiRocketLaunch className="h-5 w-5" />
                 </AvatarFallback>
@@ -34,14 +40,43 @@ const Navbar = ({ onSidebarToggle }) => {
                 <span className="text-xl font-bold text-foreground">
                   {t('navbar.brand')}
                 </span>
-                <Badge variant="secondary" className="text-xs w-fit">
+                {/* <Badge variant="secondary" className="text-xs w-fit"> */}
                   Beta
-                </Badge>
+                {/* </Badge> */}
               </div>
             </div>
 
             {/* Actions */}
             <div className="flex items-center space-x-1">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    onClick={toggleDarkMode}
+                    aria-label={t('navbar.toggleTheme')}
+                  >
+                    {isDarkMode ? (
+                      <>
+                        <HiSun className="h-4 w-4 text-yellow-500" />
+                        <span>Light</span>
+                      </>
+                    ) : (
+                      <>
+                        <HiMoon className="h-4 w-4 text-blue-700" />
+                        <span>Dark</span>
+                      </>
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('navbar.toggleTheme')} ({isDarkMode ? 'Light' : 'Dark'})</p>
+                </TooltipContent>
+              </Tooltip>
+
+
+              {/* Language Selector */}
+              <LanguageSelector />
+              <Separator orientation="vertical" className="h-6 mx-2" />
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -68,39 +103,6 @@ const Navbar = ({ onSidebarToggle }) => {
 
                 <span>{t('navbar.save')}</span>
               </Button>
-              
-
-              <Separator orientation="vertical" className="h-6 mx-2" />
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    onClick={toggleDarkMode}
-                    aria-label={t('navbar.toggleTheme')}
-                  >
-                    {isDarkMode ? (
-                      <>
-                        <HiSun className="h-4 w-4 text-yellow-500" />
-                        <span>Light</span>
-                      </>
-                    ) : (
-                      <>
-                        <HiMoon className="h-4 w-4 text-blue-700" />
-                        <span>Dark</span>
-                      </>
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{t('navbar.toggleTheme')} ({isDarkMode ? 'Light' : 'Dark'})</p>
-                </TooltipContent>
-              </Tooltip>
-
-              <Separator orientation="vertical" className="h-6 mx-2" />
-
-              {/* Language Selector */}
-              <LanguageSelector />
             </div>
           </div>
         </div>

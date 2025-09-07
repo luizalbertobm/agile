@@ -21,7 +21,7 @@ function MarkdownPreviewer({
 }) {
     const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
-    const [viewMode, setViewMode] = useState('code'); // 'preview' ou 'code'
+    const [viewMode, setViewMode] = useState('preview'); // 'preview' ou 'code'
 
     // Calculate progress percentage based on user story completeness
     const calculateProgress = () => {

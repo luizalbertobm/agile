@@ -8,8 +8,7 @@
     "toggleTheme": "Alternar tema",
     "selectLanguage": "Selecionar idioma",
     "stories": "Histórias",
-    "save": "Salvar",
-    "copy": "Copiar"
+    "save": "Salvar"
   },
   "sidebar": {
     "title": "Histórias de Usuário",
@@ -38,9 +37,6 @@
     "basicInfo": {
       "title": "Informações Básicas"
     },
-    "structure": {
-      "title": "Estrutura da User Story"
-    },
     "details": {
       "title": "Detalhes"
     },
@@ -48,7 +44,6 @@
       "title": "Título",
       "titlePlaceholder": "Digite o título da história de usuário",
       "templates": "Modelos",
-      "templatePlaceholder": "Selecione um modelo",
       "templateNone": "Nenhum modelo",
       "as": "Como (Persona)",
       "asPlaceholder": "Ex: usuário, administrador, cliente",
@@ -59,7 +54,6 @@
       "priority": "Prioridade",
       "selectPriority": "Selecione a prioridade",
       "storyPoints": "Story Points",
-      "selectStoryPoints": "Selecionar pontos",
       "tags": "Tags",
       "tagsPlaceholder": "Ex: frontend, backend, API (separadas por vírgula)"
     },
@@ -135,43 +129,36 @@
       "emptyContent": "Nenhum conteúdo para visualizar",
       "noMarkdownContent": "// Nenhum conteúdo markdown disponível"
     },
-    "templates": {
-      "title": "Templates",
-      "defaultTitle": "História de Usuário",
-      "login": "Login de Usuário",
-      "loginTemplate": "Como um usuário do sistema, eu quero fazer login com minhas credenciais para que eu possa acessar funcionalidades personalizadas e meus dados privados",
-      "ecommerce": "Compra Online",
-      "ecommerceTemplate": "Como um cliente da loja online, eu quero adicionar produtos ao meu carrinho de compras para que eu possa revisar e finalizar minha compra",
-      "dashboard": "Dashboard Gerencial",
-      "dashboardTemplate": "Como um gestor da empresa, eu quero visualizar métricas e relatórios em tempo real para que eu possa tomar decisões estratégicas baseadas em dados atualizados",
-      "profile": "Gestão de Perfil",
-      "profileTemplate": "Como um usuário registrado, eu quero editar as informações do meu perfil para que eu possa manter meus dados pessoais sempre atualizados"
-    },
-    "gherkin": {
-      "title": "Templates Gherkin",
-      "button": "Gherkin",
-      "login": "Login",
-      "loginGiven": "que estou na página de login",
-      "loginWhen": "eu inserir credenciais válidas",
-      "loginThen": "eu devo ser redirecionado para o dashboard",
-      "form": "Formulário",
-      "formGiven": "que estou preenchendo um formulário",
-      "formWhen": "eu submeter dados válidos",
-      "formThen": "eu devo ver uma mensagem de sucesso",
-      "navigation": "Navegação",
-      "navigationGiven": "que estou logado no sistema",
-      "navigationWhen": "eu clicar em um menu",
-      "navigationThen": "eu devo ser levado para a página correspondente"
-    },
     "summary": {
       "title": "Resumo",
       "scenarios": "Cenários",
       "definitionItems": "Itens de DoD",
       "progress": "Progresso"
     },
-    "builder": {
-      "title": "User Story Builder",
-      "subtitle": "Crie User Stories bem estruturadas de forma fácil e profissional"
+    "templates": {
+      "defaultTitle": "Modelo Padrão",
+      "login": "Login",
+      "loginTemplate": "Como usuário, eu quero fazer login para que eu possa acessar o sistema",
+      "ecommerce": "E-commerce",
+      "ecommerceTemplate": "Como cliente, eu quero adicionar produtos ao carrinho para que eu possa fazer uma compra",
+      "dashboard": "Dashboard",
+      "dashboardTemplate": "Como usuário, eu quero visualizar métricas no dashboard para que eu possa acompanhar o desempenho",
+      "profile": "Perfil",
+      "profileTemplate": "Como usuário, eu quero editar meu perfil para que eu possa manter minhas informações atualizadas"
+    },
+    "gherkin": {
+      "login": "Login no sistema",
+      "loginGiven": "Dado que o usuário está na página de login",
+      "loginWhen": "Quando o usuário insere credenciais válidas",
+      "loginThen": "Então o usuário deve ser redirecionado para o dashboard",
+      "form": "Preenchimento de formulário",
+      "formGiven": "Dado que o usuário está em um formulário",
+      "formWhen": "Quando o usuário preenche todos os campos obrigatórios",
+      "formThen": "Então o formulário deve ser submetido com sucesso",
+      "navigation": "Navegação no sistema",
+      "navigationGiven": "Dado que o usuário está logado no sistema",
+      "navigationWhen": "Quando o usuário clica em um item do menu",
+      "navigationThen": "Então o usuário deve ser direcionado para a página correspondente"
     }
   }
 }

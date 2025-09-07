@@ -6,7 +6,8 @@ import path from 'path';
 // Função para extrair chaves de tradução do código
 function extractTranslationKeys(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
-  const regex = /t\('([^']+)'\)/g;
+  // Updated regex to be more specific: looks for {t('key')} or t('key') with word boundaries
+  const regex = /(?:\{|[\s\(])t\('([^']+)'\)/g;
   const keys = [];
   let match;
   
@@ -43,7 +44,8 @@ const usedKeys = [
   ...extractTranslationKeys('src/components/UserStory/UserStoryBuilder.jsx'),
   ...extractTranslationKeys('src/components/common/Navbar/Navbar.jsx'),
   ...extractTranslationKeys('src/components/common/Sidebar/Sidebar.jsx'),
-  ...extractTranslationKeys('src/components/common/LanguageSelector/LanguageSelector.jsx')
+  ...extractTranslationKeys('src/components/common/LanguageSelector/LanguageSelector.jsx'),
+  ...extractTranslationKeys('src/components/ui/MarkdownPreviewer.jsx')
 ].filter((key, index, array) => array.indexOf(key) === index); // Remove duplicatas
 
 // Extrair chaves disponíveis nos arquivos de tradução

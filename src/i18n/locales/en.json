@@ -8,8 +8,7 @@
     "toggleTheme": "Toggle theme",
     "selectLanguage": "Select language",
     "stories": "Stories",
-    "save": "Save",
-    "copy": "Copy"
+    "save": "Save"
   },
   "sidebar": {
     "title": "User Stories",
@@ -38,9 +37,6 @@
     "basicInfo": {
       "title": "Basic Information"
     },
-    "structure": {
-      "title": "User Story Structure"
-    },
     "details": {
       "title": "Details"
     },
@@ -48,7 +44,6 @@
       "title": "Title",
       "titlePlaceholder": "Enter the user story title",
       "templates": "Templates",
-      "templatePlaceholder": "Select a template",
       "templateNone": "No template",
       "as": "As",
       "asPlaceholder": "Ex: user, administrator, customer",
@@ -59,7 +54,6 @@
       "priority": "Priority",
       "selectPriority": "Select priority",
       "storyPoints": "Story Points",
-      "selectStoryPoints": "Select points",
       "tags": "Tags",
       "tagsPlaceholder": "Ex: frontend, backend, API (comma separated)"
     },
@@ -135,43 +129,36 @@
       "emptyContent": "No content to preview",
       "noMarkdownContent": "// No markdown content available"
     },
-    "templates": {
-      "title": "Templates",
-      "defaultTitle": "User Story",
-      "login": "User Login",
-      "loginTemplate": "As a system user, I want to login with my credentials so that I can access personalized features and my private data",
-      "ecommerce": "Online Purchase",
-      "ecommerceTemplate": "As an online store customer, I want to add products to my shopping cart so that I can review and complete my purchase",
-      "dashboard": "Management Dashboard",
-      "dashboardTemplate": "As a company manager, I want to view real-time metrics and reports so that I can make strategic decisions based on updated data",
-      "profile": "Profile Management",
-      "profileTemplate": "As a registered user, I want to edit my profile information so that I can keep my personal data always up to date"
-    },
-    "gherkin": {
-      "title": "Gherkin Templates",
-      "button": "Gherkin",
-      "login": "Login",
-      "loginGiven": "that I am on the login page",
-      "loginWhen": "I enter valid credentials",
-      "loginThen": "I should be redirected to the dashboard",
-      "form": "Form",
-      "formGiven": "that I am filling out a form",
-      "formWhen": "I submit valid data",
-      "formThen": "I should see a success message",
-      "navigation": "Navigation",
-      "navigationGiven": "that I am logged into the system",
-      "navigationWhen": "I click on a menu",
-      "navigationThen": "I should be taken to the corresponding page"
-    },
     "summary": {
       "title": "Summary",
       "scenarios": "Scenarios",
       "definitionItems": "DoD Items",
       "progress": "Progress"
     },
-    "builder": {
-      "title": "User Story Builder",
-      "subtitle": "Create well-structured User Stories easily and professionally"
+    "templates": {
+      "defaultTitle": "Default Template",
+      "login": "Login",
+      "loginTemplate": "As a user, I want to login so that I can access the system",
+      "ecommerce": "E-commerce",
+      "ecommerceTemplate": "As a customer, I want to add products to cart so that I can make a purchase",
+      "dashboard": "Dashboard",
+      "dashboardTemplate": "As a user, I want to view metrics on dashboard so that I can track performance",
+      "profile": "Profile",
+      "profileTemplate": "As a user, I want to edit my profile so that I can keep my information updated"
+    },
+    "gherkin": {
+      "login": "System login",
+      "loginGiven": "Given that the user is on the login page",
+      "loginWhen": "When the user enters valid credentials",
+      "loginThen": "Then the user should be redirected to the dashboard",
+      "form": "Form completion",
+      "formGiven": "Given that the user is on a form",
+      "formWhen": "When the user fills all required fields",
+      "formThen": "Then the form should be submitted successfully",
+      "navigation": "System navigation",
+      "navigationGiven": "Given that the user is logged into the system",
+      "navigationWhen": "When the user clicks on a menu item",
+      "navigationThen": "Then the user should be directed to the corresponding page"
     }
   }
 }
