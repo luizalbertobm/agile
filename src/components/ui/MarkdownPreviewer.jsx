@@ -184,7 +184,7 @@ function MarkdownPreviewer({
             <CardContent>
                 {viewMode === 'preview' ? (
                     <div
-                        className="prose prose-sm max-w-none markdown-content"
+                        className="prose prose-sm max-w-none markdown-content text-sm"
                         dangerouslySetInnerHTML={{
                             __html: renderMarkdown(markdown)
                         }}
