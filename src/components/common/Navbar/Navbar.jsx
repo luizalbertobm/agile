@@ -20,7 +20,7 @@ const Navbar = ({ onSidebarToggle }) => {
 
   return (
     <TooltipProvider>
-      <nav className="bg-background border-b shadow-sm">
+      <nav className="bg-background/50 backdrop-blur-sm  border-b shadow-lg sticky top-0 z-50">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Brand */}
