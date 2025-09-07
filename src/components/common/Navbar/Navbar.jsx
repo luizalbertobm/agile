@@ -41,7 +41,8 @@ const Navbar = ({ onSidebarToggle }) => {
                   {t('navbar.brand')}
                 </span>
                 {/* <Badge variant="secondary" className="text-xs w-fit"> */}
-                  Beta
+                  {/* Bee-lieve in Better Agile */}
+                  Professional Stories Made Easy
                 {/* </Badge> */}
               </div>
             </div>
