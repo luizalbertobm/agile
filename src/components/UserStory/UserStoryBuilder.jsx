@@ -462,7 +462,7 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             className="text-xs flex items-center gap-1"
                         >
                             <FileText className="h-4 w-4" />
-                            {selectedTemplate === 'none' || !selectedTemplate ? t('userStory.form.template') : selectedTemplate}
+                            {selectedTemplate === 'none' || !selectedTemplate ? t('userStory.form.templates') : selectedTemplate}
                             <ChevronDown className={`h-3 w-3 transition-transform ${showTemplateDropdown ? 'rotate-180' : ''}`} />
                         </Button>
                         {showTemplateDropdown && (
@@ -653,8 +653,8 @@ function AcceptanceCriteriaSection({
                             onClick={() => setShowGherkinDropdown(!showGherkinDropdown)}
                             className="text-xs flex items-center gap-1"
                         >
-                            <Code className="h-4 w-4" />
-                            {selectedGherkinTemplate || t('userStory.gherkin.button')}
+                            <FileText className="h-4 w-4" />
+                            {selectedGherkinTemplate || t('userStory.form.templates')}
                             <ChevronDown className={`h-3 w-3 transition-transform ${showGherkinDropdown ? 'rotate-180' : ''}`} />
                         </Button>
                         {showGherkinDropdown && (

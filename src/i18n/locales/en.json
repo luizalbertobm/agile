@@ -47,7 +47,7 @@
     "form": {
       "title": "Title",
       "titlePlaceholder": "Enter the user story title",
-      "template": "Template",
+      "templates": "Templates",
       "templatePlaceholder": "Select a template",
       "templateNone": "No template",
       "as": "As",
