@@ -64,16 +64,13 @@ function UserStoryBuilder() {
 
     // Story Points data (Fibonacci sequence)
     const storyPoints = [
-        { value: '1', label: '1' },
-        { value: '2', label: '2' },
-        { value: '3', label: '3' },
-        { value: '5', label: '5' },
-        { value: '8', label: '8' },
-        { value: '13', label: '13' },
-        { value: '21', label: '21' },
-        { value: '34', label: '34' },
-        { value: '55', label: '55' },
-        { value: '89', label: '89' }
+        { value: '1', label: '1 SP' },
+        { value: '2', label: '2 SP' },
+        { value: '3', label: '3 SP' },
+        { value: '5', label: '5 SP' },
+        { value: '8', label: '8 SP' },
+        { value: '13', label: '13 SP' },
+        { value: '21', label: '21 SP' }
     ];
 
     // Quick templates
@@ -542,8 +539,8 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                 </div>
 
                 {/* Priority and Business Value */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className='md:col-span-1'>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.priority')}
                         </Label>
@@ -563,7 +560,7 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             </SelectContent>
                         </Select>
                     </div>
-                    <div>
+                    <div className='md:col-span-1'>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.storyPoints')}
                         </Label>
@@ -583,7 +580,7 @@ function UserStoryBasicInfo({ data, updateData, priorities, storyPoints, quickTe
                             </SelectContent>
                         </Select>
                     </div>
-                    <div>
+                    <div className='md:col-span-2'>
                         <Label className="block text-sm font-medium mb-2">
                             {t('userStory.form.tags')}
                         </Label>
