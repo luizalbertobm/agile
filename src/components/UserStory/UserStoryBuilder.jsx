@@ -316,15 +316,16 @@ function UserStoryBuilder() {
             markdown += `## ${t('userStory.acceptanceCriteria.title')}\n\n`;
             userStoryData.acceptanceCriteria.forEach((scenario, index) => {
                 markdown += `### ${t('userStory.acceptanceCriteria.scenario')} ${index + 1}\n\n`;
-                if (scenario.given) markdown += `**Given** ${scenario.given}  \n`;
-                if (scenario.when) markdown += `**When** ${scenario.when}  \n`;
-                if (scenario.then) markdown += `**Then** ${scenario.then}  \n`;
+                markdown += '```gherkin\n';
+                if (scenario.given) markdown += `Given ${scenario.given}\n`;
+                if (scenario.when) markdown += `When ${scenario.when}\n`;
+                if (scenario.then) markdown += `Then ${scenario.then}\n`;
                 if (scenario.and && scenario.and.length > 0) {
                     scenario.and.forEach(condition => {
-                        if (condition) markdown += `**And** ${condition}  \n`;
+                        if (condition) markdown += `And ${condition}\n`;
                     });
                 }
-                markdown += '\n';
+                markdown += '```\n\n';
             });
         }
 
