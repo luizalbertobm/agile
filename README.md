@@ -2,14 +2,14 @@
 
 [![React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.1.2-646CFF.svg)](https://vitejs.dev/)
-[![Flowbite React](https://img.shields.io/badge/Flowbite%20React-0.12.7-06B6D4.svg)](https://flowbite-react.com/)
+[![Shadcn/ui](https://img.shields.io/badge/Shadcn%2Fui-Latest-000000.svg)](https://ui.shadcn.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1.12-38B2AC.svg)](https://tailwindcss.com/)
 
-A modern, professional React application for creating, validating, and managing User Stories with an intuitive interface built using React, Tailwind CSS, and Flowbite components.
+A modern, professional React application for creating, validating, and managing User Stories with an intuitive interface built using React, Tailwind CSS, and Shadcn/ui components.
 
 ## ✨ Features
 
-- **🎨 Modern UI/UX**: Clean, responsive design with Flowbite React components
+- **🎨 Modern UI/UX**: Clean, responsive design with Shadcn/ui React components
 - **🌓 Dark/Light Mode**: Seamless theme switching with system preference detection
 - **🌍 Internationalization**: Multi-language support (Portuguese/English) with react-i18next
 - **📱 Responsive Design**: Mobile-first approach with Tailwind CSS
@@ -82,7 +82,7 @@ src/
 - **JavaScript (ES6+)** - Modern JavaScript features
 
 ### UI & Styling
-- **Flowbite React 0.12.7** - Professional component library
+- **Shadcn/ui** - Modern component library built on Radix UI
 - **Tailwind CSS 4.1.12** - Utility-first CSS framework
 - **React Icons 5.5.0** - Comprehensive icon library
 - **React Country Flag** - High-quality SVG flag icons for internationalization
@@ -136,16 +136,8 @@ VITE_APP_TITLE=Bee Agile
 VITE_APP_VERSION=1.0.0
 ```
 
-### Flowbite Configuration
-The Flowbite React plugin is configured in `.flowbite-react/config.json`:
-
-```json
-{
-  "dark": true,
-  "path": "src/components",
-  "version": 4
-}
-```
+### Shadcn/ui Configuration
+Shadcn/ui components are configured with custom styling and integrated with Tailwind CSS for consistent theming and accessibility.
 
 ## 📱 Browser Support
 
@@ -181,7 +173,7 @@ This project is private and not available for public use.
 ## 🙏 Acknowledgments
 
 - [React Team](https://reactjs.org/) for the amazing framework
-- [Flowbite](https://flowbite.com/) for the beautiful component library
+- [Shadcn/ui](https://ui.shadcn.com/) for the beautiful component library
 - [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
 - [Vite](https://vitejs.dev/) for the lightning-fast build tool
 
