@@ -23,23 +23,15 @@ import {
     ChevronDown,
     Info
 } from 'lucide-react';
+import { buildUserStoryMarkdown, createEmptyUserStoryData } from '@/utils/userStory';
 
-function UserStoryBuilder() {
+function UserStoryBuilder({ userStoryData: userStoryDataProp, setUserStoryData: setUserStoryDataProp }) {
     const { t } = useTranslation();
 
     // State for user story data
-    const [userStoryData, setUserStoryData] = React.useState({
-        title: '',
-        as: '',
-        iWant: '',
-        soThat: '',
-        priority: '',
-        storyPoints: '',
-        tags: '',
-        acceptanceCriteria: [],
-        definitionOfDone: [],
-        notes: ''
-    });
+    const [internalUserStoryData, setInternalUserStoryData] = React.useState(createEmptyUserStoryData);
+    const userStoryData = userStoryDataProp ?? internalUserStoryData;
+    const setUserStoryData = setUserStoryDataProp ?? setInternalUserStoryData;
 
     // State for new scenario
     const [newScenario, setNewScenario] = React.useState({
@@ -272,71 +264,16 @@ function UserStoryBuilder() {
         });
     };
 
-    const generatePreview = () => {
-        let markdown = '';
+    const priorityLabelMap = React.useMemo(
+        () => Object.fromEntries(priorities.map(priority => [priority.value, priority.label])),
+        [priorities]
+    );
 
-        if (userStoryData.title) {
-            markdown += `## ${userStoryData.title}\n\n`;
-        }
-
-        if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
-            if (userStoryData.as || userStoryData.iWant || userStoryData.soThat) {
-                markdown += `**${t('userStory.form.as')}** ${userStoryData.as || '_[pendente]_'}  \n`;
-                markdown += `**${t('userStory.form.iWant')}** ${userStoryData.iWant || '_[pendente]_'}  \n`;
-                markdown += `**${t('userStory.form.soThat')}** ${userStoryData.soThat || '_[pendente]_'}\n\n`;
-            }
-        }
-
-        if (userStoryData.priority || userStoryData.storyPoints) {
-            markdown += `### ${t('userStory.details.title')}\n\n`;
-            if (userStoryData.priority) {
-                const priorityLabel = priorities.find(p => p.value === userStoryData.priority)?.label || userStoryData.priority;
-                markdown += `- **${t('userStory.form.priority')}:** ${priorityLabel}\n`;
-            }
-            if (userStoryData.storyPoints) {
-                markdown += `- **${t('userStory.form.storyPoints')}:** ${userStoryData.storyPoints}\n`;
-            }
-            if (userStoryData.tags && userStoryData.tags.trim()) {
-                const tagsList = userStoryData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
-                if (tagsList.length > 0) {
-                    markdown += `- **${t('userStory.form.tags')}:** ${tagsList.map(tag => `\`${tag}\``).join(' ')}\n`;
-                }
-            }
-            markdown += '\n';
-        }
-
-        if (userStoryData.acceptanceCriteria.length > 0) {
-            markdown += `### ${t('userStory.acceptanceCriteria.title')}\n\n`;
-            userStoryData.acceptanceCriteria.forEach((scenario, index) => {
-                markdown += '```gherkin\n';
-                markdown += `Scenario: ${t('userStory.acceptanceCriteria.scenario')} ${index + 1}\n`;
-                if (scenario.given) markdown += `Given ${scenario.given}\n`;
-                if (scenario.when) markdown += `When ${scenario.when}\n`;
-                if (scenario.then) markdown += `Then ${scenario.then}\n`;
-                if (scenario.and && scenario.and.length > 0) {
-                    scenario.and.forEach(condition => {
-                        if (condition) markdown += `And ${condition}\n`;
-                    });
-                }
-                markdown += '```\n\n';
-            });
-        }
-
-        if (userStoryData.definitionOfDone.length > 0) {
-            markdown += `### ${t('userStory.definitionOfDone.title')}\n\n`;
-            userStoryData.definitionOfDone.forEach((item) => {
-                const checkbox = item.completed ? '- [x]' : '- [ ]';
-                markdown += `${checkbox} ${item.text}\n`;
-            });
-            markdown += '\n';
-        }
-
-        if (userStoryData.notes) {
-            markdown += `### ${t('userStory.notes.title')}\n\n${userStoryData.notes}\n\n`;
-        }
-
-        return markdown || `*${t('userStory.preview.empty')}*`;
-    };
+    const generatePreview = () => buildUserStoryMarkdown({
+        data: userStoryData,
+        t,
+        priorityLabelMap
+    });
 
     return (
         <div className="max-w-7xl mx-auto p-2 sm:p-4 md:p-6 space-y-4 sm:space-y-6">

@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { MarkdownPreviewer } from '@/components/ui/MarkdownPreviewer';
 import {
   Sheet,
   SheetContent,
@@ -17,75 +19,69 @@ import {
   HiClock, 
   HiCheckCircle, 
   HiExclamationCircle,
-  HiPlus
+  HiPlus,
+  HiX
 } from 'react-icons/hi';
 import { useLanguage } from '../../../hooks/useLanguage';
+import { USER_STORY_STATUS_OPTIONS } from '../../../constants';
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
-
-  // Mock data for demo purposes - in a real app this would come from local storage or API
-  const mockStories = [
-    {
-      id: 1,
-      title: "Login do usuário",
-      description: "Como usuário, eu quero fazer login no sistema para acessar funcionalidades personalizadas",
-      status: t('userStory.status.completed'),
-      priority: "Alta",
-      estimate: "5",
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 2,
-      title: "Dashboard principal",
-      description: "Como administrador, eu quero visualizar um dashboard com métricas importantes",
-      status: t('userStory.status.inProgress'),
-      priority: "Média",
-      estimate: "8",
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 3,
-      title: "Relatórios personalizados",
-      description: "Como gerente, eu quero gerar relatórios personalizados para análise de dados",
-      status: t('userStory.status.pending'),
-      priority: "Baixa",
-      estimate: "13",
-      createdAt: new Date().toISOString()
-    }
-  ];
+  const [selectedStory, setSelectedStory] = useState(null);
 
   // Filter stories based on search term
-  const filteredStories = mockStories.filter(story => 
+  const filteredStories = stories.filter(story => 
     story.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    story.description.toLowerCase().includes(searchTerm.toLowerCase())
+    story.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Stats calculation
-  const stats = {
-    inProgress: mockStories.filter(s => s.status === t('userStory.status.inProgress')).length,
-    completed: mockStories.filter(s => s.status === t('userStory.status.completed')).length,
-    pending: mockStories.filter(s => s.status === t('userStory.status.pending')).length,
-    total: mockStories.length
-  };
+  const stats = useMemo(() => ({
+    inProgress: stories.filter(s => s.status === 'in progress').length,
+    completed: stories.filter(s => s.status === 'done').length,
+    pending: stories.filter(s => s.status === 'to do').length,
+    total: stories.length
+  }), [stories]);
 
   const StatusIcon = ({ status }) => {
     const iconClass = "h-4 w-4";
     
-    if (status === t('userStory.status.completed')) {
+    if (status === 'done') {
       return <HiCheckCircle className={`${iconClass} text-green-500`} />;
-    } else if (status === t('userStory.status.inProgress')) {
-      return <HiClock className={`${iconClass} text-blue-500`} />;
-    } else {
-      return <HiExclamationCircle className={`${iconClass} text-gray-400`} />;
     }
+    if (status === 'in progress') {
+      return <HiClock className={`${iconClass} text-blue-500`} />;
+    }
+    if (status === 'blocked') {
+      return <HiExclamationCircle className={`${iconClass} text-red-500`} />;
+    }
+    if (status === 'to test') {
+      return <HiCheckCircle className={`${iconClass} text-purple-500`} />;
+    }
+    return <HiDocumentText className={`${iconClass} text-gray-500`} />;
   };
 
   const getStatusBadgeVariant = (status) => {
-    if (status === t('userStory.status.completed')) return "default";
-    if (status === t('userStory.status.inProgress')) return "secondary";
+    if (status === 'done') return "default";
+    if (status === 'in progress') return "secondary";
+    if (status === 'blocked') return "destructive";
     return "outline";
+  };
+
+  const handleStoryClick = (story) => {
+    setSelectedStory(story);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedStory(null);
+  };
+
+  const handleStatusChange = (status) => {
+    if (!selectedStory) return;
+    const updatedStory = { ...selectedStory, status };
+    setSelectedStory(updatedStory);
+    onUpdateStoryStatus?.(selectedStory.id, status);
   };
 
   return (
@@ -173,6 +169,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div 
                   key={story.id || index}
                   className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3 sm:p-4 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                  onClick={() => handleStoryClick(story)}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center space-x-2 min-w-0 flex-1">
@@ -186,9 +183,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                     </Badge>
                   </div>
                   
-                  <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
-                    {story.description}
-                  </p>
+                  {story.description && (
+                    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
+                      {story.description}
+                    </p>
+                  )}
                   
                   <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 flex-wrap gap-1">
                     <div className="flex items-center space-x-1">
@@ -214,7 +213,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </div>
               )}
 
-              {mockStories.length === 0 && (
+              {stories.length === 0 && (
                 <div className="text-center py-12">
                   <div className="bg-gray-100 dark:bg-gray-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <HiDocumentText className="h-8 w-8 text-gray-400" />
@@ -235,6 +234,64 @@ const Sidebar = ({ isOpen, onClose }) => {
           </ScrollArea>
         </div>
       </SheetContent>
+
+      {selectedStory && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={handleCloseModal}
+        >
+          <div
+            className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {selectedStory.title}
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {new Date(selectedStory.createdAt).toLocaleString()}
+                </p>
+              </div>
+              <Button variant="ghost" size="sm" onClick={handleCloseModal} aria-label="Close">
+                <HiX className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="px-6 py-4 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Status
+                  </span>
+                  <Badge variant={getStatusBadgeVariant(selectedStory.status)}>
+                    {selectedStory.status}
+                  </Badge>
+                </div>
+                <div className="min-w-[220px]">
+                  <Select value={selectedStory.status} onValueChange={handleStatusChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {USER_STORY_STATUS_OPTIONS.map(option => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <MarkdownPreviewer
+                markdown={selectedStory.markdown}
+                title={t('userStory.preview.title')}
+                showCopyButton
+                showToggleButton
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </Sheet>
   );
 };

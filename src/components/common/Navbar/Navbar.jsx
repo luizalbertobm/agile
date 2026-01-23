@@ -15,7 +15,7 @@ import { useLanguage } from '../../../hooks/useLanguage';
 import { LanguageSelector } from '../LanguageSelector/LanguageSelector';
 import beeLogoUrl from '../../../assets/bee-transparent.png';
 
-const Navbar = ({ onSidebarToggle }) => {
+const Navbar = ({ onSidebarToggle, onSave }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { t } = useLanguage();
 
@@ -110,7 +110,7 @@ const Navbar = ({ onSidebarToggle }) => {
                 variant="default"
                 size="sm"
                 className="text-white px-2 sm:px-3"
-                onClick={onSidebarToggle}
+                onClick={onSave}
                 aria-label={t('navbar.save')}
               >
                 <HiSave className="h-4 w-4 sm:h-5 sm:w-5" />
