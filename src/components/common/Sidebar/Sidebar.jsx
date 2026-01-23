@@ -25,7 +25,7 @@ import {
 import { useLanguage } from '../../../hooks/useLanguage';
 import { USER_STORY_STATUS_OPTIONS } from '../../../constants';
 
-const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
+const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteStory }) => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStory, setSelectedStory] = useState(null);
@@ -82,6 +82,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
 
   const handleStoryClick = (story) => {
     setSelectedStory(story);
+    onClose?.();
   };
 
   const handleCloseModal = () => {
@@ -93,6 +94,18 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
     const updatedStory = { ...selectedStory, status };
     setSelectedStory(updatedStory);
     onUpdateStoryStatus?.(selectedStory.id, status);
+  };
+
+  const handleDeleteStory = () => {
+    if (!selectedStory) return;
+
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this user story? This action cannot be undone.'
+    );
+
+    if (!confirmed) return;
+    onDeleteStory?.(selectedStory.id);
+    setSelectedStory(null);
   };
 
   return (
@@ -190,7 +203,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                       </h4>
                     </div>
                     <Badge variant={getStatusBadgeVariant(story.status)} className="text-xs flex-shrink-0 ml-2">
-                      {story.status}
+                      {getStatusLabel(story.status)}
                     </Badge>
                   </div>
                   
@@ -299,6 +312,11 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                 showCopyButton
                 showToggleButton
               />
+              <div className="flex items-center justify-end pt-2">
+                <Button variant="destructive" onClick={handleDeleteStory}>
+                  {t('common.delete')}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
