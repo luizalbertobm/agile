@@ -75,6 +75,14 @@ function App() {
     });
   };
 
+  const handleDeleteStory = (storyId) => {
+    setSavedStories(prevStories => {
+      const updatedStories = prevStories.filter(story => story.id !== storyId);
+      storage.set(STORAGE_KEYS.USER_STORIES, updatedStories);
+      return updatedStories;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900" key={forceUpdate}>
       <Navbar onSidebarToggle={toggleSidebar} onSave={handleSaveStory} />
@@ -84,6 +92,7 @@ function App() {
         onClose={closeSidebar}
         stories={savedStories}
         onUpdateStoryStatus={handleUpdateStoryStatus}
+        onDeleteStory={handleDeleteStory}
       />
 
       {/* Main Content */}
