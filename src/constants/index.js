@@ -12,6 +12,14 @@ export const USER_STORY_PRIORITY = {
   HIGH: 'Alta'
 };
 
+export const USER_STORY_STATUS_OPTIONS = [
+  { value: 'to do', label: 'to do' },
+  { value: 'in progress', label: 'in progress' },
+  { value: 'to test', label: 'to test' },
+  { value: 'blocked', label: 'blocked' },
+  { value: 'done', label: 'done' }
+];
+
 // Storage Keys
 export const STORAGE_KEYS = {
   THEME: 'bee-agile-theme',
