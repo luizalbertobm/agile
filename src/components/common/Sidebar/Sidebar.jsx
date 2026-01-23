@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -34,10 +34,10 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
   const statusOptions = useMemo(() => getUserStoryStatusOptions(t), [t]);
 
   // Function to get translated status label
-  const getStatusLabel = (statusValue) => {
+  const getStatusLabel = useCallback((statusValue) => {
     const option = statusOptions.find(opt => opt.value === statusValue);
     return option ? option.label : statusValue;
-  };
+  }, [statusOptions]);
 
   // Filter stories based on search term
   const filteredStories = stories.filter(story => 

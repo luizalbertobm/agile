@@ -30,7 +30,9 @@ export const getUserStoryStatusOptions = (t) => [
   { value: STATUS_VALUES.DONE, label: t('userStory.status.done') }
 ];
 
-// Deprecated - for backwards compatibility
+// DEPRECATED - This constant uses hard-coded English labels and does not support internationalization.
+// Use getUserStoryStatusOptions(t) function instead to get properly translated status options.
+// This export will be removed in a future version.
 export const USER_STORY_STATUS_OPTIONS = [
   { value: 'to do', label: 'to do' },
   { value: 'in progress', label: 'in progress' },
