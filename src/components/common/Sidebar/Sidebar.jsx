@@ -98,6 +98,12 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
 
   const handleDeleteStory = () => {
     if (!selectedStory) return;
+
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this user story? This action cannot be undone.'
+    );
+
+    if (!confirmed) return;
     onDeleteStory?.(selectedStory.id);
     setSelectedStory(null);
   };
