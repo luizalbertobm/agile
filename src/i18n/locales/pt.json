@@ -1,6 +1,9 @@
 {
   "common": {
-    "create": "Criar"
+    "create": "Criar",
+    "select": "Selecionar",
+    "add": "Adicionar",
+    "delete": "Excluir"
   },
   "navbar": {
     "brand": "Bee Agile",
@@ -116,7 +119,7 @@
         "title": "Progresso da User Story",
         "status": {
           "starting": "Iniciando",
-          "inProgress": "Em progresso", 
+          "inProgress": "Em progresso",
           "almostReady": "Quase pronto"
         }
       },
@@ -144,7 +147,9 @@
       "dashboard": "Dashboard",
       "dashboardTemplate": "Como usuário, eu quero visualizar métricas no dashboard para que eu possa acompanhar o desempenho",
       "profile": "Perfil",
-      "profileTemplate": "Como usuário, eu quero editar meu perfil para que eu possa manter minhas informações atualizadas"
+      "profileTemplate": "Como usuário, eu quero editar meu perfil para que eu possa manter minhas informações atualizadas",
+      "defaultAs": "usuário",
+      "defaultSoThat": "alcançar meus objetivos"
     },
     "gherkin": {
       "login": "Login no sistema",

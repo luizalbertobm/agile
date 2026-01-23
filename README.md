@@ -1,182 +1,75 @@
-# 🐝 Bee Agile
+# 🐝 Bee Agile Mobile
 
-[![React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-7.1.2-646CFF.svg)](https://vitejs.dev/)
-[![Shadcn/ui](https://img.shields.io/badge/Shadcn%2Fui-Latest-000000.svg)](https://ui.shadcn.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1.12-38B2AC.svg)](https://tailwindcss.com/)
+[![React Native](https://img.shields.io/badge/React%20Native-0.74.5-61DAFB.svg)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-51.0.14-000020.svg)](https://expo.dev/)
+[![i18next](https://img.shields.io/badge/i18next-25.4.2-26A69A.svg)](https://www.i18next.com/)
 
-A modern, professional React application for creating, validating, and managing User Stories with an intuitive interface built using React, Tailwind CSS, and Shadcn/ui components.
+Bee Agile is now a React Native mobile experience for building, previewing, and tracking user stories on the go. The app keeps the core workflow intact while adapting the interface for touch-first mobile usage.
 
 ## ✨ Features
 
-- **🎨 Modern UI/UX**: Clean, responsive design with Shadcn/ui React components
-- **🌓 Dark/Light Mode**: Seamless theme switching with system preference detection
-- **🌍 Internationalization**: Multi-language support (Portuguese/English) with react-i18next
-- **📱 Responsive Design**: Mobile-first approach with Tailwind CSS
-- **📋 User Story Management**: Create, organize, and track user stories efficiently
-- **⚡ Performance Optimized**: React 19 with modern hooks and best practices
-- **🔧 Professional Architecture**: Modular component structure with custom hooks
-- **♿ Accessibility**: ARIA compliant with proper semantic HTML
-- **💾 Local Storage**: Persistent user preferences and data
+- **📱 Mobile-first User Story Builder**: Capture titles, personas, goals, and tags from a handheld-friendly interface.
+- **✅ Acceptance Criteria & DoD**: Add Gherkin scenarios and Definition of Done items, with completion toggles.
+- **📝 Markdown Preview**: Review a generated markdown summary right inside the app.
+- **🌍 Internationalization**: Portuguese and English translations via react-i18next.
+- **🧭 Quick Templates**: Apply common story templates and Gherkin starters with a tap.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 20.19+ or 22.12+ (recommended)
-- npm or yarn package manager
+- Node.js 20.19+ or 22.12+
+- npm or yarn
+- Expo Go (for running on device) or Android/iOS simulator
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/luizalbertobm/agile.git
-   cd agile
-   ```
-
-2. **Install dependencies**
+1. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Start development server**
+2. **Start the Expo development server**
    ```bash
-   npm run dev
+   npm run start
    ```
 
-4. **Open your browser**
-   Navigate to `http://localhost:5173`
+3. **Run on device or simulator**
+   - Scan the QR code with Expo Go, or
+   - Press `a` for Android / `i` for iOS in the Expo CLI.
 
 ## 📜 Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build production-ready application |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint for code quality checks |
+| `npm run start` | Start the Expo development server |
+| `npm run android` | Launch the Android app |
+| `npm run ios` | Launch the iOS app |
+| `npm run web` | Launch the Expo web preview |
+| `npm run lint` | Run ESLint checks |
 
 ## 🏗️ Project Structure
 
 ```
 src/
-├── components/           # React components
-│   ├── common/          # Shared components
-│   │   ├── Navbar/      # Navigation component
-│   │   └── Sidebar/     # Sidebar component
-│   └── UserStory/       # User story related components
-├── contexts/            # React Context providers
-├── hooks/               # Custom React hooks
-├── utils/               # Utility functions
-├── constants/           # Application constants
-├── assets/             # Static assets
-├── App.jsx             # Main application component
-└── main.jsx            # Application entry point
+├── App.jsx             # React Native screen
+├── hooks/              # Shared hooks (language)
+├── i18n/               # Translation setup and locale files
 ```
 
 ## 🛠️ Tech Stack
 
-### Core Technologies
-- **React 19.1.1** - Modern React with latest features
-- **Vite 7.1.2** - Fast build tool and development server
-- **JavaScript (ES6+)** - Modern JavaScript features
-
-### UI & Styling
-- **Shadcn/ui** - Modern component library built on Radix UI
-- **Tailwind CSS 4.1.12** - Utility-first CSS framework
-- **React Icons 5.5.0** - Comprehensive icon library
-- **React Country Flag** - High-quality SVG flag icons for internationalization
-
-### Internationalization
-- **React i18next 15.7.3** - Internationalization framework
-- **i18next 25.4.2** - Core internationalization library
-- **i18next Browser Language Detector 8.2.0** - Automatic language detection
-
-### Development Tools
-- **ESLint 9.33.0** - Code linting and quality
-- **Autoprefixer** - CSS vendor prefixing
-- **React Refresh** - Fast refresh for development
-
-## 🎯 Key Features Implementation
-
-### Theme Management
-- Custom `useTheme` hook for theme state management
-- Local storage persistence for user preferences
-- System preference detection on first visit
-- Smooth transitions between light and dark modes
-
-### Component Architecture
-- **Modular Design**: Each component has single responsibility
-- **Custom Hooks**: Reusable logic extracted into hooks
-- **Context API**: Global state management for user stories
-- **Performance**: React.memo for optimized re-renders
-
-### Internationalization System
-- **Language Detection**: Automatic browser language detection with localStorage fallback
-- **Professional Flags**: High-quality SVG flags using react-country-flag
-- **Elegant UI**: Dropdown selector with gradients, animations, and visual indicators
-- **Comprehensive Coverage**: Full interface translation (navbar, sidebar, forms, messages)
-- **Persistence**: User language preference saved locally
-- **Supported Languages**: Portuguese (Brazil) and English (United States)
-
-### Professional Practices
-- **Accessibility**: ARIA labels and semantic HTML
-- **Error Handling**: Graceful error boundaries
-- **Code Quality**: ESLint with React-specific rules
-- **Type Safety**: PropTypes for component validation
-
-## 🔧 Configuration
-
-### Environment Setup
-The application uses Vite's built-in environment variable handling. Create a `.env.local` file for local development:
-
-```env
-# Development settings
-VITE_APP_TITLE=Bee Agile
-VITE_APP_VERSION=1.0.0
-```
-
-### Shadcn/ui Configuration
-Shadcn/ui components are configured with custom styling and integrated with Tailwind CSS for consistent theming and accessibility.
-
-## 📱 Browser Support
-
-- Chrome (latest)
-- Firefox (latest)  
-- Safari (latest)
-- Edge (latest)
+- **React Native** for the mobile UI
+- **Expo** for development tooling and build pipeline
+- **React i18next** for localization
+- **@react-native-picker/picker** for mobile select inputs
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-- Follow the existing code style and conventions
-- Add proper documentation for new features
-- Ensure all ESLint rules pass
-- Test your changes across different screen sizes
-- Maintain accessibility standards
+1. Create a branch: `git checkout -b feature/mobile-update`
+2. Commit changes: `git commit -m "Your message"`
+3. Push and open a PR
 
 ## 📝 License
 
 This project is private and not available for public use.
-
-## 👤 Author
-
-**Luiz Alberto**
-- GitHub: [@luizalbertobm](https://github.com/luizalbertobm)
-
-## 🙏 Acknowledgments
-
-- [React Team](https://reactjs.org/) for the amazing framework
-- [Shadcn/ui](https://ui.shadcn.com/) for the beautiful component library
-- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
-- [Vite](https://vitejs.dev/) for the lightning-fast build tool
-
----
-
-Built with ❤️ using modern web technologies

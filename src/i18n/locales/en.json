@@ -1,6 +1,9 @@
 {
   "common": {
-    "create": "Create"
+    "create": "Create",
+    "select": "Select",
+    "add": "Add",
+    "delete": "Delete"
   },
   "navbar": {
     "brand": "Bee Agile",
@@ -144,7 +147,9 @@
       "dashboard": "Dashboard",
       "dashboardTemplate": "As a user, I want to view metrics on dashboard so that I can track performance",
       "profile": "Profile",
-      "profileTemplate": "As a user, I want to edit my profile so that I can keep my information updated"
+      "profileTemplate": "As a user, I want to edit my profile so that I can keep my information updated",
+      "defaultAs": "user",
+      "defaultSoThat": "achieve my goals"
     },
     "gherkin": {
       "login": "System login",
