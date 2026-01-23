@@ -69,6 +69,17 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
     return "outline";
   };
 
+  const getStatusLabel = (status) => {
+    const statusMap = {
+      'to do': 'userStory.status.toDo',
+      'in progress': 'userStory.status.inProgress',
+      'to test': 'userStory.status.toTest',
+      'blocked': 'userStory.status.blocked',
+      'done': 'userStory.status.done'
+    };
+    return t(statusMap[status] || status);
+  };
+
   const handleStoryClick = (story) => {
     setSelectedStory(story);
   };
@@ -261,10 +272,10 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Status
+                    {t('sidebar.status')}
                   </span>
                   <Badge variant={getStatusBadgeVariant(selectedStory.status)}>
-                    {selectedStory.status}
+                    {getStatusLabel(selectedStory.status)}
                   </Badge>
                 </div>
                 <div className="min-w-[220px]">
@@ -275,7 +286,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                     <SelectContent>
                       {USER_STORY_STATUS_OPTIONS.map(option => (
                         <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                          {getStatusLabel(option.value)}
                         </SelectItem>
                       ))}
                     </SelectContent>
