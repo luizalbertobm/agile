@@ -1,6 +1,8 @@
 {
   "common": {
-    "create": "Create"
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "navbar": {
     "brand": "Bee Agile",

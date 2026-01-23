@@ -53,6 +53,7 @@ function App() {
       status: 'to do',
       priority: userStoryData.priority || null,
       estimate: userStoryData.storyPoints || null,
+      data: userStoryData,
       createdAt: new Date().toISOString(),
       markdown
     };
@@ -75,6 +76,30 @@ function App() {
     });
   };
 
+  const getStoryFormData = (story) => ({
+    ...createEmptyUserStoryData(),
+    ...(story?.data ?? {}),
+    title: story?.data?.title ?? story?.title ?? '',
+    priority: story?.data?.priority ?? story?.priority ?? '',
+    storyPoints: story?.data?.storyPoints ?? story?.estimate ?? ''
+  });
+
+  const handleEditStory = (story) => {
+    setUserStoryData(getStoryFormData(story));
+  };
+
+  const handleCreateStory = () => {
+    setUserStoryData(createEmptyUserStoryData());
+  };
+
+  const handleDeleteStory = (storyId) => {
+    setSavedStories(prevStories => {
+      const updatedStories = prevStories.filter(story => story.id !== storyId);
+      storage.set(STORAGE_KEYS.USER_STORIES, updatedStories);
+      return updatedStories;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900" key={forceUpdate}>
       <Navbar onSidebarToggle={toggleSidebar} onSave={handleSaveStory} />
@@ -83,7 +108,10 @@ function App() {
         isOpen={isSidebarOpen} 
         onClose={closeSidebar}
         stories={savedStories}
+        onCreateStory={handleCreateStory}
+        onEditStory={handleEditStory}
         onUpdateStoryStatus={handleUpdateStoryStatus}
+        onDeleteStory={handleDeleteStory}
       />
 
       {/* Main Content */}

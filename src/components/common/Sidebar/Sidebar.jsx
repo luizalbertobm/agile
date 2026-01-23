@@ -25,7 +25,15 @@ import {
 import { useLanguage } from '../../../hooks/useLanguage';
 import { USER_STORY_STATUS_OPTIONS } from '../../../constants';
 
-const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
+const Sidebar = ({
+  isOpen,
+  onClose,
+  stories = [],
+  onUpdateStoryStatus,
+  onDeleteStory,
+  onEditStory,
+  onCreateStory
+}) => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStory, setSelectedStory] = useState(null);
@@ -82,10 +90,16 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
 
   const handleStoryClick = (story) => {
     setSelectedStory(story);
+    onClose?.();
   };
 
   const handleCloseModal = () => {
     setSelectedStory(null);
+  };
+
+  const handleCreateStory = () => {
+    onCreateStory?.();
+    onClose?.();
   };
 
   const handleStatusChange = (status) => {
@@ -93,6 +107,18 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
     const updatedStory = { ...selectedStory, status };
     setSelectedStory(updatedStory);
     onUpdateStoryStatus?.(selectedStory.id, status);
+  };
+
+  const handleEditStory = () => {
+    if (!selectedStory) return;
+    onEditStory?.(selectedStory);
+    setSelectedStory(null);
+  };
+
+  const handleDeleteStory = () => {
+    if (!selectedStory) return;
+    onDeleteStory?.(selectedStory.id);
+    setSelectedStory(null);
   };
 
   return (
@@ -167,7 +193,12 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
               {t('sidebar.sections.recent')} ({filteredStories.length})
             </h3>
-            <Button size="sm" variant="outline" className="h-6 sm:h-7 px-2 text-xs">
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-6 sm:h-7 px-2 text-xs"
+              onClick={handleCreateStory}
+            >
               <HiPlus className="h-3 w-3 mr-1" />
               <span className="hidden sm:inline">{t('common.create')}</span>
             </Button>
@@ -190,7 +221,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                       </h4>
                     </div>
                     <Badge variant={getStatusBadgeVariant(story.status)} className="text-xs flex-shrink-0 ml-2">
-                      {story.status}
+                      {getStatusLabel(story.status)}
                     </Badge>
                   </div>
                   
@@ -235,7 +266,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                   <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
                     {t('sidebar.empty.description')}
                   </p>
-                  <Button className="px-4 py-2">
+                  <Button className="px-4 py-2" onClick={handleCreateStory}>
                     <HiPlus className="h-4 w-4 mr-2" />
                     {t('sidebar.empty.action')}
                   </Button>
@@ -299,6 +330,14 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                 showCopyButton
                 showToggleButton
               />
+              <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
+                <Button variant="outline" onClick={handleEditStory}>
+                  {t('common.edit')}
+                </Button>
+                <Button variant="destructive" onClick={handleDeleteStory}>
+                  {t('common.delete')}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
