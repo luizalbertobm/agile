@@ -32,7 +32,14 @@
     "status": {
       "pending": "Pending",
       "inProgress": "In Progress",
-      "completed": "Completed"
+      "completed": "Completed",
+      "toDo": "To Do",
+      "toTest": "To Test",
+      "blocked": "Blocked",
+      "done": "Done"
+    },
+    "placeholders": {
+      "pending": "_[pending]_"
     },
     "basicInfo": {
       "title": "Basic Information"

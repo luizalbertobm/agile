@@ -4,7 +4,7 @@ import { useLanguage } from './hooks/useLanguage';
 import Navbar from './components/common/Navbar/Navbar';
 import Sidebar from './components/common/Sidebar/Sidebar';
 import UserStoryBuilder from './components/UserStory/UserStoryBuilder';
-import { STORAGE_KEYS } from './constants';
+import { STORAGE_KEYS, STATUS_VALUES } from './constants';
 import { storage } from './utils/storage';
 import { buildStorySummary, buildUserStoryMarkdown, createEmptyUserStoryData } from './utils/userStory';
 import './App.css';
@@ -50,7 +50,7 @@ function App() {
       id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       title: userStoryData.title?.trim() || 'Untitled story',
       description: buildStorySummary({ data: userStoryData, t }),
-      status: 'to do',
+      status: STATUS_VALUES.TO_DO,
       priority: userStoryData.priority || null,
       estimate: userStoryData.storyPoints || null,
       createdAt: new Date().toISOString(),

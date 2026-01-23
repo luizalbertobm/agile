@@ -23,12 +23,21 @@ import {
   HiX
 } from 'react-icons/hi';
 import { useLanguage } from '../../../hooks/useLanguage';
-import { USER_STORY_STATUS_OPTIONS } from '../../../constants';
+import { STATUS_VALUES, getUserStoryStatusOptions } from '../../../constants';
 
 const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStory, setSelectedStory] = useState(null);
+
+  // Get status options with translations
+  const statusOptions = useMemo(() => getUserStoryStatusOptions(t), [t]);
+
+  // Function to get translated status label
+  const getStatusLabel = (statusValue) => {
+    const option = statusOptions.find(opt => opt.value === statusValue);
+    return option ? option.label : statusValue;
+  };
 
   // Filter stories based on search term
   const filteredStories = stories.filter(story => 
@@ -38,34 +47,34 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
 
   // Stats calculation
   const stats = useMemo(() => ({
-    inProgress: stories.filter(s => s.status === 'in progress').length,
-    completed: stories.filter(s => s.status === 'done').length,
-    pending: stories.filter(s => s.status === 'to do').length,
+    inProgress: stories.filter(s => s.status === STATUS_VALUES.IN_PROGRESS).length,
+    completed: stories.filter(s => s.status === STATUS_VALUES.DONE).length,
+    pending: stories.filter(s => s.status === STATUS_VALUES.TO_DO).length,
     total: stories.length
   }), [stories]);
 
   const StatusIcon = ({ status }) => {
     const iconClass = "h-4 w-4";
     
-    if (status === 'done') {
+    if (status === STATUS_VALUES.DONE) {
       return <HiCheckCircle className={`${iconClass} text-green-500`} />;
     }
-    if (status === 'in progress') {
+    if (status === STATUS_VALUES.IN_PROGRESS) {
       return <HiClock className={`${iconClass} text-blue-500`} />;
     }
-    if (status === 'blocked') {
+    if (status === STATUS_VALUES.BLOCKED) {
       return <HiExclamationCircle className={`${iconClass} text-red-500`} />;
     }
-    if (status === 'to test') {
+    if (status === STATUS_VALUES.TO_TEST) {
       return <HiCheckCircle className={`${iconClass} text-purple-500`} />;
     }
     return <HiDocumentText className={`${iconClass} text-gray-500`} />;
   };
 
   const getStatusBadgeVariant = (status) => {
-    if (status === 'done') return "default";
-    if (status === 'in progress') return "secondary";
-    if (status === 'blocked') return "destructive";
+    if (status === STATUS_VALUES.DONE) return "default";
+    if (status === STATUS_VALUES.IN_PROGRESS) return "secondary";
+    if (status === STATUS_VALUES.BLOCKED) return "destructive";
     return "outline";
   };
 
@@ -179,7 +188,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                       </h4>
                     </div>
                     <Badge variant={getStatusBadgeVariant(story.status)} className="text-xs flex-shrink-0 ml-2">
-                      {story.status}
+                      {getStatusLabel(story.status)}
                     </Badge>
                   </div>
                   
@@ -264,7 +273,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                     Status
                   </span>
                   <Badge variant={getStatusBadgeVariant(selectedStory.status)}>
-                    {selectedStory.status}
+                    {getStatusLabel(selectedStory.status)}
                   </Badge>
                 </div>
                 <div className="min-w-[220px]">
@@ -273,7 +282,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus }) => {
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      {USER_STORY_STATUS_OPTIONS.map(option => (
+                      {statusOptions.map(option => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>

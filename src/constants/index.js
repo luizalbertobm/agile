@@ -12,6 +12,25 @@ export const USER_STORY_PRIORITY = {
   HIGH: 'Alta'
 };
 
+// Status value constants (used for filtering and comparisons)
+export const STATUS_VALUES = {
+  TO_DO: 'to do',
+  IN_PROGRESS: 'in progress',
+  TO_TEST: 'to test',
+  BLOCKED: 'blocked',
+  DONE: 'done'
+};
+
+// Function to get status options with translations
+export const getUserStoryStatusOptions = (t) => [
+  { value: STATUS_VALUES.TO_DO, label: t('userStory.status.toDo') },
+  { value: STATUS_VALUES.IN_PROGRESS, label: t('userStory.status.inProgress') },
+  { value: STATUS_VALUES.TO_TEST, label: t('userStory.status.toTest') },
+  { value: STATUS_VALUES.BLOCKED, label: t('userStory.status.blocked') },
+  { value: STATUS_VALUES.DONE, label: t('userStory.status.done') }
+];
+
+// Deprecated - for backwards compatibility
 export const USER_STORY_STATUS_OPTIONS = [
   { value: 'to do', label: 'to do' },
   { value: 'in progress', label: 'in progress' },
