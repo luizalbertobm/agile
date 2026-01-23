@@ -47,7 +47,7 @@ function App() {
       priorityLabelMap
     });
     const newStory = {
-      id: crypto.randomUUID(),
+      id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       title: userStoryData.title?.trim() || 'Untitled story',
       description: buildStorySummary({ data: userStoryData, t }),
       status: 'to do',
