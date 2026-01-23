@@ -14,6 +14,7 @@
     "title": "Histórias de Usuário",
     "subtitle": "Gerencie suas histórias",
     "search": "Buscar histórias...",
+    "status": "Status",
     "stats": {
       "inProgress": "Em progresso",
       "completed": "Concluído",
@@ -32,7 +33,11 @@
     "status": {
       "pending": "Pendente",
       "inProgress": "Em progresso",
-      "completed": "Concluído"
+      "completed": "Concluído",
+      "toDo": "A fazer",
+      "toTest": "Para testar",
+      "blocked": "Bloqueado",
+      "done": "Concluído"
     },
     "basicInfo": {
       "title": "Informações Básicas"
