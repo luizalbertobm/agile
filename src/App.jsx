@@ -57,9 +57,11 @@ function App() {
       markdown
     };
 
-    const updatedStories = [newStory, ...savedStories];
-    setSavedStories(updatedStories);
-    storage.set(STORAGE_KEYS.USER_STORIES, updatedStories);
+    setSavedStories(prevStories => {
+      const updatedStories = [newStory, ...prevStories];
+      storage.set(STORAGE_KEYS.USER_STORIES, updatedStories);
+      return updatedStories;
+    });
     openSidebar();
   };
 
