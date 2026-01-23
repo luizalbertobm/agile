@@ -264,9 +264,8 @@ function UserStoryBuilder({ userStoryData: userStoryDataProp, setUserStoryData: 
         });
     };
 
-    const priorityLabelMap = React.useMemo(
-        () => Object.fromEntries(priorities.map(priority => [priority.value, priority.label])),
-        [priorities]
+    const priorityLabelMap = Object.fromEntries(
+        priorities.map(priority => [priority.value, priority.label])
     );
 
     const generatePreview = () => buildUserStoryMarkdown({
