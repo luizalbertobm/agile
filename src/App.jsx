@@ -14,6 +14,7 @@ function App() {
   const { t } = useLanguage();
   const [forceUpdate, setForceUpdate] = useState(0);
   const [userStoryData, setUserStoryData] = useState(createEmptyUserStoryData);
+  const [editingStoryId, setEditingStoryId] = useState(null);
   const [savedStories, setSavedStories] = useState(() => storage.get(STORAGE_KEYS.USER_STORIES, []));
 
   const priorityLabelMap = useMemo(
@@ -41,27 +42,49 @@ function App() {
   }, []);
 
   const handleSaveStory = () => {
+    const dataSnapshot = typeof structuredClone === 'function'
+      ? structuredClone(userStoryData)
+      : JSON.parse(JSON.stringify(userStoryData));
     const markdown = buildUserStoryMarkdown({
       data: userStoryData,
       t,
       priorityLabelMap
     });
-    const newStory = {
-      id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-      title: userStoryData.title?.trim() || 'Untitled story',
-      description: buildStorySummary({ data: userStoryData, t }),
-      status: 'to do',
-      priority: userStoryData.priority || null,
-      estimate: userStoryData.storyPoints || null,
-      createdAt: new Date().toISOString(),
-      markdown
-    };
-
     setSavedStories(prevStories => {
+      if (editingStoryId) {
+        const updatedStories = prevStories.map(story => {
+          if (story.id !== editingStoryId) return story;
+          return {
+            ...story,
+            title: userStoryData.title?.trim() || story.title || 'Untitled story',
+            description: buildStorySummary({ data: userStoryData, t }),
+            priority: userStoryData.priority || null,
+            estimate: userStoryData.storyPoints || null,
+            markdown,
+            data: dataSnapshot
+          };
+        });
+        storage.set(STORAGE_KEYS.USER_STORIES, updatedStories);
+        return updatedStories;
+      }
+
+      const newStory = {
+        id: crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        title: userStoryData.title?.trim() || 'Untitled story',
+        description: buildStorySummary({ data: userStoryData, t }),
+        status: 'to do',
+        priority: userStoryData.priority || null,
+        estimate: userStoryData.storyPoints || null,
+        createdAt: new Date().toISOString(),
+        markdown,
+        data: dataSnapshot
+      };
+
       const updatedStories = [newStory, ...prevStories];
       storage.set(STORAGE_KEYS.USER_STORIES, updatedStories);
       return updatedStories;
     });
+    setEditingStoryId(null);
     openSidebar();
   };
 
@@ -81,6 +104,44 @@ function App() {
       storage.set(STORAGE_KEYS.USER_STORIES, updatedStories);
       return updatedStories;
     });
+    if (editingStoryId === storyId) {
+      setEditingStoryId(null);
+    }
+  };
+
+  const handleEditStory = (story) => {
+    const baseData = createEmptyUserStoryData();
+    let storyData = { ...baseData, title: story?.title || '' };
+
+    if (story?.data) {
+      storyData = { ...baseData, ...story.data };
+    } else {
+      if (story?.priority) {
+        storyData.priority = story.priority;
+      }
+      if (story?.estimate) {
+        storyData.storyPoints = story.estimate;
+      }
+      if (story?.description) {
+        const ptMatch = story.description.match(/Como\s+(.+?),\s*eu\s+quero\s+(.+?)\s+para\s+que\s+(.+)/i);
+        const enMatch = story.description.match(/As\s+(.+?),\s*I\s+want\s+(.+?)\s+so\s+that\s+(.+)/i);
+        const match = ptMatch || enMatch;
+        if (match) {
+          storyData.as = match[1].trim();
+          storyData.iWant = match[2].trim();
+          storyData.soThat = match[3].trim();
+        }
+      }
+    }
+    setUserStoryData(storyData);
+    setEditingStoryId(story?.id ?? null);
+    closeSidebar();
+  };
+
+  const handleCreateStory = () => {
+    setUserStoryData(createEmptyUserStoryData());
+    setEditingStoryId(null);
+    closeSidebar();
   };
 
   return (
@@ -93,6 +154,8 @@ function App() {
         stories={savedStories}
         onUpdateStoryStatus={handleUpdateStoryStatus}
         onDeleteStory={handleDeleteStory}
+        onEditStory={handleEditStory}
+        onCreateStory={handleCreateStory}
       />
 
       {/* Main Content */}

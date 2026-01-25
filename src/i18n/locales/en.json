@@ -1,6 +1,7 @@
 {
   "common": {
     "create": "Create",
+    "edit": "Edit",
     "delete": "Delete"
   },
   "navbar": {

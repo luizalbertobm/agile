@@ -20,12 +20,13 @@ import {
   HiCheckCircle, 
   HiExclamationCircle,
   HiPlus,
-  HiX
+  HiX,
+  HiPencil
 } from 'react-icons/hi';
 import { useLanguage } from '../../../hooks/useLanguage';
 import { USER_STORY_STATUS_OPTIONS } from '../../../constants';
 
-const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteStory }) => {
+const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteStory, onEditStory, onCreateStory }) => {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStory, setSelectedStory] = useState(null);
@@ -108,6 +109,12 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
     setSelectedStory(null);
   };
 
+  const handleEditStory = () => {
+    if (!selectedStory) return;
+    onEditStory?.(selectedStory);
+    setSelectedStory(null);
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="left" className="w-[350px] sm:w-[400px] md:w-[540px] p-0">
@@ -180,7 +187,12 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
               {t('sidebar.sections.recent')} ({filteredStories.length})
             </h3>
-            <Button size="sm" variant="outline" className="h-6 sm:h-7 px-2 text-xs">
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-6 sm:h-7 px-2 text-xs"
+              onClick={() => onCreateStory?.()}
+            >
               <HiPlus className="h-3 w-3 mr-1" />
               <span className="hidden sm:inline">{t('common.create')}</span>
             </Button>
@@ -248,7 +260,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
                   <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
                     {t('sidebar.empty.description')}
                   </p>
-                  <Button className="px-4 py-2">
+                  <Button className="px-4 py-2" onClick={() => onCreateStory?.()}>
                     <HiPlus className="h-4 w-4 mr-2" />
                     {t('sidebar.empty.action')}
                   </Button>
@@ -312,7 +324,11 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
                 showCopyButton
                 showToggleButton
               />
-              <div className="flex items-center justify-end pt-2">
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <Button variant="outline" onClick={handleEditStory} className="flex items-center gap-2">
+                  <HiPencil className="h-4 w-4" />
+                  {t('common.edit')}
+                </Button>
                 <Button variant="destructive" onClick={handleDeleteStory}>
                   {t('common.delete')}
                 </Button>
