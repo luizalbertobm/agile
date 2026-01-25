@@ -117,6 +117,7 @@
     "preview": {
       "title": "Preview (Markdown)",
       "empty": "Complete the fields to see preview",
+      "pending": "Pending",
       "progress": {
         "title": "User Story Progress",
         "status": {
