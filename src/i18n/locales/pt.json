@@ -119,6 +119,7 @@
     "preview": {
       "title": "Preview (Markdown)",
       "empty": "Complete os campos para ver o preview",
+      "pending": "Pendente",
       "progress": {
         "title": "Progresso da User Story",
         "status": {

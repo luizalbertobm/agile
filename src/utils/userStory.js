@@ -19,9 +19,10 @@ export const buildUserStoryMarkdown = ({ data, t, priorityLabelMap = {} }) => {
   }
 
   if (data.as || data.iWant || data.soThat) {
-    markdown += `**${t('userStory.form.as')}** ${data.as || '_[pendente]_'}  \n`;
-    markdown += `**${t('userStory.form.iWant')}** ${data.iWant || '_[pendente]_'}  \n`;
-    markdown += `**${t('userStory.form.soThat')}** ${data.soThat || '_[pendente]_'}\n\n`;
+    const pendingText = `_[${t('userStory.preview.pending')}]_`;
+    markdown += `**${t('userStory.form.as')}** ${data.as || pendingText}  \n`;
+    markdown += `**${t('userStory.form.iWant')}** ${data.iWant || pendingText}  \n`;
+    markdown += `**${t('userStory.form.soThat')}** ${data.soThat || pendingText}\n\n`;
   }
 
   if (data.priority || data.storyPoints) {
