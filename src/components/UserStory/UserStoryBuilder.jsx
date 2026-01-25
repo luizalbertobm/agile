@@ -641,7 +641,7 @@ function AcceptanceCriteriaSection({
                     <div className="space-y-3">
                         <div>
                             <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
-                                Given
+                                {t('userStory.acceptanceCriteria.givenLabel')}
                             </Label>
                             <Input
                                 placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
@@ -651,7 +651,7 @@ function AcceptanceCriteriaSection({
                         </div>
                         <div>
                             <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
-                                When
+                                {t('userStory.acceptanceCriteria.whenLabel')}
                             </Label>
                             <Input
                                 placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
@@ -661,7 +661,7 @@ function AcceptanceCriteriaSection({
                         </div>
                         <div>
                             <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
-                                Then
+                                {t('userStory.acceptanceCriteria.thenLabel')}
                             </Label>
                             <Input
                                 placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
@@ -700,7 +700,7 @@ function AcceptanceCriteriaSection({
                             {/* Given */}
                             <div>
                                 <Label className="block text-sm font-medium mb-1 text-green-700 dark:text-green-400">
-                                    Given
+                                    {t('userStory.acceptanceCriteria.givenLabel')}
                                 </Label>
                                 <Input
                                     placeholder={t('userStory.acceptanceCriteria.givenPlaceholder')}
@@ -712,7 +712,7 @@ function AcceptanceCriteriaSection({
                             {/* When */}
                             <div>
                                 <Label className="block text-sm font-medium mb-1 text-blue-700 dark:text-blue-400">
-                                    When
+                                    {t('userStory.acceptanceCriteria.whenLabel')}
                                 </Label>
                                 <Input
                                     placeholder={t('userStory.acceptanceCriteria.whenPlaceholder')}
@@ -724,7 +724,7 @@ function AcceptanceCriteriaSection({
                             {/* Then */}
                             <div>
                                 <Label className="block text-sm font-medium mb-1 text-purple-700 dark:text-purple-400">
-                                    Then
+                                    {t('userStory.acceptanceCriteria.thenLabel')}
                                 </Label>
                                 <Input
                                     placeholder={t('userStory.acceptanceCriteria.thenPlaceholder')}
@@ -737,7 +737,7 @@ function AcceptanceCriteriaSection({
                             {scenario.and && scenario.and.length > 0 && (
                                 <div>
                                     <Label className="block text-sm font-medium mb-1 text-orange-700 dark:text-orange-400">
-                                        And
+                                        {t('userStory.acceptanceCriteria.andLabel')}
                                     </Label>
                                     {scenario.and.map((andCondition, andIndex) => (
                                         <div key={andIndex} className="flex gap-2 mb-2">
