@@ -14,7 +14,22 @@
     "tagline": "Professional Stories Made Easy",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "logoAlt": "Bee Agile logo"
+    "logoAlt": "Bee Agile logo",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your integrations and preferences.",
+    "save": "Save",
+    "show": "Show",
+    "hide": "Hide",
+    "saved": "API key saved successfully.",
+    "cleared": "API key removed.",
+    "openaiApiKey": {
+      "label": "OpenAI API Key",
+      "placeholder": "Enter your OpenAI API key",
+      "helper": "Stored locally in this browser. Leave blank to remove."
+    }
   },
   "sidebar": {
     "title": "User Stories",
@@ -39,7 +54,7 @@
       "copied": "Copied!",
       "error": "Unable to generate the prompt right now. Please try again.",
       "copyError": "Unable to copy the prompt.",
-      "missingKey": "Set VITE_OPENAI_API_KEY to generate the prompt."
+      "missingKey": "Set your OpenAI API key in Settings to generate the prompt."
     },
     "empty": {
       "title": "No stories found",

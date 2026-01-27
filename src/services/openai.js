@@ -1,3 +1,6 @@
+import { STORAGE_KEYS } from '@/constants';
+import { storage } from '@/utils/storage';
+
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const buildStoryContext = (story) => {
@@ -14,7 +17,8 @@ const buildStoryContext = (story) => {
 };
 
 export const generateAiPromptForStory = async (story) => {
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+  const storedApiKey = storage.get(STORAGE_KEYS.OPENAI_API_KEY, '');
+  const apiKey = storedApiKey || import.meta.env.VITE_OPENAI_API_KEY;
   const model = import.meta.env.VITE_OPENAI_MODEL || 'gpt-4o-mini';
 
   if (!apiKey) {

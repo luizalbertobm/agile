@@ -14,7 +14,22 @@
     "tagline": "Histórias profissionais com facilidade",
     "themeLight": "Claro",
     "themeDark": "Escuro",
-    "logoAlt": "Logo da Bee Agile"
+    "logoAlt": "Logo da Bee Agile",
+    "settings": "Configurações"
+  },
+  "settings": {
+    "title": "Configurações",
+    "description": "Gerencie suas integrações e preferências.",
+    "save": "Salvar",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "saved": "Chave da API salva com sucesso.",
+    "cleared": "Chave da API removida.",
+    "openaiApiKey": {
+      "label": "Chave da API OpenAI",
+      "placeholder": "Digite sua chave da API OpenAI",
+      "helper": "Armazenada localmente neste navegador. Deixe em branco para remover."
+    }
   },
   "sidebar": {
     "title": "Histórias de Usuário",
@@ -39,7 +54,7 @@
       "copied": "Copiado!",
       "error": "Não foi possível gerar o prompt agora. Tente novamente.",
       "copyError": "Não foi possível copiar o prompt.",
-      "missingKey": "Configure a chave VITE_OPENAI_API_KEY para gerar o prompt."
+      "missingKey": "Configure a chave da OpenAI nas Configurações para gerar o prompt."
     },
     "empty": {
       "title": "Nenhuma história encontrada",

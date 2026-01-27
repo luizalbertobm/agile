@@ -24,7 +24,8 @@ export const USER_STORY_STATUS_OPTIONS = [
 export const STORAGE_KEYS = {
   THEME: 'bee-agile-theme',
   LANGUAGE: 'bee-agile-language',
-  USER_STORIES: 'bee-agile-user-stories'
+  USER_STORIES: 'bee-agile-user-stories',
+  OPENAI_API_KEY: 'bee-agile-openai-api-key'
 };
 
 export const THEME_STORAGE_KEY = 'darkMode'; // Deprecated - use STORAGE_KEYS.THEME
