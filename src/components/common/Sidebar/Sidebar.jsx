@@ -277,7 +277,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
           onClick={handleCloseModal}
         >
           <div
-            className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden"
+            className="flex w-full max-w-3xl max-h-[calc(100vh-2rem)] flex-col bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -293,7 +293,7 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
                 <HiX className="h-5 w-5" />
               </Button>
             </div>
-            <div className="px-6 py-4 space-y-4">
+            <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
