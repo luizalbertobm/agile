@@ -10,7 +10,11 @@
     "toggleTheme": "Alternar tema",
     "selectLanguage": "Selecionar idioma",
     "stories": "Histórias",
-    "save": "Salvar"
+    "save": "Salvar",
+    "tagline": "Histórias profissionais com facilidade",
+    "themeLight": "Claro",
+    "themeDark": "Escuro",
+    "logoAlt": "Logo da Bee Agile"
   },
   "sidebar": {
     "title": "Histórias de Usuário",
@@ -60,8 +64,9 @@
       "soThatPlaceholder": "Ex: acessar funcionalidades, melhorar produtividade",
       "priority": "Prioridade",
       "selectPriority": "Selecione a prioridade",
-      "storyPoints": "Story Points",
-      "tags": "Tags",
+      "storyPoints": "Pontos de História",
+      "storyPointsShort": "{{value}} SP",
+      "tags": "Etiquetas",
       "tagsPlaceholder": "Ex: frontend, backend, API (separadas por vírgula)"
     },
     "priorities": {
@@ -121,10 +126,10 @@
       "placeholder": "Adicione notas ou observações adicionais"
     },
     "preview": {
-      "title": "Preview (Markdown)",
-      "empty": "Complete os campos para ver o preview",
+      "title": "Pré-visualização (Markdown)",
+      "empty": "Complete os campos para ver a pré-visualização",
       "progress": {
-        "title": "Progresso da User Story",
+        "title": "Progresso da História de Usuário",
         "status": {
           "starting": "Iniciando",
           "inProgress": "Em progresso", 
@@ -133,18 +138,30 @@
       },
       "buttons": {
         "code": "Código",
-        "preview": "Preview",
+        "preview": "Prévia",
         "copy": "Copiar",
         "copied": "Copiado!"
       },
       "emptyContent": "Nenhum conteúdo para visualizar",
-      "noMarkdownContent": "// Nenhum conteúdo markdown disponível"
+      "noMarkdownContent": "// Nenhum conteúdo de markdown disponível"
     },
     "summary": {
       "title": "Resumo",
       "scenarios": "Cenários",
       "definitionItems": "Itens de DoD",
-      "progress": "Progresso"
+      "progress": "Progresso",
+      "line": "Como {{as}}, eu quero {{iWant}} para que {{soThat}}"
+    },
+    "gherkinKeywords": {
+      "scenario": "Cenário",
+      "background": "Contexto",
+      "scenarioOutline": "Esquema do Cenário",
+      "examples": "Exemplos",
+      "given": "Dado",
+      "when": "Quando",
+      "then": "Então",
+      "and": "E",
+      "but": "Mas"
     },
     "templates": {
       "defaultTitle": "Modelo Padrão",

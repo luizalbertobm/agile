@@ -13,7 +13,7 @@ import { Copy, Check, Eye, Code } from 'lucide-react';
  */
 function MarkdownPreviewer({
     markdown = '',
-    title = 'Preview',
+    title = '',
     className = '',
     showCopyButton = true,
     showToggleButton = true,
@@ -87,11 +87,40 @@ function MarkdownPreviewer({
         setViewMode(prev => prev === 'preview' ? 'code' : 'preview');
     };
 
+    const resolvedTitle = title || t('userStory.preview.title');
+
+    const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    const gherkinKeywords = {
+        scenario: t('userStory.gherkinKeywords.scenario'),
+        background: t('userStory.gherkinKeywords.background'),
+        scenarioOutline: t('userStory.gherkinKeywords.scenarioOutline'),
+        examples: t('userStory.gherkinKeywords.examples'),
+        given: t('userStory.gherkinKeywords.given'),
+        when: t('userStory.gherkinKeywords.when'),
+        then: t('userStory.gherkinKeywords.then'),
+        and: t('userStory.gherkinKeywords.and'),
+        but: t('userStory.gherkinKeywords.but')
+    };
+
     // Parser de markdown para HTML com styling
     const renderMarkdown = (markdownText) => {
         if (!markdownText.trim()) {
             return `<p class="text-gray-500 dark:text-gray-400 italic text-center py-8">${t('userStory.preview.emptyContent')}</p>`;
         }
+
+        const scenarioKeywords = [
+            gherkinKeywords.scenario,
+            gherkinKeywords.background,
+            gherkinKeywords.scenarioOutline
+        ].map(escapeRegExp).join('|');
+        const stepKeywords = [
+            gherkinKeywords.given,
+            gherkinKeywords.when,
+            gherkinKeywords.then,
+            gherkinKeywords.and,
+            gherkinKeywords.but
+        ].map(escapeRegExp).join('|');
 
         return markdownText
             // Gherkin code blocks
@@ -99,13 +128,22 @@ function MarkdownPreviewer({
                 const formattedCode = code
 
                     // Scenario keywords - 2 spaces indentation, bold blue
-                    .replace(/^(Scenario|Background|Scenario Outline):\s*(.*$)/gm, '<span class="text-blue-600 dark:text-blue-400 font-bold">$1:</span> <span class="text-gray-800 dark:text-gray-200">$2</span>')
+                    .replace(
+                        new RegExp(`^(${scenarioKeywords}):\\s*(.*$)`, 'gm'),
+                        '<span class="text-blue-600 dark:text-blue-400 font-bold">$1:</span> <span class="text-gray-800 dark:text-gray-200">$2</span>'
+                    )
 
                     // Step keywords - 4 spaces indentation, colored keywords
-                    .replace(/^(Given|When|Then|And|But)\s+(.*$)/gm, '  <span class="text-purple-600 dark:text-purple-400 font-semibold">$1</span> <span class="text-gray-700 dark:text-gray-300">$2</span>')
+                    .replace(
+                        new RegExp(`^(${stepKeywords})\\s+(.*$)`, 'gm'),
+                        '  <span class="text-purple-600 dark:text-purple-400 font-semibold">$1</span> <span class="text-gray-700 dark:text-gray-300">$2</span>'
+                    )
 
                     // Examples keyword - 2 spaces indentation
-                    .replace(/^(Examples):\s*(.*$)/gm, '  <span class="text-orange-600 dark:text-orange-400 font-bold">$1:</span> <span class="text-gray-800 dark:text-gray-200">$2</span>')
+                    .replace(
+                        new RegExp(`^(${escapeRegExp(gherkinKeywords.examples)}):\\s*(.*$)`, 'gm'),
+                        '  <span class="text-orange-600 dark:text-orange-400 font-bold">$1:</span> <span class="text-gray-800 dark:text-gray-200">$2</span>'
+                    )
 
                     // Comments - maintain original indentation, gray italic
                     .replace(/^(\s*#.*$)/gm, '<span class="text-gray-500 dark:text-gray-400 italic">$1</span>')
@@ -184,7 +222,7 @@ function MarkdownPreviewer({
                     ) : (
                         <Code className="h-5 w-5 text-green-500" />
                     )}
-                    {title}
+                    {resolvedTitle}
                 </CardTitle>
                 <div className="flex items-center gap-2">
                     {showToggleButton && (

@@ -56,15 +56,11 @@ function UserStoryBuilder({ userStoryData: userStoryDataProp, setUserStoryData: 
     ];
 
     // Story Points data (Fibonacci sequence)
-    const storyPoints = [
-        { value: '1', label: '1 SP' },
-        { value: '2', label: '2 SP' },
-        { value: '3', label: '3 SP' },
-        { value: '5', label: '5 SP' },
-        { value: '8', label: '8 SP' },
-        { value: '13', label: '13 SP' },
-        { value: '21', label: '21 SP' }
-    ];
+    const storyPointValues = ['1', '2', '3', '5', '8', '13', '21'];
+    const storyPoints = storyPointValues.map((value) => ({
+        value,
+        label: t('userStory.form.storyPointsShort', { value })
+    }));
 
     // Quick templates
     const quickTemplates = [
