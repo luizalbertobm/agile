@@ -29,6 +29,18 @@
     "sections": {
       "recent": "Histórias Recentes"
     },
+    "aiPrompt": {
+      "title": "Prompt para IA",
+      "description": "Gere um prompt detalhado para um agente de IA implementar esta história.",
+      "generate": "Gerar prompt para IA",
+      "generating": "Gerando prompt...",
+      "outputLabel": "Prompt gerado",
+      "copy": "Copiar prompt",
+      "copied": "Copiado!",
+      "error": "Não foi possível gerar o prompt agora. Tente novamente.",
+      "copyError": "Não foi possível copiar o prompt.",
+      "missingKey": "Configure a chave VITE_OPENAI_API_KEY para gerar o prompt."
+    },
     "empty": {
       "title": "Nenhuma história encontrada",
       "description": "Comece criando sua primeira história de usuário",

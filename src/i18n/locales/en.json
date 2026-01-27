@@ -29,6 +29,18 @@
     "sections": {
       "recent": "Recent Stories"
     },
+    "aiPrompt": {
+      "title": "AI Prompt",
+      "description": "Generate a detailed prompt for an AI agent to implement this story.",
+      "generate": "Generate AI prompt",
+      "generating": "Generating prompt...",
+      "outputLabel": "Generated prompt",
+      "copy": "Copy prompt",
+      "copied": "Copied!",
+      "error": "Unable to generate the prompt right now. Please try again.",
+      "copyError": "Unable to copy the prompt.",
+      "missingKey": "Set VITE_OPENAI_API_KEY to generate the prompt."
+    },
     "empty": {
       "title": "No stories found",
       "description": "Start by creating your first user story",

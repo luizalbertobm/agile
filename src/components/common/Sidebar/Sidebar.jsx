@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MarkdownPreviewer } from '@/components/ui/MarkdownPreviewer';
+import { generateAiPromptForStory } from '@/services/openai';
 import {
   Sheet,
   SheetContent,
@@ -30,6 +31,10 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStory, setSelectedStory] = useState(null);
+  const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [promptError, setPromptError] = useState('');
+  const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
+  const [hasCopiedPrompt, setHasCopiedPrompt] = useState(false);
 
   // Filter stories based on search term
   const filteredStories = stories.filter(story => 
@@ -83,11 +88,17 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
 
   const handleStoryClick = (story) => {
     setSelectedStory(story);
+    setGeneratedPrompt('');
+    setPromptError('');
+    setHasCopiedPrompt(false);
     onClose?.();
   };
 
   const handleCloseModal = () => {
     setSelectedStory(null);
+    setGeneratedPrompt('');
+    setPromptError('');
+    setHasCopiedPrompt(false);
   };
 
   const handleStatusChange = (status) => {
@@ -113,6 +124,37 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
     if (!selectedStory) return;
     onEditStory?.(selectedStory);
     setSelectedStory(null);
+  };
+
+  const handleGeneratePrompt = async () => {
+    if (!selectedStory) return;
+    setIsGeneratingPrompt(true);
+    setPromptError('');
+    setHasCopiedPrompt(false);
+
+    try {
+      const prompt = await generateAiPromptForStory(selectedStory);
+      setGeneratedPrompt(prompt);
+    } catch (error) {
+      if (error?.code === 'missing_api_key' || error?.message === 'missing_api_key') {
+        setPromptError(t('sidebar.aiPrompt.missingKey'));
+      } else {
+        setPromptError(t('sidebar.aiPrompt.error'));
+      }
+    } finally {
+      setIsGeneratingPrompt(false);
+    }
+  };
+
+  const handleCopyPrompt = async () => {
+    if (!generatedPrompt) return;
+    try {
+      await navigator.clipboard.writeText(generatedPrompt);
+      setHasCopiedPrompt(true);
+      setTimeout(() => setHasCopiedPrompt(false), 2000);
+    } catch (error) {
+      setPromptError(t('sidebar.aiPrompt.copyError'));
+    }
   };
 
   return (
@@ -324,6 +366,45 @@ const Sidebar = ({ isOpen, onClose, stories = [], onUpdateStoryStatus, onDeleteS
                 showCopyButton
                 showToggleButton
               />
+              <div className="rounded-lg border border-dashed border-gray-200 dark:border-gray-700 p-4 space-y-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
+                      {t('sidebar.aiPrompt.title')}
+                    </h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {t('sidebar.aiPrompt.description')}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={handleGeneratePrompt}
+                    disabled={isGeneratingPrompt}
+                  >
+                    {isGeneratingPrompt ? t('sidebar.aiPrompt.generating') : t('sidebar.aiPrompt.generate')}
+                  </Button>
+                </div>
+                {promptError && (
+                  <p className="text-xs text-red-500">{promptError}</p>
+                )}
+                {generatedPrompt && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                        {t('sidebar.aiPrompt.outputLabel')}
+                      </span>
+                      <Button variant="ghost" size="sm" onClick={handleCopyPrompt}>
+                        {hasCopiedPrompt ? t('sidebar.aiPrompt.copied') : t('sidebar.aiPrompt.copy')}
+                      </Button>
+                    </div>
+                    <div className="rounded-md bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-3">
+                      <pre className="whitespace-pre-wrap text-xs text-gray-700 dark:text-gray-200 font-mono">
+                        {generatedPrompt}
+                      </pre>
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="flex items-center justify-end gap-3 pt-2">
                 <Button variant="outline" onClick={handleEditStory} className="flex items-center gap-2">
                   <HiPencil className="h-4 w-4" />
