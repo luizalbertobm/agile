@@ -10,7 +10,11 @@
     "toggleTheme": "Toggle theme",
     "selectLanguage": "Select language",
     "stories": "Stories",
-    "save": "Save"
+    "save": "Save",
+    "tagline": "Professional Stories Made Easy",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "logoAlt": "Bee Agile logo"
   },
   "sidebar": {
     "title": "User Stories",
@@ -61,6 +65,7 @@
       "priority": "Priority",
       "selectPriority": "Select priority",
       "storyPoints": "Story Points",
+      "storyPointsShort": "{{value}} SP",
       "tags": "Tags",
       "tagsPlaceholder": "Ex: frontend, backend, API (comma separated)"
     },
@@ -144,7 +149,19 @@
       "title": "Summary",
       "scenarios": "Scenarios",
       "definitionItems": "DoD Items",
-      "progress": "Progress"
+      "progress": "Progress",
+      "line": "As {{as}}, I want {{iWant}} so that {{soThat}}"
+    },
+    "gherkinKeywords": {
+      "scenario": "Scenario",
+      "background": "Background",
+      "scenarioOutline": "Scenario Outline",
+      "examples": "Examples",
+      "given": "Given",
+      "when": "When",
+      "then": "Then",
+      "and": "And",
+      "but": "But"
     },
     "templates": {
       "defaultTitle": "Default Template",

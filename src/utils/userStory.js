@@ -45,14 +45,19 @@ export const buildUserStoryMarkdown = ({ data, t, priorityLabelMap = {} }) => {
   if (data.acceptanceCriteria.length > 0) {
     markdown += `### ${t('userStory.acceptanceCriteria.title')}\n\n`;
     data.acceptanceCriteria.forEach((scenario, index) => {
+      const scenarioLabel = t('userStory.gherkinKeywords.scenario');
+      const givenLabel = t('userStory.gherkinKeywords.given');
+      const whenLabel = t('userStory.gherkinKeywords.when');
+      const thenLabel = t('userStory.gherkinKeywords.then');
+      const andLabel = t('userStory.gherkinKeywords.and');
       markdown += '```gherkin\n';
-      markdown += `Scenario: ${t('userStory.acceptanceCriteria.scenario')} ${index + 1}\n`;
-      if (scenario.given) markdown += `Given ${scenario.given}\n`;
-      if (scenario.when) markdown += `When ${scenario.when}\n`;
-      if (scenario.then) markdown += `Then ${scenario.then}\n`;
+      markdown += `${scenarioLabel}: ${index + 1}\n`;
+      if (scenario.given) markdown += `${givenLabel} ${scenario.given}\n`;
+      if (scenario.when) markdown += `${whenLabel} ${scenario.when}\n`;
+      if (scenario.then) markdown += `${thenLabel} ${scenario.then}\n`;
       if (scenario.and && scenario.and.length > 0) {
         scenario.and.forEach(condition => {
-          if (condition) markdown += `And ${condition}\n`;
+          if (condition) markdown += `${andLabel} ${condition}\n`;
         });
       }
       markdown += '```\n\n';
@@ -88,5 +93,9 @@ export const buildStorySummary = ({ data, t }) => {
   const fallbackIWant = iWantValue || t('userStory.form.iWant');
   const fallbackSoThat = soThatValue || t('userStory.form.soThat');
 
-  return `As ${fallbackAs}, I want ${fallbackIWant} so that ${fallbackSoThat}`;
+  return t('userStory.summary.line', {
+    as: fallbackAs,
+    iWant: fallbackIWant,
+    soThat: fallbackSoThat
+  });
 };

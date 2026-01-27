@@ -27,9 +27,9 @@ const Navbar = ({ onSidebarToggle, onSave }) => {
             {/* Brand */}
             <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
               <Avatar className="w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0">
-                <AvatarImage 
-                  src={beeLogoUrl} 
-                  alt="Bee Agile Logo" 
+                <AvatarImage
+                  src={beeLogoUrl}
+                  alt={t('navbar.logoAlt')}
                   className="object-contain"
                 />
                 <AvatarFallback className="bg-gradient-to-br from-purple-600 to-blue-600 text-white font-bold">
@@ -41,7 +41,7 @@ const Navbar = ({ onSidebarToggle, onSave }) => {
                   {t('navbar.brand')}
                 </span>
                 <span className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-                  Professional Stories Made Easy
+                  {t('navbar.tagline')}
                 </span>
               </div>
             </div>
@@ -62,18 +62,20 @@ const Navbar = ({ onSidebarToggle, onSave }) => {
                       {isDarkMode ? (
                         <>
                           <HiSun className="h-4 w-4 text-yellow-500" />
-                          <span className="ml-1 hidden lg:inline">Light</span>
+                          <span className="ml-1 hidden lg:inline">{t('navbar.themeLight')}</span>
                         </>
                       ) : (
                         <>
                           <HiMoon className="h-4 w-4 text-blue-700" />
-                          <span className="ml-1 hidden lg:inline">Dark</span>
+                          <span className="ml-1 hidden lg:inline">{t('navbar.themeDark')}</span>
                         </>
                       )}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{t('navbar.toggleTheme')} ({isDarkMode ? 'Light' : 'Dark'})</p>
+                    <p>
+                      {t('navbar.toggleTheme')} ({isDarkMode ? t('navbar.themeLight') : t('navbar.themeDark')})
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -134,12 +136,12 @@ const Navbar = ({ onSidebarToggle, onSave }) => {
                     {isDarkMode ? (
                       <>
                         <HiSun className="h-4 w-4 text-yellow-500" />
-                        <span className="ml-1 text-xs">Light</span>
+                        <span className="ml-1 text-xs">{t('navbar.themeLight')}</span>
                       </>
                     ) : (
                       <>
                         <HiMoon className="h-4 w-4 text-blue-700" />
-                        <span className="ml-1 text-xs">Dark</span>
+                        <span className="ml-1 text-xs">{t('navbar.themeDark')}</span>
                       </>
                     )}
                   </Button>
@@ -153,7 +155,7 @@ const Navbar = ({ onSidebarToggle, onSave }) => {
             </div>
             
             <span className="text-xs text-muted-foreground">
-              Professional Stories Made Easy
+              {t('navbar.tagline')}
             </span>
           </div>
         </div>
