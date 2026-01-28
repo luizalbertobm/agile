@@ -54,7 +54,7 @@
       "copied": "Copied!",
       "error": "Unable to generate the prompt right now. Please try again.",
       "copyError": "Unable to copy the prompt.",
-      "missingKey": "Set your OpenAI API key in Settings to generate the prompt."
+      "missingKey": "Missing API key. Add your OpenAI API key in Settings or ask an administrator to configure it."
     },
     "empty": {
       "title": "No stories found",

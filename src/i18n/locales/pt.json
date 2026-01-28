@@ -54,7 +54,7 @@
       "copied": "Copiado!",
       "error": "Não foi possível gerar o prompt agora. Tente novamente.",
       "copyError": "Não foi possível copiar o prompt.",
-      "missingKey": "Configure a chave da OpenAI nas Configurações para gerar o prompt."
+      "missingKey": "Chave da API ausente. Adicione sua chave da OpenAI nas Configurações ou peça a um administrador para configurar."
     },
     "empty": {
       "title": "Nenhuma história encontrada",

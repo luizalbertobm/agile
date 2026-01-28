@@ -20,6 +20,9 @@ export const generateAiPromptForStory = async (story) => {
   const storedApiKey = storage.get(STORAGE_KEYS.OPENAI_API_KEY, '');
   const apiKey = storedApiKey || import.meta.env.VITE_OPENAI_API_KEY;
   const model = import.meta.env.VITE_OPENAI_MODEL || 'gpt-4o-mini';
+  const temperatureRaw = import.meta.env.VITE_OPENAI_TEMPERATURE;
+  const parsedTemperature = Number.parseFloat(temperatureRaw);
+  const temperature = Number.isFinite(parsedTemperature) ? parsedTemperature : 0.2;
 
   if (!apiKey) {
     const error = new Error('missing_api_key');
@@ -35,7 +38,7 @@ export const generateAiPromptForStory = async (story) => {
     },
     body: JSON.stringify({
       model,
-      temperature: 0.2,
+      temperature,
       messages: [
         {
           role: 'system',
