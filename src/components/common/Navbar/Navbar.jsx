@@ -8,14 +8,14 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
-import { HiMoon, HiSun, HiMenuAlt3, HiSave } from 'react-icons/hi';
+import { HiCog, HiMoon, HiSun, HiMenuAlt3, HiSave } from 'react-icons/hi';
 import { HiRocketLaunch } from 'react-icons/hi2';
 import { useTheme } from '../../../hooks/useTheme';
 import { useLanguage } from '../../../hooks/useLanguage';
 import { LanguageSelector } from '../LanguageSelector/LanguageSelector';
 import beeLogoUrl from '../../../assets/bee-transparent.png';
 
-const Navbar = ({ onSidebarToggle, onSave }) => {
+const Navbar = ({ onSidebarToggle, onSave, onOpenSettings }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { t } = useLanguage();
 
@@ -106,6 +106,24 @@ const Navbar = ({ onSidebarToggle, onSave }) => {
                   <p>{t('navbar.toggleSidebar')}</p>
                 </TooltipContent>
               </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={onOpenSettings}
+                    aria-label={t('navbar.settings')}
+                    className="px-2 sm:px-3"
+                  >
+                    <HiCog className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span className="ml-1 hidden md:inline">{t('navbar.settings')}</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t('navbar.settings')}</p>
+                </TooltipContent>
+              </Tooltip>
               
               {/* Save Button */}
               <Button
@@ -153,6 +171,16 @@ const Navbar = ({ onSidebarToggle, onSave }) => {
               
               <LanguageSelector />
             </div>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onOpenSettings}
+              aria-label={t('navbar.settings')}
+              className="px-2"
+            >
+              <HiCog className="h-4 w-4" />
+            </Button>
             
             <span className="text-xs text-muted-foreground">
               {t('navbar.tagline')}

@@ -14,7 +14,22 @@
     "tagline": "Histórias profissionais com facilidade",
     "themeLight": "Claro",
     "themeDark": "Escuro",
-    "logoAlt": "Logo da Bee Agile"
+    "logoAlt": "Logo da Bee Agile",
+    "settings": "Configurações"
+  },
+  "settings": {
+    "title": "Configurações",
+    "description": "Gerencie suas integrações e preferências.",
+    "save": "Salvar",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "saved": "Chave da API salva com sucesso.",
+    "cleared": "Chave da API removida.",
+    "openaiApiKey": {
+      "label": "Chave da API OpenAI",
+      "placeholder": "Digite sua chave da API OpenAI",
+      "helper": "Armazenada localmente neste navegador. Deixe em branco para remover."
+    }
   },
   "sidebar": {
     "title": "Histórias de Usuário",
@@ -28,6 +43,18 @@
     },
     "sections": {
       "recent": "Histórias Recentes"
+    },
+    "aiPrompt": {
+      "title": "Prompt para IA",
+      "description": "Gere um prompt detalhado para um agente de IA implementar esta história.",
+      "generate": "Gerar prompt para IA",
+      "generating": "Gerando prompt...",
+      "outputLabel": "Prompt gerado",
+      "copy": "Copiar prompt",
+      "copied": "Copiado!",
+      "error": "Não foi possível gerar o prompt agora. Tente novamente.",
+      "copyError": "Não foi possível copiar o prompt.",
+      "missingKey": "Chave da API ausente. Adicione sua chave da OpenAI nas Configurações ou peça a um administrador para configurar."
     },
     "empty": {
       "title": "Nenhuma história encontrada",
