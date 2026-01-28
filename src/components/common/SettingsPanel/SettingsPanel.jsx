@@ -33,34 +33,38 @@ const SettingsPanel = ({ isOpen, onClose }) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="right" className="w-[320px] sm:w-[380px]">
-        <SheetHeader className="space-y-2">
-          <SheetTitle>{t('settings.title')}</SheetTitle>
-          <SheetDescription>{t('settings.description')}</SheetDescription>
+      <SheetContent side="right" className="w-[320px] sm:w-[400px] p-0">
+        <SheetHeader className="px-6 py-5 border-b border-border bg-background/80 backdrop-blur">
+          <SheetTitle className="text-lg font-semibold">{t('settings.title')}</SheetTitle>
+          <SheetDescription className="text-sm text-muted-foreground">
+            {t('settings.description')}
+          </SheetDescription>
         </SheetHeader>
-        <div className="mt-6 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="openai-api-key">{t('settings.openaiApiKey.label')}</Label>
-            <Input
-              id="openai-api-key"
-              type={showApiKey ? 'text' : 'password'}
-              placeholder={t('settings.openaiApiKey.placeholder')}
-              value={apiKey}
-              onChange={(event) => setApiKey(event.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">
-              {t('settings.openaiApiKey.helper')}
-            </p>
+        <div className="px-6 py-5 space-y-4">
+          <div className="rounded-lg border border-border bg-background shadow-sm p-4 space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="openai-api-key">{t('settings.openaiApiKey.label')}</Label>
+              <Input
+                id="openai-api-key"
+                type={showApiKey ? 'text' : 'password'}
+                placeholder={t('settings.openaiApiKey.placeholder')}
+                value={apiKey}
+                onChange={(event) => setApiKey(event.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                {t('settings.openaiApiKey.helper')}
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <Button variant="outline" size="sm" onClick={() => setShowApiKey((prev) => !prev)}>
+                {showApiKey ? t('settings.hide') : t('settings.show')}
+              </Button>
+              <Button onClick={handleSave}>{t('settings.save')}</Button>
+            </div>
+            {statusMessage && (
+              <p className="text-xs text-green-600 dark:text-green-400">{statusMessage}</p>
+            )}
           </div>
-          <div className="flex items-center justify-between">
-            <Button variant="outline" size="sm" onClick={() => setShowApiKey((prev) => !prev)}>
-              {showApiKey ? t('settings.hide') : t('settings.show')}
-            </Button>
-            <Button onClick={handleSave}>{t('settings.save')}</Button>
-          </div>
-          {statusMessage && (
-            <p className="text-xs text-green-600 dark:text-green-400">{statusMessage}</p>
-          )}
         </div>
       </SheetContent>
     </Sheet>
