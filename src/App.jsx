@@ -3,6 +3,7 @@ import { useSidebar } from './hooks/useSidebar';
 import { useLanguage } from './hooks/useLanguage';
 import Navbar from './components/common/Navbar/Navbar';
 import Sidebar from './components/common/Sidebar/Sidebar';
+import SettingsPanel from './components/common/SettingsPanel/SettingsPanel';
 import UserStoryBuilder from './components/UserStory/UserStoryBuilder';
 import { STORAGE_KEYS } from './constants';
 import { storage } from './utils/storage';
@@ -16,6 +17,7 @@ function App() {
   const [userStoryData, setUserStoryData] = useState(createEmptyUserStoryData);
   const [editingStoryId, setEditingStoryId] = useState(null);
   const [savedStories, setSavedStories] = useState(() => storage.get(STORAGE_KEYS.USER_STORIES, []));
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const priorityLabelMap = useMemo(
     () => ({
@@ -146,7 +148,12 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900" key={forceUpdate}>
-      <Navbar onSidebarToggle={toggleSidebar} onSave={handleSaveStory} />
+      <Navbar
+        onSidebarToggle={toggleSidebar}
+        onSave={handleSaveStory}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+      />
+      <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       
       <Sidebar 
         isOpen={isSidebarOpen} 
